@@ -1,9 +1,7 @@
-name: Update portfolio static data
+name: Update portfolio static data (manual)
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "*/30 * * * *" # every 30 minutes
 
 permissions:
   contents: write
