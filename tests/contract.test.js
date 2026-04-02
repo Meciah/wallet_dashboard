@@ -15,6 +15,7 @@ function normalizePayload(payload) {
   const normalized = structuredClone(payload);
   normalized.generated.generated_at = "<ts>";
   normalized.generated.last_successful_export_at = "<ts>";
+  normalized.generated.commit_sha = "<sha>";
   normalized.generated.repository = "<repo>";
   normalized.generated.workflow_url = "<workflow-url>";
   normalized.generated.manual_refresh_url = "<workflow-url>";
