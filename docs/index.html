@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wallet Dashboard</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="theme-color" content="#0b1020" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Wallet Dashboard</h1>
+    <select id="scopeSelect">
+      <option value="combined">Combined</option>
+      <option value="wallet_1">Wallet 1</option>
+      <option value="wallet_2">Wallet 2</option>
+      <option value="wallet_3">Wallet 3</option>
+    </select>
+  </header>
+
+  <main>
+    <section class="card">
+      <h2>Total Value</h2>
+      <p id="totalValue">-</p>
+    </section>
+
+    <section class="card">
+      <h2>Top Positions</h2>
+      <ul id="positions"></ul>
+    </section>
+
+    <section class="card">
+      <h2>Allocation by Protocol</h2>
+      <ul id="allocation"></ul>
+    </section>
+
+    <section class="card">
+      <h2>Latest Ingestion Runs</h2>
+      <ul id="runs"></ul>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -21,14 +21,16 @@ This implementation now includes:
 - Legacy generic LP token detection via configurable mint allowlist (`KNOWN_LP_MINTS`)
 - Price provider fallback chain (CoinGecko -> Static fallback) + persisted price history
 - Read-only local HTTP API for summaries, positions, allocation, price/history, and ingestion run status
+- Static export + GitHub Pages mobile UI scaffold (`docs/`)
 
 ## Quick start
 ```bash
-python -m portfolio_tracker init-db
-python -m portfolio_tracker ingest --rpc-url https://api.mainnet-beta.solana.com
-python -m portfolio_tracker ingest-loop --rpc-url https://api.mainnet-beta.solana.com --interval-seconds 300
-python -m portfolio_tracker summary --scope combined
-python -m portfolio_tracker serve-api --host 127.0.0.1 --port 8080
+PYTHONPATH=src python -m portfolio_tracker init-db
+PYTHONPATH=src python -m portfolio_tracker ingest --rpc-url https://api.mainnet-beta.solana.com
+PYTHONPATH=src python -m portfolio_tracker export-static --out-dir docs/data
+PYTHONPATH=src python -m portfolio_tracker ingest-loop --rpc-url https://api.mainnet-beta.solana.com --interval-seconds 300
+PYTHONPATH=src python -m portfolio_tracker summary --scope combined
+PYTHONPATH=src python -m portfolio_tracker serve-api --host 127.0.0.1 --port 8080
 ```
 
 API examples:
@@ -41,6 +43,14 @@ curl 'http://127.0.0.1:8080/v1/prices?limit=100'
 curl 'http://127.0.0.1:8080/v1/allocation?scope=combined&by=protocol'
 curl 'http://127.0.0.1:8080/v1/ingestion-runs?limit=20'
 ```
+
+## GitHub Pages / mobile setup
+1. Set repo Pages source to `/docs` (main branch).
+2. Add `SOLANA_RPC_URL` as a GitHub Actions repository secret.
+3. Add a GitHub Action workflow to run `init-db`, `ingest`, and `export-static` on a schedule (every 30 minutes).
+4. Open the Pages URL on phone and "Add to Home Screen".
+
+The workflow updates `docs/data/portfolio-data.json` which powers the mobile dashboard.
 
 > If your environment blocks outbound RPC traffic, ingestion will still run and report per-adapter errors.
 
@@ -59,8 +69,10 @@ Add your real Raydium LP mints and native stake account addresses for accurate t
 - `src/portfolio_tracker/adapters/` – protocol adapters
 - `src/portfolio_tracker/providers.py` – Solana RPC + price providers
 - `src/portfolio_tracker/ingestion.py` – ingestion orchestration and snapshot generation
+- `src/portfolio_tracker/export_static.py` – static JSON exporter for Pages/mobile
 - `src/portfolio_tracker/api.py` – read-only HTTP API server
 - `src/portfolio_tracker/cli.py` – command-line entrypoint
+- `docs/` – mobile-friendly static dashboard (GitHub Pages)
 
 ## Next steps
 1. Replace mint-allowlist LP tracking with full Raydium pool/position decoding (including fee APR + IL estimates).

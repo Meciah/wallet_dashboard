@@ -7,6 +7,7 @@ from pathlib import Path
 from .api import serve_api
 from .config import DB_PATH
 from .db import apply_schema, db_session, seed_wallets_and_protocols, summarize_scope
+from .export_static import export_static_json
 from .ingestion import run_ingestion
 from .providers import default_rpc_url
 
@@ -32,6 +33,9 @@ def make_parser() -> argparse.ArgumentParser:
         choices=["wallet_1", "wallet_2", "wallet_3", "combined"],
         default="combined",
     )
+
+    export_parser = sub.add_parser("export-static", help="Export static JSON for GitHub Pages/mobile UI")
+    export_parser.add_argument("--out-dir", type=Path, default=Path("docs/data"))
 
     serve_parser = sub.add_parser("serve-api", help="Run a local read-only HTTP API server")
     serve_parser.add_argument("--host", default="127.0.0.1")
@@ -74,6 +78,11 @@ def command_summary(db_path: Path, scope: str) -> None:
     print(f"scope={summary.scope} total_usd={summary.total_usd:.2f}")
 
 
+def command_export_static(db_path: Path, out_dir: Path) -> None:
+    export_static_json(db_path, out_dir)
+    print(f"Wrote static export to {out_dir / 'portfolio-data.json'}")
+
+
 def main() -> None:
     parser = make_parser()
     args = parser.parse_args()
@@ -92,6 +101,10 @@ def main() -> None:
 
     if args.command == "summary":
         command_summary(args.db, args.scope)
+        return
+
+    if args.command == "export-static":
+        command_export_static(args.db, args.out_dir)
         return
 
     if args.command == "serve-api":
