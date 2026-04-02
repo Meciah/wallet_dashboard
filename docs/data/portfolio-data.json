@@ -1,41 +1,41 @@
 {
   "generated": {
-    "generated_at": "2026-04-02T21:37:30.160Z",
-    "last_successful_export_at": "2026-04-02T21:37:30.160Z",
-    "commit_sha": "39baee59066da634df4ce56530871413a6670bfd",
+    "generated_at": "2026-04-02T22:31:08.887Z",
+    "last_successful_export_at": "2026-04-02T22:31:08.887Z",
+    "commit_sha": "485dfa00ea2d8f7b0ffe80223f96f77e5ca340d7",
     "repository": "Meciah/wallet_dashboard",
-    "workflow_url": "https://github.com/Meciah/wallet_dashboard/actions/runs/23923109150",
+    "workflow_url": "https://github.com/Meciah/wallet_dashboard/actions/runs/23924970806",
     "manual_refresh_url": "https://github.com/Meciah/wallet_dashboard/actions/workflows/update-data.yml",
     "latest_run_status": "success",
-    "latest_run_started_at": "2026-04-02T21:35:29.543Z",
-    "latest_run_ended_at": "2026-04-02T21:37:29.896Z"
+    "latest_run_started_at": "2026-04-02T22:29:06.810Z",
+    "latest_run_ended_at": "2026-04-02T22:31:08.615Z"
   },
   "summary": {
     "wallet_1": {
       "scope": "wallet_1",
-      "total_usd": 1.2564626071199998,
-      "snapshot_ts": "2026-04-02T21:37:30.161Z",
+      "total_usd": 1.2558261012399998,
+      "snapshot_ts": "2026-04-02T22:31:08.888Z",
       "pnl_24h": null,
       "pnl_7d": null
     },
     "wallet_2": {
       "scope": "wallet_2",
-      "total_usd": 2389.198692216,
-      "snapshot_ts": "2026-04-02T21:37:30.162Z",
+      "total_usd": 2387.9883585320003,
+      "snapshot_ts": "2026-04-02T22:31:08.889Z",
       "pnl_24h": null,
       "pnl_7d": null
     },
     "wallet_3": {
       "scope": "wallet_3",
-      "total_usd": 1.01056616472,
-      "snapshot_ts": "2026-04-02T21:37:30.162Z",
+      "total_usd": 1.0100542264399999,
+      "snapshot_ts": "2026-04-02T22:31:08.889Z",
       "pnl_24h": null,
       "pnl_7d": null
     },
     "combined": {
       "scope": "combined",
-      "total_usd": 2391.46572098784,
-      "snapshot_ts": "2026-04-02T21:37:30.163Z",
+      "total_usd": 2390.2542388596803,
+      "snapshot_ts": "2026-04-02T22:31:08.890Z",
       "pnl_24h": null,
       "pnl_7d": null
     }
@@ -49,8 +49,8 @@
         "protocol_category": "wallet",
         "position_type": "wallet_balance",
         "position_key": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R:native:So11111111111111111111111111111111111111112",
-        "usd_value": 1.2564626071199998,
-        "updated_at": "2026-04-02T21:35:29.740Z",
+        "usd_value": 1.2558261012399998,
+        "updated_at": "2026-04-02T22:29:07.074Z",
         "raw": {
           "amount": "0.015912647",
           "mint": "So11111111111111111111111111111111111111112"
@@ -64,7 +64,7 @@
         "position_type": "wallet_balance",
         "position_key": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R:token:9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:35:29.814Z",
+        "updated_at": "2026-04-02T22:29:07.136Z",
         "raw": {
           "amount": "27769292.155099",
           "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
@@ -80,8 +80,8 @@
         "protocol_category": "wallet",
         "position_type": "wallet_balance",
         "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:native:So11111111111111111111111111111111111111112",
-        "usd_value": 2203.28047529688,
-        "updated_at": "2026-04-02T21:36:06.598Z",
+        "usd_value": 2202.1643251067603,
+        "updated_at": "2026-04-02T22:29:43.403Z",
         "raw": {
           "amount": "27.903754753",
           "mint": "So11111111111111111111111111111111111111112"
@@ -94,8 +94,8 @@
         "protocol_category": "staking",
         "position_type": "staking",
         "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:marinade_native:aggregate",
-        "usd_value": 185.91821691911997,
-        "updated_at": "2026-04-02T21:36:47.481Z",
+        "usd_value": 185.82403342524,
+        "updated_at": "2026-04-02T22:30:25.523Z",
         "raw": {
           "native_stake_accounts": [
             {
@@ -131,7 +131,7 @@
         "position_type": "wallet_balance",
         "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:token:9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:06.668Z",
+        "updated_at": "2026-04-02T22:29:43.454Z",
         "raw": {
           "amount": "20077412.147705",
           "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
@@ -146,7 +146,7 @@
         "position_type": "wallet_balance",
         "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:token:3Xwp6qP6ZhmxiLe85TrHgzRcMRy8Uhbha6Mw28Gzadd7",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:06.668Z",
+        "updated_at": "2026-04-02T22:29:43.454Z",
         "raw": {
           "amount": "1",
           "mint": "3Xwp6qP6ZhmxiLe85TrHgzRcMRy8Uhbha6Mw28Gzadd7",
@@ -161,7 +161,7 @@
         "position_type": "wallet_balance",
         "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:token:BfYCXegRrdMWhmAmCBtrP57Tu4GkLezjvTUATTP6LQgr",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:06.668Z",
+        "updated_at": "2026-04-02T22:29:43.454Z",
         "raw": {
           "amount": "1",
           "mint": "BfYCXegRrdMWhmAmCBtrP57Tu4GkLezjvTUATTP6LQgr",
@@ -176,7 +176,7 @@
         "position_type": "wallet_balance",
         "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:token:5NgneqEKwXbWN4zsQaLFw9DhJPSc4x6TpwLoeihfCATp",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:06.668Z",
+        "updated_at": "2026-04-02T22:29:43.454Z",
         "raw": {
           "amount": "1",
           "mint": "5NgneqEKwXbWN4zsQaLFw9DhJPSc4x6TpwLoeihfCATp",
@@ -192,8 +192,8 @@
         "protocol_category": "wallet",
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:native:So11111111111111111111111111111111111111112",
-        "usd_value": 1.01056616472,
-        "updated_at": "2026-04-02T21:36:47.742Z",
+        "usd_value": 1.0100542264399999,
+        "updated_at": "2026-04-02T22:30:27.011Z",
         "raw": {
           "amount": "0.012798457",
           "mint": "So11111111111111111111111111111111111111112"
@@ -207,7 +207,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:9weuimuMQFXt59VBoojnKAQGkgMtMbdJhULHomtqNJaw",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "9weuimuMQFXt59VBoojnKAQGkgMtMbdJhULHomtqNJaw",
@@ -222,7 +222,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "10435753.007707",
           "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
@@ -237,7 +237,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:C4PovpswW1PuxWjhdzTyx8jr6q6U69wGisVW4yohhZUk",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "C4PovpswW1PuxWjhdzTyx8jr6q6U69wGisVW4yohhZUk",
@@ -252,7 +252,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:9Kh7YQjfxAXqYCofq3ZUFxAq42hwphv3NpfoUjGd4i38",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "9Kh7YQjfxAXqYCofq3ZUFxAq42hwphv3NpfoUjGd4i38",
@@ -267,7 +267,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:Eog2TWv5fhpzGF9ASXG6utgmoeVxioYrBYrK4DM3fquQ",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "Eog2TWv5fhpzGF9ASXG6utgmoeVxioYrBYrK4DM3fquQ",
@@ -282,7 +282,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:Hp4FsTsLva3t3gk8eYUGnVUx828ZsBxLRi6jZDzhPcCr",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "Hp4FsTsLva3t3gk8eYUGnVUx828ZsBxLRi6jZDzhPcCr",
@@ -297,7 +297,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:DHGw53DoR5JRY3NrzXGSGEr7gnCGtoYNbvMUqk8Ddtzo",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "DHGw53DoR5JRY3NrzXGSGEr7gnCGtoYNbvMUqk8Ddtzo",
@@ -312,7 +312,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:RmBgiC9u8dGxcmQxdSd4dC6agvcLtNrumNTq7X69Xrv",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "RmBgiC9u8dGxcmQxdSd4dC6agvcLtNrumNTq7X69Xrv",
@@ -327,7 +327,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:76nkX8du3oZdshPTFDAv8nRAyR824Gjf8CNRbaF1GsGx",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "76nkX8du3oZdshPTFDAv8nRAyR824Gjf8CNRbaF1GsGx",
@@ -342,7 +342,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:GgFnpc7u3ru1oL9bg9ejH7WQHzVCdW9zbxzsB8kriVY9",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "GgFnpc7u3ru1oL9bg9ejH7WQHzVCdW9zbxzsB8kriVY9",
@@ -357,7 +357,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:7CLsLX1hxhPZid6ew4JievfHmeEqPntGd174sugia9jd",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "7CLsLX1hxhPZid6ew4JievfHmeEqPntGd174sugia9jd",
@@ -372,7 +372,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:C18En8beC16gRoMzNAgGXuASWfb6Gf6xUCFFT4wAxU1U",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "C18En8beC16gRoMzNAgGXuASWfb6Gf6xUCFFT4wAxU1U",
@@ -387,7 +387,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:34wrT1UkfGHmkv9vQycSRU7yRr6AK1uxzJL93BoNtwNY",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "34wrT1UkfGHmkv9vQycSRU7yRr6AK1uxzJL93BoNtwNY",
@@ -402,7 +402,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:4iJe93b6QZqKYXDUBcBzpyELSsfhitXyBno1RTwAmSBb",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "4iJe93b6QZqKYXDUBcBzpyELSsfhitXyBno1RTwAmSBb",
@@ -417,7 +417,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:3dqQdUChDaGihkSD2TqgpWNdkayJGoH4YunJMtLAGcrH",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "3dqQdUChDaGihkSD2TqgpWNdkayJGoH4YunJMtLAGcrH",
@@ -432,7 +432,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:59EEG7JZR3M1zqvBcyZLcF2DvHmeCvFhMpM7AHwR3byn",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "59EEG7JZR3M1zqvBcyZLcF2DvHmeCvFhMpM7AHwR3byn",
@@ -447,7 +447,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:7cuSEBw4z6YC9xSQssDi4X72QEEHGQyoRHbkZdbM3cV7",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "7cuSEBw4z6YC9xSQssDi4X72QEEHGQyoRHbkZdbM3cV7",
@@ -462,7 +462,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:6sv4zbdYWDTH63spXv24kwydJvdr6Dz6UfUmeWsgQrds",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "6sv4zbdYWDTH63spXv24kwydJvdr6Dz6UfUmeWsgQrds",
@@ -477,7 +477,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:3AxY7SsbgcBUDZ6c8QePBbMcsnh5iVZxddTkXhYkVXPj",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "3AxY7SsbgcBUDZ6c8QePBbMcsnh5iVZxddTkXhYkVXPj",
@@ -492,7 +492,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:ALKtPZT5a68v9Dt6AYG4Ru7kGqx6LKJP37iMVnYzMNNn",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "ALKtPZT5a68v9Dt6AYG4Ru7kGqx6LKJP37iMVnYzMNNn",
@@ -507,7 +507,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:5X77x2yGJACeyddGU1rhQES4N8LTknZNtZaS7rbd5VwQ",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "5X77x2yGJACeyddGU1rhQES4N8LTknZNtZaS7rbd5VwQ",
@@ -522,7 +522,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:D9YrxFc32dYByW9vbTmyYiJoNzvUdNsdrk4nK5g88Syr",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "D9YrxFc32dYByW9vbTmyYiJoNzvUdNsdrk4nK5g88Syr",
@@ -537,7 +537,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:BLMyWrFiPH2QBRSH7xVKmsiriYsa8JBYsa8pLgdbnHJS",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "BLMyWrFiPH2QBRSH7xVKmsiriYsa8JBYsa8pLgdbnHJS",
@@ -552,7 +552,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:RqCmATQJf31dLRvSA5XfyniV8sWmTSGScxjiMxxmcLE",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "RqCmATQJf31dLRvSA5XfyniV8sWmTSGScxjiMxxmcLE",
@@ -567,7 +567,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:4w6mLuJN2A5ytp9aAW2Pe1hj6DFW1E5a8oAbmVRFGN7k",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "4w6mLuJN2A5ytp9aAW2Pe1hj6DFW1E5a8oAbmVRFGN7k",
@@ -582,7 +582,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:FPVQ5ASUDZ3LYVvbSLKTZRt1drYk7d4hNQdY9AVcjMPA",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "FPVQ5ASUDZ3LYVvbSLKTZRt1drYk7d4hNQdY9AVcjMPA",
@@ -598,8 +598,8 @@
         "protocol_category": "wallet",
         "position_type": "wallet_balance",
         "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:native:So11111111111111111111111111111111111111112",
-        "usd_value": 2203.28047529688,
-        "updated_at": "2026-04-02T21:36:06.598Z",
+        "usd_value": 2202.1643251067603,
+        "updated_at": "2026-04-02T22:29:43.403Z",
         "raw": {
           "amount": "27.903754753",
           "mint": "So11111111111111111111111111111111111111112"
@@ -612,8 +612,8 @@
         "protocol_category": "staking",
         "position_type": "staking",
         "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:marinade_native:aggregate",
-        "usd_value": 185.91821691911997,
-        "updated_at": "2026-04-02T21:36:47.481Z",
+        "usd_value": 185.82403342524,
+        "updated_at": "2026-04-02T22:30:25.523Z",
         "raw": {
           "native_stake_accounts": [
             {
@@ -648,8 +648,8 @@
         "protocol_category": "wallet",
         "position_type": "wallet_balance",
         "position_key": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R:native:So11111111111111111111111111111111111111112",
-        "usd_value": 1.2564626071199998,
-        "updated_at": "2026-04-02T21:35:29.740Z",
+        "usd_value": 1.2558261012399998,
+        "updated_at": "2026-04-02T22:29:07.074Z",
         "raw": {
           "amount": "0.015912647",
           "mint": "So11111111111111111111111111111111111111112"
@@ -662,8 +662,8 @@
         "protocol_category": "wallet",
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:native:So11111111111111111111111111111111111111112",
-        "usd_value": 1.01056616472,
-        "updated_at": "2026-04-02T21:36:47.742Z",
+        "usd_value": 1.0100542264399999,
+        "updated_at": "2026-04-02T22:30:27.011Z",
         "raw": {
           "amount": "0.012798457",
           "mint": "So11111111111111111111111111111111111111112"
@@ -677,7 +677,7 @@
         "position_type": "wallet_balance",
         "position_key": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R:token:9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:35:29.814Z",
+        "updated_at": "2026-04-02T22:29:07.136Z",
         "raw": {
           "amount": "27769292.155099",
           "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
@@ -692,7 +692,7 @@
         "position_type": "wallet_balance",
         "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:token:9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:06.668Z",
+        "updated_at": "2026-04-02T22:29:43.454Z",
         "raw": {
           "amount": "20077412.147705",
           "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
@@ -707,7 +707,7 @@
         "position_type": "wallet_balance",
         "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:token:3Xwp6qP6ZhmxiLe85TrHgzRcMRy8Uhbha6Mw28Gzadd7",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:06.668Z",
+        "updated_at": "2026-04-02T22:29:43.454Z",
         "raw": {
           "amount": "1",
           "mint": "3Xwp6qP6ZhmxiLe85TrHgzRcMRy8Uhbha6Mw28Gzadd7",
@@ -722,7 +722,7 @@
         "position_type": "wallet_balance",
         "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:token:BfYCXegRrdMWhmAmCBtrP57Tu4GkLezjvTUATTP6LQgr",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:06.668Z",
+        "updated_at": "2026-04-02T22:29:43.454Z",
         "raw": {
           "amount": "1",
           "mint": "BfYCXegRrdMWhmAmCBtrP57Tu4GkLezjvTUATTP6LQgr",
@@ -737,7 +737,7 @@
         "position_type": "wallet_balance",
         "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:token:5NgneqEKwXbWN4zsQaLFw9DhJPSc4x6TpwLoeihfCATp",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:06.668Z",
+        "updated_at": "2026-04-02T22:29:43.454Z",
         "raw": {
           "amount": "1",
           "mint": "5NgneqEKwXbWN4zsQaLFw9DhJPSc4x6TpwLoeihfCATp",
@@ -752,7 +752,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:9weuimuMQFXt59VBoojnKAQGkgMtMbdJhULHomtqNJaw",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "9weuimuMQFXt59VBoojnKAQGkgMtMbdJhULHomtqNJaw",
@@ -767,7 +767,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "10435753.007707",
           "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
@@ -782,7 +782,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:C4PovpswW1PuxWjhdzTyx8jr6q6U69wGisVW4yohhZUk",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "C4PovpswW1PuxWjhdzTyx8jr6q6U69wGisVW4yohhZUk",
@@ -797,7 +797,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:9Kh7YQjfxAXqYCofq3ZUFxAq42hwphv3NpfoUjGd4i38",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "9Kh7YQjfxAXqYCofq3ZUFxAq42hwphv3NpfoUjGd4i38",
@@ -812,7 +812,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:Eog2TWv5fhpzGF9ASXG6utgmoeVxioYrBYrK4DM3fquQ",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "Eog2TWv5fhpzGF9ASXG6utgmoeVxioYrBYrK4DM3fquQ",
@@ -827,7 +827,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:Hp4FsTsLva3t3gk8eYUGnVUx828ZsBxLRi6jZDzhPcCr",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "Hp4FsTsLva3t3gk8eYUGnVUx828ZsBxLRi6jZDzhPcCr",
@@ -842,7 +842,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:DHGw53DoR5JRY3NrzXGSGEr7gnCGtoYNbvMUqk8Ddtzo",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "DHGw53DoR5JRY3NrzXGSGEr7gnCGtoYNbvMUqk8Ddtzo",
@@ -857,7 +857,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:RmBgiC9u8dGxcmQxdSd4dC6agvcLtNrumNTq7X69Xrv",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "RmBgiC9u8dGxcmQxdSd4dC6agvcLtNrumNTq7X69Xrv",
@@ -872,7 +872,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:76nkX8du3oZdshPTFDAv8nRAyR824Gjf8CNRbaF1GsGx",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "76nkX8du3oZdshPTFDAv8nRAyR824Gjf8CNRbaF1GsGx",
@@ -887,7 +887,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:GgFnpc7u3ru1oL9bg9ejH7WQHzVCdW9zbxzsB8kriVY9",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "GgFnpc7u3ru1oL9bg9ejH7WQHzVCdW9zbxzsB8kriVY9",
@@ -902,7 +902,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:7CLsLX1hxhPZid6ew4JievfHmeEqPntGd174sugia9jd",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "7CLsLX1hxhPZid6ew4JievfHmeEqPntGd174sugia9jd",
@@ -917,7 +917,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:C18En8beC16gRoMzNAgGXuASWfb6Gf6xUCFFT4wAxU1U",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "C18En8beC16gRoMzNAgGXuASWfb6Gf6xUCFFT4wAxU1U",
@@ -932,7 +932,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:34wrT1UkfGHmkv9vQycSRU7yRr6AK1uxzJL93BoNtwNY",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "34wrT1UkfGHmkv9vQycSRU7yRr6AK1uxzJL93BoNtwNY",
@@ -947,7 +947,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:4iJe93b6QZqKYXDUBcBzpyELSsfhitXyBno1RTwAmSBb",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "4iJe93b6QZqKYXDUBcBzpyELSsfhitXyBno1RTwAmSBb",
@@ -962,7 +962,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:3dqQdUChDaGihkSD2TqgpWNdkayJGoH4YunJMtLAGcrH",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "3dqQdUChDaGihkSD2TqgpWNdkayJGoH4YunJMtLAGcrH",
@@ -977,7 +977,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:59EEG7JZR3M1zqvBcyZLcF2DvHmeCvFhMpM7AHwR3byn",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "59EEG7JZR3M1zqvBcyZLcF2DvHmeCvFhMpM7AHwR3byn",
@@ -992,7 +992,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:7cuSEBw4z6YC9xSQssDi4X72QEEHGQyoRHbkZdbM3cV7",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "7cuSEBw4z6YC9xSQssDi4X72QEEHGQyoRHbkZdbM3cV7",
@@ -1007,7 +1007,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:6sv4zbdYWDTH63spXv24kwydJvdr6Dz6UfUmeWsgQrds",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "6sv4zbdYWDTH63spXv24kwydJvdr6Dz6UfUmeWsgQrds",
@@ -1022,7 +1022,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:3AxY7SsbgcBUDZ6c8QePBbMcsnh5iVZxddTkXhYkVXPj",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "3AxY7SsbgcBUDZ6c8QePBbMcsnh5iVZxddTkXhYkVXPj",
@@ -1037,7 +1037,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:ALKtPZT5a68v9Dt6AYG4Ru7kGqx6LKJP37iMVnYzMNNn",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "ALKtPZT5a68v9Dt6AYG4Ru7kGqx6LKJP37iMVnYzMNNn",
@@ -1052,7 +1052,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:5X77x2yGJACeyddGU1rhQES4N8LTknZNtZaS7rbd5VwQ",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "5X77x2yGJACeyddGU1rhQES4N8LTknZNtZaS7rbd5VwQ",
@@ -1067,7 +1067,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:D9YrxFc32dYByW9vbTmyYiJoNzvUdNsdrk4nK5g88Syr",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "D9YrxFc32dYByW9vbTmyYiJoNzvUdNsdrk4nK5g88Syr",
@@ -1082,7 +1082,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:BLMyWrFiPH2QBRSH7xVKmsiriYsa8JBYsa8pLgdbnHJS",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "BLMyWrFiPH2QBRSH7xVKmsiriYsa8JBYsa8pLgdbnHJS",
@@ -1097,7 +1097,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:RqCmATQJf31dLRvSA5XfyniV8sWmTSGScxjiMxxmcLE",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "RqCmATQJf31dLRvSA5XfyniV8sWmTSGScxjiMxxmcLE",
@@ -1112,7 +1112,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:4w6mLuJN2A5ytp9aAW2Pe1hj6DFW1E5a8oAbmVRFGN7k",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "4w6mLuJN2A5ytp9aAW2Pe1hj6DFW1E5a8oAbmVRFGN7k",
@@ -1127,7 +1127,7 @@
         "position_type": "wallet_balance",
         "position_key": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf:token:FPVQ5ASUDZ3LYVvbSLKTZRt1drYk7d4hNQdY9AVcjMPA",
         "usd_value": 0,
-        "updated_at": "2026-04-02T21:36:49.164Z",
+        "updated_at": "2026-04-02T22:30:27.061Z",
         "raw": {
           "amount": "1",
           "mint": "FPVQ5ASUDZ3LYVvbSLKTZRt1drYk7d4hNQdY9AVcjMPA",
@@ -1140,33 +1140,33 @@
     "wallet_1": [
       {
         "protocol": "wallet_tokens",
-        "total_usd": 1.2564626071199998
+        "total_usd": 1.2558261012399998
       }
     ],
     "wallet_2": [
       {
         "protocol": "wallet_tokens",
-        "total_usd": 2203.28047529688
+        "total_usd": 2202.1643251067603
       },
       {
         "protocol": "marinade_native",
-        "total_usd": 185.91821691911997
+        "total_usd": 185.82403342524
       }
     ],
     "wallet_3": [
       {
         "protocol": "wallet_tokens",
-        "total_usd": 1.01056616472
+        "total_usd": 1.0100542264399999
       }
     ],
     "combined": [
       {
         "protocol": "wallet_tokens",
-        "total_usd": 2205.54750406872
+        "total_usd": 2204.4302054344403
       },
       {
         "protocol": "marinade_native",
-        "total_usd": 185.91821691911997
+        "total_usd": 185.82403342524
       }
     ]
   },
@@ -1174,69 +1174,69 @@
     "wallet_1": [
       {
         "wallet": "wallet_1",
-        "total_usd": 1.2564626071199998
+        "total_usd": 1.2558261012399998
       }
     ],
     "wallet_2": [
       {
         "wallet": "wallet_2",
-        "total_usd": 2389.198692216
+        "total_usd": 2387.9883585320003
       }
     ],
     "wallet_3": [
       {
         "wallet": "wallet_3",
-        "total_usd": 1.01056616472
+        "total_usd": 1.0100542264399999
       }
     ],
     "combined": [
       {
         "wallet": "wallet_2",
-        "total_usd": 2389.198692216
+        "total_usd": 2387.9883585320003
       },
       {
         "wallet": "wallet_1",
-        "total_usd": 1.2564626071199998
+        "total_usd": 1.2558261012399998
       },
       {
         "wallet": "wallet_3",
-        "total_usd": 1.01056616472
+        "total_usd": 1.0100542264399999
       }
     ]
   },
   "history": {
     "wallet_1": [
       {
-        "snapshot_ts": "2026-04-02T21:35:29.544Z",
+        "snapshot_ts": "2026-04-02T22:29:06.812Z",
         "scope": "wallet_1",
-        "total_usd": 1.2564626071199998,
+        "total_usd": 1.2558261012399998,
         "pnl_24h": null,
         "pnl_7d": null
       }
     ],
     "wallet_2": [
       {
-        "snapshot_ts": "2026-04-02T21:35:29.544Z",
+        "snapshot_ts": "2026-04-02T22:29:06.812Z",
         "scope": "wallet_2",
-        "total_usd": 2389.198692216,
+        "total_usd": 2387.9883585320003,
         "pnl_24h": null,
         "pnl_7d": null
       }
     ],
     "wallet_3": [
       {
-        "snapshot_ts": "2026-04-02T21:35:29.544Z",
+        "snapshot_ts": "2026-04-02T22:29:06.812Z",
         "scope": "wallet_3",
-        "total_usd": 1.01056616472,
+        "total_usd": 1.0100542264399999,
         "pnl_24h": null,
         "pnl_7d": null
       }
     ],
     "combined": [
       {
-        "snapshot_ts": "2026-04-02T21:35:29.544Z",
+        "snapshot_ts": "2026-04-02T22:29:06.812Z",
         "scope": "combined",
-        "total_usd": 2391.46572098784,
+        "total_usd": 2390.2542388596803,
         "pnl_24h": null,
         "pnl_7d": null
       }
@@ -1245,8 +1245,8 @@
   "prices": [
     {
       "mint": "So11111111111111111111111111111111111111112",
-      "asof_ts": "2026-04-02T21:36:49.167Z",
-      "price_usd": 78.96,
+      "asof_ts": "2026-04-02T22:30:27.065Z",
+      "price_usd": 78.92,
       "source": "provider_chain",
       "confidence": null
     }
@@ -1254,8 +1254,8 @@
   "ingestion_runs": [
     {
       "id": 1,
-      "started_at": "2026-04-02T21:35:29.543Z",
-      "ended_at": "2026-04-02T21:37:29.896Z",
+      "started_at": "2026-04-02T22:29:06.810Z",
+      "ended_at": "2026-04-02T22:31:08.615Z",
       "status": "success",
       "error_count": 0,
       "notes": "positions_written=35; errors=0; details="
