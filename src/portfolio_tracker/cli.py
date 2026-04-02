@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import time
 from pathlib import Path
 
 from .api import serve_api
@@ -20,6 +21,10 @@ def make_parser() -> argparse.ArgumentParser:
 
     ingest_parser = sub.add_parser("ingest", help="Run one ingestion cycle")
     ingest_parser.add_argument("--rpc-url", default=default_rpc_url(), help="Solana RPC endpoint URL")
+
+    ingest_loop_parser = sub.add_parser("ingest-loop", help="Continuously run ingestion on an interval")
+    ingest_loop_parser.add_argument("--rpc-url", default=default_rpc_url(), help="Solana RPC endpoint URL")
+    ingest_loop_parser.add_argument("--interval-seconds", type=int, default=300, help="Seconds between ingestion runs")
 
     summary_parser = sub.add_parser("summary", help="Print current summary for one scope")
     summary_parser.add_argument(
@@ -50,6 +55,19 @@ def command_ingest(db_path: Path, rpc_url: str) -> None:
             print(f"  - {error}")
 
 
+def command_ingest_loop(db_path: Path, rpc_url: str, interval_seconds: int) -> None:
+    if interval_seconds < 5:
+        raise ValueError("interval-seconds must be at least 5")
+
+    run_count = 0
+    while True:
+        run_count += 1
+        print(f"[run {run_count}] starting ingestion")
+        command_ingest(db_path, rpc_url)
+        print(f"[run {run_count}] sleeping {interval_seconds}s")
+        time.sleep(interval_seconds)
+
+
 def command_summary(db_path: Path, scope: str) -> None:
     with db_session(db_path) as conn:
         summary = summarize_scope(conn, scope)
@@ -66,6 +84,10 @@ def main() -> None:
 
     if args.command == "ingest":
         command_ingest(args.db, args.rpc_url)
+        return
+
+    if args.command == "ingest-loop":
+        command_ingest_loop(args.db, args.rpc_url, args.interval_seconds)
         return
 
     if args.command == "summary":

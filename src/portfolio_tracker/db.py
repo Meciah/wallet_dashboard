@@ -303,3 +303,26 @@ def list_allocation(conn: sqlite3.Connection, scope: str, by: str = "protocol") 
 
     rows = conn.execute(query, params).fetchall()
     return [{dim_alias: row["dim"], "total_usd": float(row["total_usd"])} for row in rows]
+
+
+def list_ingestion_runs(conn: sqlite3.Connection, limit: int = 50) -> list[dict[str, Any]]:
+    rows = conn.execute(
+        """
+        SELECT id, started_at, ended_at, status, error_count, notes
+        FROM ingestion_runs
+        ORDER BY id DESC
+        LIMIT ?
+        """,
+        (limit,),
+    ).fetchall()
+    return [
+        {
+            "id": int(row["id"]),
+            "started_at": row["started_at"],
+            "ended_at": row["ended_at"],
+            "status": row["status"],
+            "error_count": int(row["error_count"]),
+            "notes": row["notes"],
+        }
+        for row in rows
+    ]

@@ -18,12 +18,13 @@ This implementation now includes:
 - Marinade exposure detection via mSOL wallet balance
 - LP token detection via configurable mint allowlist (`KNOWN_LP_MINTS`)
 - Price provider fallback chain (CoinGecko -> Static fallback) + persisted price history
-- Read-only local HTTP API for summaries, positions, allocation, history, and latest prices
+- Read-only local HTTP API for summaries, positions, allocation, price/history, and ingestion run status
 
 ## Quick start
 ```bash
 python -m portfolio_tracker init-db
 python -m portfolio_tracker ingest --rpc-url https://api.mainnet-beta.solana.com
+python -m portfolio_tracker ingest-loop --rpc-url https://api.mainnet-beta.solana.com --interval-seconds 300
 python -m portfolio_tracker summary --scope combined
 python -m portfolio_tracker serve-api --host 127.0.0.1 --port 8080
 ```
@@ -36,6 +37,7 @@ curl 'http://127.0.0.1:8080/v1/positions?scope=wallet_2'
 curl 'http://127.0.0.1:8080/v1/history?scope=combined&limit=50'
 curl 'http://127.0.0.1:8080/v1/prices?limit=100'
 curl 'http://127.0.0.1:8080/v1/allocation?scope=combined&by=protocol'
+curl 'http://127.0.0.1:8080/v1/ingestion-runs?limit=20'
 ```
 
 > If your environment blocks outbound RPC traffic, ingestion will still run and report per-adapter errors.

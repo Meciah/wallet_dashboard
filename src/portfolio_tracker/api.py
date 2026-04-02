@@ -6,7 +6,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-from .db import db_session, list_allocation, list_current_positions, list_latest_prices, list_portfolio_history, summarize_scope
+from .db import db_session, list_allocation, list_current_positions, list_ingestion_runs, list_latest_prices, list_portfolio_history, summarize_scope
 
 
 class PortfolioApiHandler(BaseHTTPRequestHandler):
@@ -60,6 +60,19 @@ class PortfolioApiHandler(BaseHTTPRequestHandler):
             return
 
 
+
+
+        if parsed.path == "/v1/ingestion-runs":
+            limit_str = query.get("limit", ["50"])[0]
+            try:
+                limit = max(1, min(500, int(limit_str)))
+            except ValueError:
+                self._bad_request("limit must be an integer")
+                return
+            with db_session(self.db_path) as conn:
+                runs = list_ingestion_runs(conn, limit=limit)
+            self._send_json({"count": len(runs), "runs": runs})
+            return
 
         if parsed.path == "/v1/allocation":
             scope = _validate_scope(query.get("scope", ["combined"])[0])
