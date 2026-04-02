@@ -1,6 +1,6 @@
 {
   "scope": "wallet_2",
-  "count": 5,
+  "count": 6,
   "positions": [
     {
       "wallet_label": "wallet_2",
@@ -9,11 +9,47 @@
       "protocol_category": "wallet",
       "position_type": "wallet_balance",
       "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:native:So11111111111111111111111111111111111111112",
-      "usd_value": 2196.9037819872,
-      "updated_at": "2026-04-02T18:46:07.431949+00:00",
+      "usd_value": 2203.28047529688,
+      "updated_at": "2026-04-02T21:36:06.598Z",
       "raw": {
-        "amount": "27.932660928",
+        "amount": "27.903754753",
         "mint": "So11111111111111111111111111111111111111112"
+      }
+    },
+    {
+      "wallet_label": "wallet_2",
+      "wallet_address": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS",
+      "protocol": "marinade_native",
+      "protocol_category": "staking",
+      "position_type": "staking",
+      "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:marinade_native:aggregate",
+      "usd_value": 185.91821691911997,
+      "updated_at": "2026-04-02T21:36:47.481Z",
+      "raw": {
+        "native_stake_accounts": [
+          {
+            "stake_account": "4UrT2xdfmswtVBCsyNu8YF5bNkcZjgxTFYu48xEHqdtU",
+            "voter": "",
+            "active_sol": 0
+          },
+          {
+            "stake_account": "6R2WQCGbWBfufHnCzXVSAQqC1erMKtCLmjUduB4Rztz6",
+            "voter": "ENVaKoD7ytn58xJ8s5htFfQ8hqQt1G9dcPUDqbSwVcgB",
+            "active_sol": 0.019595292
+          },
+          {
+            "stake_account": "6VKzgzky5tdbVMNqLbXnBcou2zd5c8pWjMsEkCHKaMqd",
+            "voter": "ENVaKoD7ytn58xJ8s5htFfQ8hqQt1G9dcPUDqbSwVcgB",
+            "active_sol": 2.334992055
+          }
+        ],
+        "configured_accounts": [],
+        "discovered_accounts": [
+          "4UrT2xdfmswtVBCsyNu8YF5bNkcZjgxTFYu48xEHqdtU",
+          "6R2WQCGbWBfufHnCzXVSAQqC1erMKtCLmjUduB4Rztz6",
+          "6VKzgzky5tdbVMNqLbXnBcou2zd5c8pWjMsEkCHKaMqd"
+        ],
+        "note": "Native stake accounts are auto-discovered from wallet stake instructions and merged with configured list"
       }
     },
     {
@@ -24,9 +60,9 @@
       "position_type": "wallet_balance",
       "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:token:9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
       "usd_value": 0,
-      "updated_at": "2026-04-02T18:46:07.570421+00:00",
+      "updated_at": "2026-04-02T21:36:06.668Z",
       "raw": {
-        "amount": "20053775.160163",
+        "amount": "20077412.147705",
         "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
         "decimals": 6
       }
@@ -39,7 +75,7 @@
       "position_type": "wallet_balance",
       "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:token:3Xwp6qP6ZhmxiLe85TrHgzRcMRy8Uhbha6Mw28Gzadd7",
       "usd_value": 0,
-      "updated_at": "2026-04-02T18:46:07.570445+00:00",
+      "updated_at": "2026-04-02T21:36:06.668Z",
       "raw": {
         "amount": "1",
         "mint": "3Xwp6qP6ZhmxiLe85TrHgzRcMRy8Uhbha6Mw28Gzadd7",
@@ -54,7 +90,7 @@
       "position_type": "wallet_balance",
       "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:token:BfYCXegRrdMWhmAmCBtrP57Tu4GkLezjvTUATTP6LQgr",
       "usd_value": 0,
-      "updated_at": "2026-04-02T18:46:07.570455+00:00",
+      "updated_at": "2026-04-02T21:36:06.668Z",
       "raw": {
         "amount": "1",
         "mint": "BfYCXegRrdMWhmAmCBtrP57Tu4GkLezjvTUATTP6LQgr",
@@ -69,7 +105,7 @@
       "position_type": "wallet_balance",
       "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:token:5NgneqEKwXbWN4zsQaLFw9DhJPSc4x6TpwLoeihfCATp",
       "usd_value": 0,
-      "updated_at": "2026-04-02T18:46:07.570461+00:00",
+      "updated_at": "2026-04-02T21:36:06.668Z",
       "raw": {
         "amount": "1",
         "mint": "5NgneqEKwXbWN4zsQaLFw9DhJPSc4x6TpwLoeihfCATp",

@@ -1,11 +1,15 @@
 {
   "scope": "wallet_2",
   "by": "protocol",
-  "count": 1,
+  "count": 2,
   "allocation": [
     {
       "protocol": "wallet_tokens",
-      "total_usd": 2196.9037819872
+      "total_usd": 2203.28047529688
+    },
+    {
+      "protocol": "marinade_native",
+      "total_usd": 185.91821691911997
     }
   ]
 }
