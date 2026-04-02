@@ -1,0 +1,46 @@
+name: Update portfolio static data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/30 * * * *" # every 30 minutes
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-portfolio-data
+  cancel-in-progress: true
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Build latest portfolio snapshot
+        env:
+          SOLANA_RPC_URL: ${{ secrets.SOLANA_RPC_URL }}
+        run: |
+          PYTHONPATH=src python -m portfolio_tracker init-db
+          PYTHONPATH=src python -m portfolio_tracker ingest --rpc-url "$SOLANA_RPC_URL"
+          PYTHONPATH=src python -m portfolio_tracker export-static --out-dir docs/data
+
+      - name: Commit updated static data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add docs/data/portfolio-data.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update portfolio static data"
+            git push
+          else
+            echo "No data changes to commit."
+          fi
