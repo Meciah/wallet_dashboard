@@ -5,6 +5,8 @@ from pathlib import Path
 
 from .adapters.lp_tokens import LpTokenAdapter
 from .adapters.marinade import MarinadeAdapter
+from .adapters.marinade_native import MarinadeNativeStakeAdapter
+from .adapters.raydium_lp import RaydiumLpAdapter
 from .adapters.wallet_tokens import WalletTokenAdapter
 from .config import TRACKED_WALLETS
 from .db import (
@@ -42,6 +44,8 @@ def run_ingestion(conn, db_path: Path, rpc_url: str | None = None, price_provide
     adapters = [
         WalletTokenAdapter(chain_provider, prices),
         MarinadeAdapter(chain_provider, prices),
+        MarinadeNativeStakeAdapter(chain_provider, prices),
+        RaydiumLpAdapter(chain_provider, prices),
         LpTokenAdapter(chain_provider, prices),
     ]
 

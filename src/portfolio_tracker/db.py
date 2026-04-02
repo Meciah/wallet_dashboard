@@ -45,7 +45,9 @@ def seed_wallets_and_protocols(conn: sqlite3.Connection) -> None:
     default_protocols = (
         ("wallet_tokens", "wallet"),
         ("marinade", "staking"),
+        ("marinade_native", "staking"),
         ("lp_tokens", "lp"),
+        ("raydium", "lp"),
     )
     for name, category in default_protocols:
         conn.execute(

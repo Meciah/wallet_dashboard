@@ -26,12 +26,26 @@ TOKEN_SYMBOL_OVERRIDES: dict[str, str] = {
     MSOL_MINT: "mSOL",
 }
 
-# Configure LP token mints you want tracked as LP positions.
-# Add additional mints as your wallets use more pools.
+# Legacy generic LP mint detection.
 KNOWN_LP_MINTS: dict[str, str] = {
     "LPPlaceholderMint11111111111111111111111111111111": "LP_PLACEHOLDER",
 }
 
+# Raydium LP token mints (set these to your actual LP mint addresses).
+RAYDIUM_LP_MINTS: dict[str, str] = {
+    "RaydiumLpMintPlaceholder111111111111111111111": "RAYDIUM_LP_PLACEHOLDER",
+}
+
+# Optional native Marinade stake account allowlist by wallet.
+# Add stake account pubkeys once known for precise native stake tracking.
+MARINADE_NATIVE_STAKE_ACCOUNTS: dict[str, list[str]] = {
+    "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R": [],
+    "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS": [],
+    "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf": [],
+}
+
+# Marinade validator vote account allowlist for native stake account filtering.
+MARINADE_VALIDATOR_VOTE_ACCOUNTS: set[str] = set()
 
 COINGECKO_IDS_BY_MINT: dict[str, str] = {
     SOL_MINT: "solana",

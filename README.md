@@ -16,7 +16,9 @@ This implementation now includes:
 - Portfolio summary aggregation for per-wallet and combined scopes
 - Solana RPC-backed wallet token ingestion (native SOL + SPL token balances)
 - Marinade exposure detection via mSOL wallet balance
-- LP token detection via configurable mint allowlist (`KNOWN_LP_MINTS`)
+- Marinade native stake tracking via configured stake-account list
+- Raydium LP tracking via dedicated mint allowlist
+- Legacy generic LP token detection via configurable mint allowlist (`KNOWN_LP_MINTS`)
 - Price provider fallback chain (CoinGecko -> Static fallback) + persisted price history
 - Read-only local HTTP API for summaries, positions, allocation, price/history, and ingestion run status
 
@@ -42,11 +44,13 @@ curl 'http://127.0.0.1:8080/v1/ingestion-runs?limit=20'
 
 > If your environment blocks outbound RPC traffic, ingestion will still run and report per-adapter errors.
 
-## LP tracking configuration
-LP detection currently uses an allowlist in `src/portfolio_tracker/config.py`:
-- `KNOWN_LP_MINTS = { mint: "display_name" }`
+## Raydium LP + Marinade native configuration
+In `src/portfolio_tracker/config.py`:
+- `RAYDIUM_LP_MINTS = { mint: "pool_name" }`
+- `MARINADE_NATIVE_STAKE_ACCOUNTS = { wallet_address: [stake_account_pubkeys...] }`
+- `MARINADE_VALIDATOR_VOTE_ACCOUNTS = { vote_pubkey, ... }` (optional filter)
 
-Add the LP token mints you hold to improve position coverage.
+Add your real Raydium LP mints and native stake account addresses for accurate tracking.
 
 ## Project structure
 - `src/portfolio_tracker/schema.sql` – full SQLite schema
@@ -59,6 +63,6 @@ Add the LP token mints you hold to improve position coverage.
 - `src/portfolio_tracker/cli.py` – command-line entrypoint
 
 ## Next steps
-1. Replace LP allowlist detection with protocol-native LP position decoding.
-2. Extend Marinade parser beyond mSOL balance proxy into stake-account-level detail.
+1. Replace mint-allowlist LP tracking with full Raydium pool/position decoding (including fee APR + IL estimates).
+2. Auto-discover Marinade native stake accounts from wallet activity instead of manual stake account config.
 3. Add token metadata enrichment (symbol/logo/verification) and confidence scoring.

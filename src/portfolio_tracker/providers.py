@@ -6,7 +6,7 @@ import urllib.parse
 import urllib.request
 from dataclasses import dataclass
 from decimal import Decimal
-from typing import Protocol
+from typing import Any, Protocol
 
 from .config import COINGECKO_IDS_BY_MINT
 
@@ -26,6 +26,9 @@ class ChainDataProvider(Protocol):
         ...
 
     def get_token_balances(self, wallet_address: str) -> list[TokenBalance]:
+        ...
+
+    def get_parsed_multiple_accounts(self, addresses: list[str]) -> list[dict[str, Any]]:
         ...
 
 
@@ -82,6 +85,21 @@ class SolanaRpcProvider:
             decimals = int(token_amount.get("decimals", 0))
             balances.append(TokenBalance(mint=mint, amount=amount, decimals=decimals))
         return balances
+
+    def get_parsed_multiple_accounts(self, addresses: list[str]) -> list[dict[str, Any]]:
+        if not addresses:
+            return []
+        result = self._rpc(
+            "getMultipleAccounts",
+            [addresses, {"encoding": "jsonParsed", "commitment": "confirmed"}],
+        )
+        values = result.get("value", [])
+        accounts: list[dict[str, Any]] = []
+        for address, account in zip(addresses, values):
+            if account is None:
+                continue
+            accounts.append({"address": address, "account": account})
+        return accounts
 
 
 class StaticPriceProvider:
