@@ -1,0 +1,13 @@
+{
+  "count": 1,
+  "runs": [
+    {
+      "id": 1,
+      "started_at": "2026-04-02T18:45:48.266262+00:00",
+      "ended_at": "2026-04-02T18:46:10.208188+00:00",
+      "status": "partial_success",
+      "error_count": 4,
+      "notes": "positions_written=34; errors=4; details=wallet=wallet_1 adapter=marinade_native error=HTTP Error 429: Too Many Requests | wallet=wallet_2 adapter=marinade_native error=HTTP Error 429: Too Many Requests | wallet=wallet_3 adapter=marinade_native error=HTTP Error 429: Too Many Requests | wallet=wallet_3 adapter=lp_tokens error=HTTP Error 429: Too Many Requests"
+    }
+  ]
+}

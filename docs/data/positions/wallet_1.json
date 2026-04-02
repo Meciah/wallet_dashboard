@@ -1,0 +1,35 @@
+{
+  "scope": "wallet_1",
+  "count": 2,
+  "positions": [
+    {
+      "wallet_label": "wallet_1",
+      "wallet_address": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R",
+      "protocol": "wallet_tokens",
+      "protocol_category": "wallet",
+      "position_type": "wallet_balance",
+      "position_key": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R:native:So11111111111111111111111111111111111111112",
+      "usd_value": 1.130684984,
+      "updated_at": "2026-04-02T18:45:48.662983+00:00",
+      "raw": {
+        "amount": "0.01437616",
+        "mint": "So11111111111111111111111111111111111111112"
+      }
+    },
+    {
+      "wallet_label": "wallet_1",
+      "wallet_address": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R",
+      "protocol": "wallet_tokens",
+      "protocol_category": "wallet",
+      "position_type": "wallet_balance",
+      "position_key": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R:token:9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
+      "usd_value": 0,
+      "updated_at": "2026-04-02T18:45:48.809597+00:00",
+      "raw": {
+        "amount": "27769292.155099",
+        "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
+        "decimals": 6
+      }
+    }
+  ]
+}

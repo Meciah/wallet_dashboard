@@ -1,6 +1,8 @@
-name: Update portfolio static data (manual)
+name: Update portfolio static data
 
 on:
+  schedule:
+    - cron: "*/30 * * * *"
   workflow_dispatch:
 
 permissions:
@@ -18,27 +20,35 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up Node
+        uses: actions/setup-node@v4
         with:
-          python-version: "3.11"
+          node-version: "23"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Test
+        run: npm test
 
       - name: Build latest portfolio snapshot
         env:
           SOLANA_RPC_URL: ${{ secrets.SOLANA_RPC_URL }}
         run: |
-          PYTHONPATH=src python -m portfolio_tracker init-db
-          PYTHONPATH=src python -m portfolio_tracker ingest --rpc-url "$SOLANA_RPC_URL"
-          PYTHONPATH=src python -m portfolio_tracker export-static --out-dir docs/data
+          npm run init-db
+          npm run ingest -- --rpc-url "$SOLANA_RPC_URL"
+          npm run export-static
+          npm run build
 
-      - name: Commit updated static data
+      - name: Commit updated Pages assets
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs/data/portfolio-data.json
+          git add docs
           if ! git diff --cached --quiet; then
-            git commit -m "chore: update portfolio static data"
+            git commit -m "chore: update wallet dashboard data"
             git push
           else
-            echo "No data changes to commit."
+            echo "No Pages changes to commit."
           fi

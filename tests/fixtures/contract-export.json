@@ -1,0 +1,117 @@
+{
+  "generated": {
+    "generated_at": "<ts>",
+    "last_successful_export_at": "<ts>",
+    "commit_sha": null,
+    "repository": "<repo>",
+    "workflow_url": "<workflow-url>",
+    "manual_refresh_url": "<workflow-url>",
+    "latest_run_status": null,
+    "latest_run_started_at": null,
+    "latest_run_ended_at": null
+  },
+  "summary": {
+    "wallet_1": {
+      "scope": "wallet_1",
+      "total_usd": 50,
+      "snapshot_ts": "<ts>",
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    "wallet_2": {
+      "scope": "wallet_2",
+      "total_usd": 0,
+      "snapshot_ts": "<ts>",
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    "wallet_3": {
+      "scope": "wallet_3",
+      "total_usd": 0,
+      "snapshot_ts": "<ts>",
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    "combined": {
+      "scope": "combined",
+      "total_usd": 50,
+      "snapshot_ts": "<ts>",
+      "pnl_24h": null,
+      "pnl_7d": null
+    }
+  },
+  "positions": {
+    "wallet_1": [
+      {
+        "wallet_label": "wallet_1",
+        "wallet_address": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R",
+        "protocol": "wallet_tokens",
+        "protocol_category": "wallet",
+        "position_type": "wallet_balance",
+        "position_key": "contract-position",
+        "usd_value": 50,
+        "updated_at": "2026-04-02T18:45:48.266Z",
+        "raw": {
+          "source": "fixture"
+        }
+      }
+    ],
+    "wallet_2": [],
+    "wallet_3": [],
+    "combined": [
+      {
+        "wallet_label": "wallet_1",
+        "wallet_address": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R",
+        "protocol": "wallet_tokens",
+        "protocol_category": "wallet",
+        "position_type": "wallet_balance",
+        "position_key": "contract-position",
+        "usd_value": 50,
+        "updated_at": "2026-04-02T18:45:48.266Z",
+        "raw": {
+          "source": "fixture"
+        }
+      }
+    ]
+  },
+  "allocation_protocol": {
+    "wallet_1": [
+      {
+        "protocol": "wallet_tokens",
+        "total_usd": 50
+      }
+    ],
+    "wallet_2": [],
+    "wallet_3": [],
+    "combined": [
+      {
+        "protocol": "wallet_tokens",
+        "total_usd": 50
+      }
+    ]
+  },
+  "allocation_wallet": {
+    "wallet_1": [
+      {
+        "wallet": "wallet_1",
+        "total_usd": 50
+      }
+    ],
+    "wallet_2": [],
+    "wallet_3": [],
+    "combined": [
+      {
+        "wallet": "wallet_1",
+        "total_usd": 50
+      }
+    ]
+  },
+  "history": {
+    "wallet_1": [],
+    "wallet_2": [],
+    "wallet_3": [],
+    "combined": []
+  },
+  "prices": [],
+  "ingestion_runs": []
+}

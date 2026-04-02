@@ -1,80 +1,70 @@
-# Wallet Dashboard (SQLite-first)
+# Wallet Dashboard
 
-Personal Solana portfolio tracker for three wallets with a SQLite backend.
+JavaScript rewrite of the wallet dashboard: a Node.js CLI and local API for Solana portfolio ingestion, plus a React + Vite frontend deployed to GitHub Pages.
 
-## Tracked wallets
-- `3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R`
-- `ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS`
-- `CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf`
+## What It Does
+- Tracks three configured Solana wallets
+- Stores current positions, snapshots, prices, and ingestion runs in SQLite
+- Ingests wallet balances, Marinade mSOL exposure, Marinade native stake, Raydium LP allowlist positions, and legacy LP allowlist positions
+- Exports both an aggregate static payload and split JSON endpoints for GitHub Pages
+- Serves a local read-only API with the same main summary/positions/allocation/history/prices/run views
+- Ships a mobile-first React dashboard that queries static JSON on page load
 
-## Current implementation status
-This implementation now includes:
-- Canonical position model
-- SQLite schema + migrations
-- Wallet/protocol seed data
-- Ingestion runner with pluggable protocol adapters
-- Portfolio summary aggregation for per-wallet and combined scopes
-- Solana RPC-backed wallet token ingestion (native SOL + SPL token balances)
-- Marinade exposure detection via mSOL wallet balance
-- Marinade native stake tracking with auto-discovery from wallet stake instructions (+ optional configured stake-account list)
-- Raydium LP tracking via dedicated mint allowlist
-- Legacy generic LP token detection via configurable mint allowlist (`KNOWN_LP_MINTS`)
-- Price provider fallback chain (CoinGecko -> Static fallback) + persisted price history
-- Read-only local HTTP API for summaries, positions, allocation, price/history, and ingestion run status
-- Static export + GitHub Pages mobile UI scaffold (`docs/`)
+## Runtime
+- Node.js 23+
+- npm
 
-## Quick start
+The backend uses Node's built-in `node:sqlite` module, so the project expects a modern Node release.
+
+## Install
 ```bash
-PYTHONPATH=src python -m portfolio_tracker init-db
-PYTHONPATH=src python -m portfolio_tracker ingest --rpc-url https://api.mainnet-beta.solana.com
-PYTHONPATH=src python -m portfolio_tracker export-static --out-dir docs/data
-PYTHONPATH=src python -m portfolio_tracker ingest-loop --rpc-url https://api.mainnet-beta.solana.com --interval-seconds 300
-PYTHONPATH=src python -m portfolio_tracker summary --scope combined
-PYTHONPATH=src python -m portfolio_tracker serve-api --host 127.0.0.1 --port 8080
+npm install
 ```
 
-API examples:
+## Commands
 ```bash
-curl 'http://127.0.0.1:8080/health'
-curl 'http://127.0.0.1:8080/v1/summary?scope=combined'
-curl 'http://127.0.0.1:8080/v1/positions?scope=wallet_2'
-curl 'http://127.0.0.1:8080/v1/history?scope=combined&limit=50'
-curl 'http://127.0.0.1:8080/v1/prices?limit=100'
-curl 'http://127.0.0.1:8080/v1/allocation?scope=combined&by=protocol'
-curl 'http://127.0.0.1:8080/v1/ingestion-runs?limit=20'
+npm run init-db
+npm run ingest -- --rpc-url https://api.mainnet-beta.solana.com
+npm run export-static
+npm run summary -- --scope combined
+npm run serve-api -- --host 127.0.0.1 --port 8080
+npm run build
 ```
 
-## GitHub Pages / mobile setup
-1. Set repo Pages source to `/docs` (main branch).
-2. Add `SOLANA_RPC_URL` as a GitHub Actions repository secret.
-3. Add a GitHub Action workflow to run `init-db`, `ingest`, and `export-static` on a schedule (every 30 minutes).
-4. Open the Pages URL on phone and "Add to Home Screen".
+## Frontend + Pages Model
+- Vite builds the frontend into `docs/`
+- Static portfolio data lives in `docs/data/`
+- The frontend queries split JSON files on load:
+  - `data/generated.json`
+  - `data/summary/<scope>.json`
+  - `data/positions/<scope>.json`
+  - `data/allocation/protocol/<scope>.json`
+  - `data/allocation/wallet/<scope>.json`
+  - `data/history/<scope>.json`
+  - `data/prices.json`
+  - `data/ingestion-runs.json`
+- `docs/data/portfolio-data.json` remains as the aggregate compatibility artifact
 
-The workflow updates `docs/data/portfolio-data.json` which powers the mobile dashboard.
+The dashboard includes a manual refresh control that opens the GitHub Actions workflow page and then re-checks published metadata for the next export.
 
-> If your environment blocks outbound RPC traffic, ingestion will still run and report per-adapter errors.
+## GitHub Actions
+`update-data.yml`:
+- runs every 30 minutes
+- supports manual dispatch
+- installs dependencies
+- runs tests
+- ingests latest data
+- exports static JSON
+- builds the React frontend
+- commits updated `docs/` assets back to `main`
 
-## Raydium LP + Marinade native configuration
-In `src/portfolio_tracker/config.py`:
-- `RAYDIUM_LP_MINTS = { mint: "pool_name" }`
-- `MARINADE_NATIVE_STAKE_ACCOUNTS = { wallet_address: [stake_account_pubkeys...] }` (optional override/augment)
-- `MARINADE_VALIDATOR_VOTE_ACCOUNTS = { vote_pubkey, ... }` (optional filter)
+## Project Layout
+- `src/backend/` Node CLI, data access, adapters, ingestion, export, API
+- `src/web/` React dashboard source
+- `scripts/seed-split-data.js` bootstraps split JSON files from an existing aggregate export
+- `scripts/smoke.js` verifies export + build flow with fake ingestion data
+- `tests/` Vitest backend, contract, API, provider, and frontend tests
 
-Add your real Raydium LP mints and native stake account addresses for accurate tracking.
-
-## Project structure
-- `src/portfolio_tracker/schema.sql` – full SQLite schema
-- `src/portfolio_tracker/db.py` – DB connection, schema apply, seed, persistence/query helpers
-- `src/portfolio_tracker/models.py` – canonical dataclasses for normalized positions/snapshots
-- `src/portfolio_tracker/adapters/` – protocol adapters
-- `src/portfolio_tracker/providers.py` – Solana RPC + price providers
-- `src/portfolio_tracker/ingestion.py` – ingestion orchestration and snapshot generation
-- `src/portfolio_tracker/export_static.py` – static JSON exporter for Pages/mobile
-- `src/portfolio_tracker/api.py` – read-only HTTP API server
-- `src/portfolio_tracker/cli.py` – command-line entrypoint
-- `docs/` – mobile-friendly static dashboard (GitHub Pages)
-
-## Next steps
-1. Replace mint-allowlist LP tracking with full Raydium pool/position decoding (including fee APR + IL estimates).
-2. Auto-discover Marinade native stake accounts from wallet activity instead of manual stake account config.
-3. Add token metadata enrichment (symbol/logo/verification) and confidence scoring.
+## Notes
+- CoinGecko coverage is intentionally limited to the configured mint map, so many wallet tokens may still show `0` USD until more metadata/pricing is added.
+- GitHub Pages remains static-only. The public dashboard loads published JSON; it does not execute live ingestion itself.
