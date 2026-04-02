@@ -31,6 +31,12 @@ class ChainDataProvider(Protocol):
     def get_parsed_multiple_accounts(self, addresses: list[str]) -> list[dict[str, Any]]:
         ...
 
+    def get_signatures_for_address(self, address: str, limit: int = 200) -> list[str]:
+        ...
+
+    def get_parsed_transaction(self, signature: str) -> dict[str, Any] | None:
+        ...
+
 
 class PriceProvider(Protocol):
     def get_price_usd(self, mint: str) -> Decimal | None:
@@ -100,6 +106,20 @@ class SolanaRpcProvider:
                 continue
             accounts.append({"address": address, "account": account})
         return accounts
+
+    def get_signatures_for_address(self, address: str, limit: int = 200) -> list[str]:
+        result = self._rpc(
+            "getSignaturesForAddress",
+            [address, {"limit": limit, "commitment": "confirmed"}],
+        )
+        return [row["signature"] for row in result if row.get("signature")]
+
+    def get_parsed_transaction(self, signature: str) -> dict[str, Any] | None:
+        result = self._rpc(
+            "getTransaction",
+            [signature, {"encoding": "jsonParsed", "maxSupportedTransactionVersion": 0}],
+        )
+        return result
 
 
 class StaticPriceProvider:

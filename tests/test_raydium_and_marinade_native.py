@@ -38,6 +38,27 @@ class FakeChainProvider:
             }
         ]
 
+    def get_signatures_for_address(self, address: str, limit: int = 200) -> list[str]:
+        return ["sig1"]
+
+    def get_parsed_transaction(self, signature: str):
+        return {
+            "transaction": {
+                "message": {
+                    "instructions": [
+                        {
+                            "program": "stake",
+                            "parsed": {
+                                "info": {
+                                    "stakeAccount": "stakeAcct1",
+                                }
+                            },
+                        }
+                    ]
+                }
+            }
+        }
+
 
 class FakePriceProvider:
     def get_price_usd(self, mint: str):
@@ -69,6 +90,7 @@ class RaydiumAndMarinadeNativeTests(unittest.TestCase):
             self.assertEqual(1, len(positions))
             self.assertEqual("marinade_native", positions[0].protocol)
             self.assertEqual(150.0, positions[0].usd_value)
+            self.assertIn("discovered_accounts", positions[0].raw)
         finally:
             config.MARINADE_NATIVE_STAKE_ACCOUNTS[wallet] = original
 

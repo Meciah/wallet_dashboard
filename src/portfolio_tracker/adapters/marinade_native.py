@@ -15,8 +15,32 @@ class MarinadeNativeStakeAdapter(ProtocolAdapter):
         self.chain_provider = chain_provider
         self.price_provider = price_provider
 
+    def _discover_stake_accounts_from_history(self, wallet_address: str) -> set[str]:
+        signatures = self.chain_provider.get_signatures_for_address(wallet_address, limit=200)
+        discovered: set[str] = set()
+
+        for sig in signatures:
+            tx = self.chain_provider.get_parsed_transaction(sig)
+            if not tx:
+                continue
+            message = tx.get("transaction", {}).get("message", {})
+            instructions = message.get("instructions", [])
+
+            for ix in instructions:
+                program = ix.get("program")
+                parsed = ix.get("parsed", {})
+                info = parsed.get("info", {})
+                if program == "stake":
+                    stake_account = info.get("stakeAccount") or info.get("newSplitAccount")
+                    if stake_account:
+                        discovered.add(stake_account)
+
+        return discovered
+
     def collect_positions(self, wallet_address: str) -> list[Position]:
-        stake_accounts = MARINADE_NATIVE_STAKE_ACCOUNTS.get(wallet_address, [])
+        configured = set(MARINADE_NATIVE_STAKE_ACCOUNTS.get(wallet_address, []))
+        discovered = self._discover_stake_accounts_from_history(wallet_address)
+        stake_accounts = sorted(configured | discovered)
         if not stake_accounts:
             return []
 
@@ -52,7 +76,9 @@ class MarinadeNativeStakeAdapter(ProtocolAdapter):
                 usd_value=float(total_sol * price),
                 raw={
                     "native_stake_accounts": details,
-                    "note": "Native Marinade stake derived from configured stake accounts",
+                    "configured_accounts": sorted(configured),
+                    "discovered_accounts": sorted(discovered),
+                    "note": "Native stake accounts are auto-discovered from wallet stake instructions and merged with configured list",
                 },
             )
         ]

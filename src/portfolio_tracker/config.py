@@ -33,7 +33,7 @@ KNOWN_LP_MINTS: dict[str, str] = {
 
 # Raydium LP token mints (set these to your actual LP mint addresses).
 RAYDIUM_LP_MINTS: dict[str, str] = {
-    "RaydiumLpMintPlaceholder111111111111111111111": "RAYDIUM_LP_PLACEHOLDER",
+    "J2RwRUiUafbvJdfNMgEELY4h27gmQtV1YGwDUhez68yu": "RAYDIUM_LP_USER_POOL",
 }
 
 # Optional native Marinade stake account allowlist by wallet.

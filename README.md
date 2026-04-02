@@ -16,7 +16,7 @@ This implementation now includes:
 - Portfolio summary aggregation for per-wallet and combined scopes
 - Solana RPC-backed wallet token ingestion (native SOL + SPL token balances)
 - Marinade exposure detection via mSOL wallet balance
-- Marinade native stake tracking via configured stake-account list
+- Marinade native stake tracking with auto-discovery from wallet stake instructions (+ optional configured stake-account list)
 - Raydium LP tracking via dedicated mint allowlist
 - Legacy generic LP token detection via configurable mint allowlist (`KNOWN_LP_MINTS`)
 - Price provider fallback chain (CoinGecko -> Static fallback) + persisted price history
@@ -57,7 +57,7 @@ The workflow updates `docs/data/portfolio-data.json` which powers the mobile das
 ## Raydium LP + Marinade native configuration
 In `src/portfolio_tracker/config.py`:
 - `RAYDIUM_LP_MINTS = { mint: "pool_name" }`
-- `MARINADE_NATIVE_STAKE_ACCOUNTS = { wallet_address: [stake_account_pubkeys...] }`
+- `MARINADE_NATIVE_STAKE_ACCOUNTS = { wallet_address: [stake_account_pubkeys...] }` (optional override/augment)
 - `MARINADE_VALIDATOR_VOTE_ACCOUNTS = { vote_pubkey, ... }` (optional filter)
 
 Add your real Raydium LP mints and native stake account addresses for accurate tracking.
