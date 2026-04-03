@@ -196,6 +196,8 @@ describe("frontend dashboard", () => {
               display_symbol: "CLMM",
               pool_type: "Concentrated",
               position_nft_mint: "5rs98PFHcud13vxcuqFy3h4t3Y3QzV3VxvyYQX15qyLq",
+              fees_usd: 10.1,
+              incentive_rewards_usd: 2.4,
             },
           },
         ],
@@ -288,6 +290,8 @@ describe("frontend dashboard", () => {
               display_symbol: "CLMM",
               pool_type: "Concentrated",
               position_nft_mint: "5rs98PFHcud13vxcuqFy3h4t3Y3QzV3VxvyYQX15qyLq",
+              fees_usd: 10.1,
+              incentive_rewards_usd: 2.4,
             },
           },
         ],
@@ -381,6 +385,7 @@ describe("frontend dashboard", () => {
     await screen.findByText("URMOM holdings");
     expect(screen.getByText("Partial export")).toBeInTheDocument();
     expect(screen.getAllByText("Raydium").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Fees $10.10 | Rewards $2.40").length).toBeGreaterThan(0);
 
     const wallet2Button = screen.getAllByText("ELKy...caGS")[0].closest("button");
     await userEvent.click(wallet2Button);

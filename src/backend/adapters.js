@@ -16,6 +16,15 @@ function safeNumber(value, fallback = 0) {
   return Number.isFinite(numeric) ? numeric : fallback;
 }
 
+function decimalAmount(value, decimals = 0) {
+  if (value === null || value === undefined) {
+    return 0;
+  }
+
+  const numeric = safeNumber(typeof value?.toString === "function" ? value.toString() : value, 0);
+  return numeric / 10 ** Number(decimals ?? 0);
+}
+
 function quantityComponent({ mint, symbol, amount, name, iconUrl, decimals, priceUsd, priceChange24h, usdValue }) {
   return {
     mint,
@@ -333,12 +342,18 @@ export class RaydiumLpAdapter {
       attempts: 3,
       baseDelayMs: 700,
     });
+    const poolKeyList = await withRetry(() => raydium.api.fetchPoolKeysById({ idList: poolIds }), {
+      attempts: 3,
+      baseDelayMs: 700,
+    });
     const poolInfoById = Object.fromEntries(poolInfoList.map((pool) => [pool.id, pool]));
+    const poolKeysById = Object.fromEntries(poolKeyList.map((pool) => [pool.id, pool]));
     const epochInfo = await withRetry(() => this.connection.getEpochInfo("confirmed"), { attempts: 3, baseDelayMs: 500 });
 
     const positions = [];
     for (const ownerPosition of ownerPositions) {
       const poolInfo = poolInfoById[ownerPosition.poolId.toBase58()];
+      const poolKeys = poolKeysById[ownerPosition.poolId.toBase58()];
       if (!poolInfo) {
         continue;
       }
@@ -357,9 +372,64 @@ export class RaydiumLpAdapter {
       const amountA = safeNumber(amounts.amountA.amount?.toString()) / 10 ** poolInfo.mintA.decimals;
       const amountB = safeNumber(amounts.amountB.amount?.toString()) / 10 ** poolInfo.mintB.decimals;
       const usdValue = amountA * safeNumber(quoteA.priceUsd) + amountB * safeNumber(quoteB.priceUsd);
-      const rewardsUsd =
-        safeNumber(ownerPosition.tokenFeesOwedA?.toString()) / 10 ** poolInfo.mintA.decimals * safeNumber(quoteA.priceUsd) +
-        safeNumber(ownerPosition.tokenFeesOwedB?.toString()) / 10 ** poolInfo.mintB.decimals * safeNumber(quoteB.priceUsd);
+      const feeComponents = [
+        quantityComponent({
+          mint: poolInfo.mintA.address,
+          symbol: quoteA.symbol ?? poolInfo.mintA.symbol?.trim() ?? poolInfo.mintA.address.slice(0, 4),
+          name: quoteA.name ?? poolInfo.mintA.name?.trim() ?? poolInfo.mintA.symbol?.trim() ?? poolInfo.mintA.address,
+          amount: decimalAmount(ownerPosition.tokenFeesOwedA, poolInfo.mintA.decimals),
+          iconUrl: quoteA.iconUrl ?? poolInfo.mintA.logoURI ?? null,
+          decimals: poolInfo.mintA.decimals,
+          priceUsd: quoteA.priceUsd ?? null,
+          usdValue: decimalAmount(ownerPosition.tokenFeesOwedA, poolInfo.mintA.decimals) * safeNumber(quoteA.priceUsd),
+        }),
+        quantityComponent({
+          mint: poolInfo.mintB.address,
+          symbol: quoteB.symbol ?? poolInfo.mintB.symbol?.trim() ?? poolInfo.mintB.address.slice(0, 4),
+          name: quoteB.name ?? poolInfo.mintB.name?.trim() ?? poolInfo.mintB.symbol?.trim() ?? poolInfo.mintB.address,
+          amount: decimalAmount(ownerPosition.tokenFeesOwedB, poolInfo.mintB.decimals),
+          iconUrl: quoteB.iconUrl ?? poolInfo.mintB.logoURI ?? null,
+          decimals: poolInfo.mintB.decimals,
+          priceUsd: quoteB.priceUsd ?? null,
+          usdValue: decimalAmount(ownerPosition.tokenFeesOwedB, poolInfo.mintB.decimals) * safeNumber(quoteB.priceUsd),
+        }),
+      ].filter((item) => item.amount > 0);
+      const feesUsd = feeComponents.reduce((total, item) => total + safeNumber(item.usd_value), 0);
+
+      const rewardComponents = [];
+      for (const [index, rewardInfo] of (ownerPosition.rewardInfos ?? []).entries()) {
+        const rewardMintInfo = poolKeys?.rewardInfos?.[index]?.mint ?? poolInfo.rewardDefaultInfos?.[index]?.mint;
+        if (!rewardMintInfo) {
+          continue;
+        }
+
+        const rewardMintAddress = rewardMintInfo.address ?? rewardMintInfo.mint ?? null;
+        if (!rewardMintAddress) {
+          continue;
+        }
+
+        const rewardQuote = (await this.priceProvider.getQuote(rewardMintAddress)) ?? {};
+        const rewardDecimals = Number(rewardMintInfo.decimals ?? tokenMetadataForMint(rewardMintAddress)?.decimals ?? 0);
+        const rewardAmount = decimalAmount(rewardInfo.rewardAmountOwed, rewardDecimals);
+        if (rewardAmount <= 0) {
+          continue;
+        }
+
+        rewardComponents.push(
+          quantityComponent({
+            mint: rewardMintAddress,
+            symbol: rewardQuote.symbol ?? rewardMintInfo.symbol?.trim() ?? rewardMintAddress.slice(0, 4),
+            name: rewardQuote.name ?? rewardMintInfo.name?.trim() ?? rewardMintInfo.symbol?.trim() ?? rewardMintAddress,
+            amount: rewardAmount,
+            iconUrl: rewardQuote.iconUrl ?? rewardMintInfo.logoURI ?? null,
+            decimals: rewardDecimals,
+            priceUsd: rewardQuote.priceUsd ?? null,
+            usdValue: rewardAmount * safeNumber(rewardQuote.priceUsd),
+          }),
+        );
+      }
+      const incentiveRewardsUsd = rewardComponents.reduce((total, item) => total + safeNumber(item.usd_value), 0);
+      const rewardsUsd = feesUsd + incentiveRewardsUsd;
 
       const quantity = [
         quantityComponent({
@@ -408,6 +478,11 @@ export class RaydiumLpAdapter {
             fee_apr_24h: safeNumber(poolInfo.day?.feeApr ?? 0),
             tvl_usd: safeNumber(poolInfo.tvl),
             pair_address: poolInfo.id,
+            fees_usd: feesUsd,
+            fees: feeComponents,
+            incentive_rewards_usd: incentiveRewardsUsd,
+            incentive_rewards: rewardComponents,
+            unclaimed_usd: rewardsUsd,
           },
         }),
       );

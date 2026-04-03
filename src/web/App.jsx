@@ -290,12 +290,30 @@ function ProtocolChip({ section, active, onSelect }) {
   );
 }
 
+function lpSecondaryText(position) {
+  const feesUsd = Number(position.raw?.fees_usd ?? 0);
+  const incentiveRewardsUsd = Number(position.raw?.incentive_rewards_usd ?? 0);
+
+  if (feesUsd > 0 && incentiveRewardsUsd > 0) {
+    return `Fees ${money(feesUsd)} | Rewards ${money(incentiveRewardsUsd)}`;
+  }
+
+  if (feesUsd > 0) {
+    return `Fees ${money(feesUsd)}`;
+  }
+
+  if (incentiveRewardsUsd > 0) {
+    return `Rewards ${money(incentiveRewardsUsd)}`;
+  }
+
+  return "No unclaimed fees or rewards";
+}
+
 function PositionRow({ position }) {
   const singleAsset = (position.quantity?.length ?? 0) === 1;
   const primary = position.quantity?.[0] ?? null;
   const secondary = position.quantity?.[1] ?? null;
   const change = singleAsset ? position.price_change_24h : null;
-  const rewards = Number(position.rewards_usd ?? 0);
 
   return (
     <div className="position-row">
@@ -316,7 +334,7 @@ function PositionRow({ position }) {
           <span>
             {position.wallet_label}
             {position.protocol_section === "raydium" && position.raw?.position_nft_mint
-              ? ` � ${shortAddress(position.raw.position_nft_mint)}`
+              ? ` | ${shortAddress(position.raw.position_nft_mint)}`
               : ""}
           </span>
         </div>
@@ -324,12 +342,14 @@ function PositionRow({ position }) {
 
       <div className="position-col">
         {singleAsset ? <strong>{number(primary?.amount)}</strong> : <strong>{number(primary?.amount)} / {number(secondary?.amount)}</strong>}
-        <span>{singleAsset ? primary?.symbol : `${primary?.symbol} � ${secondary?.symbol}`}</span>
+        <span>{singleAsset ? primary?.symbol : `${primary?.symbol} / ${secondary?.symbol}`}</span>
       </div>
 
       <div className="position-col price-col">
         <strong>{singleAsset ? money(position.unit_price_usd) : position.raw?.pool_type ?? "CLMM"}</strong>
-        <span className={Number(change) >= 0 ? "positive" : "negative"}>{singleAsset ? pct(change) : `Rewards ${money(rewards)}`}</span>
+        <span className={singleAsset ? (Number(change) >= 0 ? "positive" : "negative") : ""}>
+          {singleAsset ? pct(change) : lpSecondaryText(position)}
+        </span>
       </div>
 
       <div className="position-col value-col">
@@ -339,7 +359,6 @@ function PositionRow({ position }) {
     </div>
   );
 }
-
 function ProtocolSection({ section }) {
   if (!section.positions.length) {
     return null;
@@ -634,3 +653,4 @@ export function App() {
     </div>
   );
 }
+

@@ -50,6 +50,7 @@ class FakePriceProvider {
       [SOL_MINT]: { mint, priceUsd: 100, symbol: "SOL", name: "Solana", priceChange24h: -4.2 },
       [MSOL_MINT]: { mint, priceUsd: 120, symbol: "mSOL", name: "Marinade Staked SOL", priceChange24h: -3.8 },
       [URMOM_MINT]: { mint, priceUsd: 0.000165, symbol: "URMOM", name: "URMOM", priceChange24h: -0.61 },
+      RewardMint123: { mint, priceUsd: 2, symbol: "RWD", name: "Reward Token", priceChange24h: 4.2 },
       TokenMint123: { mint, priceUsd: 2, symbol: "TKX", name: "Token X", priceChange24h: 1.5 },
     }[mint] ?? null;
   }
@@ -102,6 +103,7 @@ describe("providers and adapters", () => {
             tickUpper: 80,
             tokenFeesOwedA: { toString: () => "100000000" },
             tokenFeesOwedB: { toString: () => "600000000" },
+            rewardInfos: [{ rewardAmountOwed: { toString: () => "3000000" } }],
           },
         ]),
       },
@@ -126,7 +128,24 @@ describe("providers and adapters", () => {
               logoURI: null,
             },
             day: { feeApr: 6.5 },
+            rewardDefaultInfos: [],
             tvl: 4180,
+          },
+        ]),
+        fetchPoolKeysById: vi.fn().mockResolvedValue([
+          {
+            id: poolId.toBase58(),
+            rewardInfos: [
+              {
+                mint: {
+                  address: "RewardMint123",
+                  symbol: "RWD",
+                  name: "Reward Token",
+                  decimals: 6,
+                  logoURI: null,
+                },
+              },
+            ],
           },
         ]),
       },
@@ -155,7 +174,9 @@ describe("providers and adapters", () => {
     expect(raydiumPositions[0].protocol).toBe("raydium");
     expect(raydiumPositions[0].raw.pool_type).toBe("Concentrated");
     expect(raydiumPositions[0].usd_value).toBeCloseTo(201.98, 2);
-    expect(raydiumPositions[0].rewards_usd).toBeCloseTo(10.1, 1);
+    expect(raydiumPositions[0].rewards_usd).toBeCloseTo(16.1, 1);
+    expect(raydiumPositions[0].raw.fees_usd).toBeCloseTo(10.1, 1);
+    expect(raydiumPositions[0].raw.incentive_rewards_usd).toBe(6);
     expect(lpPositions).toHaveLength(0);
 
     expect(raydiumLoadSpy).toHaveBeenCalledTimes(1);
