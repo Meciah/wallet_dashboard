@@ -396,9 +396,17 @@ h3 {
   background: linear-gradient(180deg, rgba(216, 255, 115, 0.95), rgba(53, 242, 194, 0.9));
 }
 
-.protocol-chip span,
-.protocol-section-head span {
+.protocol-chip > span:not(.protocol-mark),
+.protocol-section-head span:not(.protocol-badge) {
   display: block;
+}
+
+.protocol-chip .protocol-mark,
+.protocol-section-head .protocol-badge {
+  display: grid;
+  place-items: center;
+  line-height: 1;
+  flex: 0 0 38px;
 }
 
 .protocol-chip strong {
