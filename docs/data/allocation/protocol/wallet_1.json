@@ -4,8 +4,12 @@
   "count": 1,
   "allocation": [
     {
-      "protocol": "wallet_tokens",
-      "total_usd": 1.2558261012399998
+      "protocol": "holdings",
+      "protocol_label": "Holdings",
+      "protocols": [
+        "wallet_tokens"
+      ],
+      "total_usd": 4527.653629911777
     }
   ]
 }

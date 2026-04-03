@@ -1,11 +1,31 @@
 {
-  "generated_at": "2026-04-02T23:59:49.180Z",
-  "last_successful_export_at": "2026-04-02T23:59:49.180Z",
-  "commit_sha": "8797eac64dc0bfa6132982d5081f7dc3c316b7d3",
+  "generated_at": "2026-04-03T02:03:00.752Z",
+  "last_successful_export_at": "2026-04-03T02:03:00.752Z",
+  "commit_sha": "eabc33201a0952eae3125bf9b712503841579ee8",
   "repository": "Meciah/wallet_dashboard",
-  "workflow_url": "https://github.com/Meciah/wallet_dashboard/actions/runs/23927499956",
+  "workflow_url": "https://github.com/Meciah/wallet_dashboard/actions/runs/23930502024",
   "manual_refresh_url": "https://github.com/Meciah/wallet_dashboard/actions/workflows/update-data.yml",
   "latest_run_status": "success",
-  "latest_run_started_at": "2026-04-02T23:57:45.439Z",
-  "latest_run_ended_at": "2026-04-02T23:59:48.908Z"
+  "latest_run_started_at": "2026-04-03T02:02:56.172Z",
+  "latest_run_ended_at": "2026-04-03T02:03:00.303Z",
+  "wallets": [
+    {
+      "scope": "wallet_1",
+      "label": "3dhj...VK7R",
+      "address": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R",
+      "accent": "#7ee787"
+    },
+    {
+      "scope": "wallet_2",
+      "label": "ELKy...caGS",
+      "address": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS",
+      "accent": "#4ad8ff"
+    },
+    {
+      "scope": "wallet_3",
+      "label": "CRsH...9zcf",
+      "address": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf",
+      "accent": "#b892ff"
+    }
+  ]
 }
