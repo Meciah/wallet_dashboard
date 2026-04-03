@@ -27,11 +27,15 @@ function useDashboardQuery(key, path, options = {}) {
 }
 
 function money(value) {
+  const numeric = Number(value ?? 0);
+  const absolute = Math.abs(numeric);
+  const maximumFractionDigits = absolute > 0 && absolute < 0.01 ? 6 : absolute > 0 && absolute < 1 ? 4 : 2;
+
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
-    maximumFractionDigits: 2,
-  }).format(Number(value ?? 0));
+    maximumFractionDigits,
+  }).format(numeric);
 }
 
 function compactMoney(value) {
@@ -443,7 +447,7 @@ function SidePanel({ latestRun, walletAllocation, generated, prices }) {
             <EmptyState title="No allocation yet" detail="Wallet totals appear after the first successful export." />
           )}
         </div>
-        {solPrice ? <small className="side-foot">SOL spot: {money(solPrice)}</small> : null}
+        {solPrice ? <small className="side-foot">SOL price: {money(solPrice)}</small> : null}
       </section>
 
       <section className="side-card">
@@ -636,7 +640,7 @@ export function App() {
                     ),
                   )}
                 />
-                <SummaryMetric label="SOL spot" value={money(solPrice)} note={`${number(solTracked, 2)} SOL exposed`} />
+                <SummaryMetric label="SOL price" value={`${number(solTracked, 2)} SOL`} note={money(solPrice)} />
                 <SummaryMetric label="Marinade" value={money(marinadeValue)} note="Native + liquid staking" tone="accent" />
                 <SummaryMetric label="Raydium" value={money(raydiumValue)} note="CLMM liquidity positions" tone="accent" />
               </div>
@@ -679,4 +683,3 @@ export function App() {
     </div>
   );
 }
-
