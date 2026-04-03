@@ -316,7 +316,7 @@ function PositionRow({ position }) {
           <span>
             {position.wallet_label}
             {position.protocol_section === "raydium" && position.raw?.position_nft_mint
-              ? ` · ${shortAddress(position.raw.position_nft_mint)}`
+              ? ` ï¿½ ${shortAddress(position.raw.position_nft_mint)}`
               : ""}
           </span>
         </div>
@@ -324,7 +324,7 @@ function PositionRow({ position }) {
 
       <div className="position-col">
         {singleAsset ? <strong>{number(primary?.amount)}</strong> : <strong>{number(primary?.amount)} / {number(secondary?.amount)}</strong>}
-        <span>{singleAsset ? primary?.symbol : `${primary?.symbol} · ${secondary?.symbol}`}</span>
+        <span>{singleAsset ? primary?.symbol : `${primary?.symbol} ï¿½ ${secondary?.symbol}`}</span>
       </div>
 
       <div className="position-col price-col">
@@ -607,12 +607,6 @@ export function App() {
 
           <section className="content-layout">
             <main>
-              <div className="section-tabs">
-                <button type="button" className="is-active">Positions</button>
-                <button type="button" disabled>Activity</button>
-                <button type="button" disabled>Airdrop</button>
-              </div>
-
               <div className="protocol-chip-row">
                 {protocolTabs.map((section) => (
                   <ProtocolChip

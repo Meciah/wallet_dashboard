@@ -95,7 +95,6 @@ img {
 .net-worth-row,
 .panel-head,
 .topbar-actions,
-.section-tabs,
 .segments,
 .segmented-control {
   display: grid;
@@ -164,8 +163,7 @@ h3 {
 .wallet-pill,
 .protocol-chip,
 .refresh-button,
-.segmented-control button,
-.section-tabs button {
+.segmented-control button {
   border: 1px solid transparent;
   cursor: pointer;
   transition: transform 140ms ease, border-color 140ms ease, background 140ms ease, color 140ms ease;
@@ -350,8 +348,7 @@ h3 {
 }
 
 .segmented-control button,
-.refresh-button,
-.section-tabs button {
+.refresh-button {
   padding: 10px 14px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.04);
@@ -359,8 +356,7 @@ h3 {
 }
 
 .segmented-control button.is-active,
-.refresh-button,
-.section-tabs button.is-active {
+.refresh-button {
   background: rgba(53, 242, 194, 0.12);
   border-color: rgba(53, 242, 194, 0.24);
   color: var(--lime);
@@ -376,17 +372,7 @@ h3 {
   margin-top: 18px;
 }
 
-.section-tabs {
-  grid-auto-flow: column;
-  gap: 10px;
-  justify-content: start;
-  margin-bottom: 18px;
-}
 
-.section-tabs button:disabled {
-  opacity: 0.55;
-  cursor: default;
-}
 
 .protocol-chip-row {
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
