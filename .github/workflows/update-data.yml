@@ -42,13 +42,38 @@ jobs:
           npm run build
 
       - name: Commit updated Pages assets
+        env:
+          SOLANA_RPC_URL: ${{ secrets.SOLANA_RPC_URL }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add docs
-          if ! git diff --cached --quiet; then
+
+          attempt=1
+          while [ "$attempt" -le 3 ]; do
+            git add docs
+
+            if git diff --cached --quiet; then
+              echo "No Pages changes to commit."
+              exit 0
+            fi
+
             git commit -m "chore: update wallet dashboard data"
-            git push
-          else
-            echo "No Pages changes to commit."
-          fi
+
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+
+            echo "Push rejected on attempt $attempt. Refreshing from origin/main and rebuilding."
+            git fetch origin main
+            git reset --hard origin/main
+
+            npm run init-db
+            npm run ingest -- --rpc-url "$SOLANA_RPC_URL"
+            npm run export-static
+            npm run build
+
+            attempt=$((attempt + 1))
+          done
+
+          echo "Failed to publish Pages assets after 3 attempts."
+          exit 1
