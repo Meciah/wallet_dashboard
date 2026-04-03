@@ -233,6 +233,23 @@ function SummaryMetric({ label, value, note, tone = "default" }) {
   );
 }
 
+function HistoryTooltip({ active, payload }) {
+  if (!active || !payload?.length) {
+    return null;
+  }
+
+  const point = payload[0]?.payload ?? null;
+  const value = payload[0]?.value ?? 0;
+
+  return (
+    <div className="history-tooltip">
+      <span className="history-tooltip-kicker">Net worth</span>
+      <strong>{money(value)}</strong>
+      <small>{formatTimestamp(point?.snapshot_ts)}</small>
+    </div>
+  );
+}
+
 function HistoryPanel({ history, range, onRangeChange }) {
   const data = chartHistory(history, range);
 
@@ -265,10 +282,20 @@ function HistoryPanel({ history, range, onRangeChange }) {
                 <stop offset="95%" stopColor="#35f2c2" stopOpacity={0.02} />
               </linearGradient>
             </defs>
-            <Tooltip formatter={(value) => money(value)} labelFormatter={(value) => value} />
+            <Tooltip
+              cursor={{ stroke: "rgba(127, 141, 167, 0.5)", strokeWidth: 1, strokeDasharray: "4 6" }}
+              content={<HistoryTooltip />}
+            />
             <XAxis dataKey="label" tick={{ fill: "#6f7f9c", fontSize: 12 }} axisLine={false} tickLine={false} />
             <YAxis tickFormatter={compactMoney} tick={{ fill: "#6f7f9c", fontSize: 12 }} axisLine={false} tickLine={false} />
-            <Area type="monotone" dataKey="total_usd" stroke="#35f2c2" strokeWidth={2.5} fill="url(#historyFill)" />
+            <Area
+              type="monotone"
+              dataKey="total_usd"
+              stroke="#35f2c2"
+              strokeWidth={2.5}
+              fill="url(#historyFill)"
+              activeDot={{ r: 5, fill: "#35f2c2", stroke: "#eefef8", strokeWidth: 2 }}
+            />
           </AreaChart>
         </ResponsiveContainer>
       ) : (
@@ -277,7 +304,6 @@ function HistoryPanel({ history, range, onRangeChange }) {
     </section>
   );
 }
-
 function ProtocolChip({ section, active, onSelect }) {
   return (
     <button type="button" className={active ? "protocol-chip is-active" : "protocol-chip"} onClick={onSelect}>
