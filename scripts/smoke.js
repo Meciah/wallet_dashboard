@@ -8,12 +8,20 @@ import { exportStaticJson } from "../src/backend/export-static.js";
 import { runIngestion } from "../src/backend/ingestion.js";
 
 class FakeChainProvider {
+  constructor() {
+    this.rpcUrl = "https://unused.local";
+  }
+
   async getSolBalance() {
     return 1;
   }
 
   async getTokenBalances() {
     return [{ mint: "So11111111111111111111111111111111111111112", amount: 1, decimals: 9, symbol: "SOL" }];
+  }
+
+  async getMarinadeNativeStakeAccounts() {
+    return [];
   }
 
   async getParsedMultipleAccounts() {
@@ -30,6 +38,16 @@ class FakeChainProvider {
 }
 
 class FakePriceProvider {
+  async getQuote(mint) {
+    return {
+      mint,
+      priceUsd: 100,
+      symbol: "SOL",
+      name: "Solana",
+      priceChange24h: 0,
+    };
+  }
+
   async getPriceUsd() {
     return 100;
   }
@@ -76,5 +94,9 @@ try {
 
   process.stdout.write("Smoke check passed.\n");
 } finally {
-  rmSync(tempDir, { recursive: true, force: true });
+  try {
+    rmSync(tempDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
+  } catch {
+    // Best-effort cleanup on Windows. The smoke result should not be marked failed because a temp dir is briefly locked.
+  }
 }

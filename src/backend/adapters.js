@@ -1,13 +1,58 @@
+import { Connection, PublicKey } from "@solana/web3.js";
+import { PositionUtils, Raydium } from "@raydium-io/raydium-sdk-v2";
+
 import {
   KNOWN_LP_MINTS,
-  MARINADE_NATIVE_STAKE_ACCOUNTS,
-  MARINADE_VALIDATOR_VOTE_ACCOUNTS,
+  MARINADE_NATIVE_STAKER_AUTHORITY,
   MSOL_MINT,
   RAYDIUM_LP_MINTS,
   SOL_MINT,
-  TOKEN_SYMBOL_OVERRIDES,
+  tokenMetadataForMint,
 } from "./config.js";
-import { utcNowIso } from "./utils.js";
+import { utcNowIso, withRetry } from "./utils.js";
+
+function safeNumber(value, fallback = 0) {
+  const numeric = Number(value ?? fallback);
+  return Number.isFinite(numeric) ? numeric : fallback;
+}
+
+function quantityComponent({ mint, symbol, amount, name, iconUrl, decimals, priceUsd, priceChange24h, usdValue }) {
+  return {
+    mint,
+    symbol,
+    amount,
+    name: name ?? symbol,
+    icon_url: iconUrl ?? null,
+    decimals: decimals ?? null,
+    price_usd: priceUsd ?? null,
+    price_change_24h: priceChange24h ?? null,
+    usd_value: usdValue ?? null,
+  };
+}
+
+function buildDisplayName(quantity, fallback) {
+  if (quantity.length === 0) {
+    return fallback;
+  }
+
+  if (quantity.length === 1) {
+    return quantity[0].name ?? quantity[0].symbol ?? fallback;
+  }
+
+  return quantity.map((item) => item.symbol ?? item.name ?? item.mint.slice(0, 4)).join(" / ");
+}
+
+function buildDisplaySymbol(quantity, fallback) {
+  if (quantity.length === 0) {
+    return fallback;
+  }
+
+  if (quantity.length === 1) {
+    return quantity[0].symbol ?? fallback;
+  }
+
+  return quantity.map((item) => item.symbol ?? item.mint.slice(0, 4)).join("/");
+}
 
 function createPosition({
   walletAddress,
@@ -20,6 +65,15 @@ function createPosition({
   rewardsUsd = 0,
   pnlUsd = 0,
 }) {
+  const displayName = raw.display_name ?? buildDisplayName(quantity, positionType);
+  const displaySymbol = raw.display_symbol ?? buildDisplaySymbol(quantity, protocol);
+  const payloadRaw = {
+    ...raw,
+    display_name: displayName,
+    display_symbol: displaySymbol,
+    quantity,
+  };
+
   return {
     wallet_address: walletAddress,
     protocol,
@@ -29,13 +83,9 @@ function createPosition({
     usd_value: usdValue,
     rewards_usd: rewardsUsd,
     pnl_usd: pnlUsd,
-    raw,
+    raw: payloadRaw,
     updated_at: utcNowIso(),
   };
-}
-
-function quantityComponent(mint, symbol, amount) {
-  return { mint, symbol, amount };
 }
 
 export class WalletTokenAdapter {
@@ -45,36 +95,103 @@ export class WalletTokenAdapter {
     this.priceProvider = priceProvider;
   }
 
+  shouldSkipToken(token, quote) {
+    if (token.mint === MSOL_MINT) {
+      return true;
+    }
+
+    if (KNOWN_LP_MINTS[token.mint] || RAYDIUM_LP_MINTS[token.mint]) {
+      return true;
+    }
+
+    const collectibleCandidate = token.decimals === 0 && token.amount === 1;
+    if (collectibleCandidate && !quote?.priceUsd) {
+      return true;
+    }
+
+    return false;
+  }
+
   async collectPositions(walletAddress) {
     const positions = [];
 
+    const solQuote = (await this.priceProvider.getQuote(SOL_MINT)) ?? {};
     const solAmount = await this.chainProvider.getSolBalance(walletAddress);
-    const solPrice = (await this.priceProvider.getPriceUsd(SOL_MINT)) ?? 0;
     positions.push(
       createPosition({
         walletAddress,
         protocol: this.protocolName,
         positionType: "wallet_balance",
         positionKey: `${walletAddress}:native:${SOL_MINT}`,
-        quantity: [quantityComponent(SOL_MINT, TOKEN_SYMBOL_OVERRIDES[SOL_MINT] ?? "SOL", solAmount)],
-        usdValue: solAmount * solPrice,
-        raw: { amount: String(solAmount), mint: SOL_MINT },
+        quantity: [
+          quantityComponent({
+            mint: SOL_MINT,
+            symbol: solQuote.symbol ?? "SOL",
+            name: solQuote.name ?? "Solana",
+            amount: solAmount,
+            iconUrl: solQuote.iconUrl ?? null,
+            decimals: 9,
+            priceUsd: solQuote.priceUsd ?? null,
+            priceChange24h: solQuote.priceChange24h ?? null,
+            usdValue: solAmount * safeNumber(solQuote.priceUsd),
+          }),
+        ],
+        usdValue: solAmount * safeNumber(solQuote.priceUsd),
+        raw: {
+          mint: SOL_MINT,
+          amount: String(solAmount),
+          unit_price_usd: solQuote.priceUsd ?? null,
+          price_change_24h: solQuote.priceChange24h ?? null,
+          icon_url: solQuote.iconUrl ?? null,
+          display_name: solQuote.name ?? "Solana",
+          display_symbol: solQuote.symbol ?? "SOL",
+        },
       }),
     );
 
     const tokenBalances = await this.chainProvider.getTokenBalances(walletAddress);
     for (const token of tokenBalances) {
-      const symbol = token.symbol ?? TOKEN_SYMBOL_OVERRIDES[token.mint] ?? token.mint.slice(0, 4);
-      const price = (await this.priceProvider.getPriceUsd(token.mint)) ?? 0;
+      const quote = await this.priceProvider.getQuote(token.mint);
+      if (this.shouldSkipToken(token, quote)) {
+        continue;
+      }
+
+      const metadata = tokenMetadataForMint(token.mint);
+      const symbol = quote?.symbol ?? token.symbol ?? metadata?.symbol ?? token.mint.slice(0, 4);
+      const name = quote?.name ?? token.name ?? metadata?.name ?? symbol;
+      const priceUsd = quote?.priceUsd ?? null;
+      const usdValue = token.amount * safeNumber(priceUsd);
       positions.push(
         createPosition({
           walletAddress,
           protocol: this.protocolName,
           positionType: "wallet_balance",
           positionKey: `${walletAddress}:token:${token.mint}`,
-          quantity: [quantityComponent(token.mint, symbol, token.amount)],
-          usdValue: token.amount * price,
-          raw: { amount: String(token.amount), mint: token.mint, decimals: token.decimals },
+          quantity: [
+            quantityComponent({
+              mint: token.mint,
+              symbol,
+              name,
+              amount: token.amount,
+              iconUrl: quote?.iconUrl ?? token.icon_url ?? metadata?.icon_url ?? null,
+              decimals: token.decimals,
+              priceUsd,
+              priceChange24h: quote?.priceChange24h ?? null,
+              usdValue,
+            }),
+          ],
+          usdValue,
+          raw: {
+            mint: token.mint,
+            amount: String(token.amount),
+            decimals: token.decimals,
+            state: token.state ?? null,
+            unit_price_usd: priceUsd,
+            price_change_24h: quote?.priceChange24h ?? null,
+            icon_url: quote?.iconUrl ?? token.icon_url ?? metadata?.icon_url ?? null,
+            display_name: name,
+            display_symbol: symbol,
+          },
         }),
       );
     }
@@ -97,18 +214,36 @@ export class MarinadeAdapter {
       return [];
     }
 
-    const price = (await this.priceProvider.getPriceUsd(MSOL_MINT)) ?? 0;
+    const quote = (await this.priceProvider.getQuote(MSOL_MINT)) ?? {};
+    const usdValue = msolBalance.amount * safeNumber(quote.priceUsd);
     return [
       createPosition({
         walletAddress,
         protocol: this.protocolName,
         positionType: "staking",
         positionKey: `${walletAddress}:marinade:${MSOL_MINT}`,
-        quantity: [quantityComponent(MSOL_MINT, TOKEN_SYMBOL_OVERRIDES[MSOL_MINT] ?? "mSOL", msolBalance.amount)],
-        usdValue: msolBalance.amount * price,
+        quantity: [
+          quantityComponent({
+            mint: MSOL_MINT,
+            symbol: quote.symbol ?? "mSOL",
+            name: quote.name ?? "Marinade Staked SOL",
+            amount: msolBalance.amount,
+            iconUrl: quote.iconUrl ?? null,
+            decimals: msolBalance.decimals,
+            priceUsd: quote.priceUsd ?? null,
+            priceChange24h: quote.priceChange24h ?? null,
+            usdValue,
+          }),
+        ],
+        usdValue,
         raw: {
-          note: "Derived from wallet mSOL balance; extend with Marinade stake-account parsing",
+          mint: MSOL_MINT,
           amount: String(msolBalance.amount),
+          unit_price_usd: quote.priceUsd ?? null,
+          price_change_24h: quote.priceChange24h ?? null,
+          icon_url: quote.iconUrl ?? null,
+          display_name: quote.name ?? "Marinade Staked SOL",
+          display_symbol: quote.symbol ?? "mSOL",
         },
       }),
     ];
@@ -122,73 +257,48 @@ export class MarinadeNativeStakeAdapter {
     this.priceProvider = priceProvider;
   }
 
-  async discoverStakeAccountsFromHistory(walletAddress) {
-    const signatures = await this.chainProvider.getSignaturesForAddress(walletAddress, 200);
-    const discovered = new Set();
-
-    for (const signature of signatures) {
-      const transaction = await this.chainProvider.getParsedTransaction(signature);
-      const instructions = transaction?.transaction?.message?.instructions ?? [];
-      for (const instruction of instructions) {
-        const program = instruction.program;
-        const info = instruction?.parsed?.info ?? {};
-        if (program !== "stake") {
-          continue;
-        }
-
-        const stakeAccount = info.stakeAccount ?? info.newSplitAccount;
-        if (stakeAccount) {
-          discovered.add(stakeAccount);
-        }
-      }
-    }
-
-    return discovered;
-  }
-
   async collectPositions(walletAddress) {
-    const configured = new Set(MARINADE_NATIVE_STAKE_ACCOUNTS[walletAddress] ?? []);
-    const discovered = await this.discoverStakeAccountsFromHistory(walletAddress);
-    const stakeAccounts = [...new Set([...configured, ...discovered])].sort();
-    if (stakeAccounts.length === 0) {
+    const stakeAccounts = await this.chainProvider.getMarinadeNativeStakeAccounts(
+      walletAddress,
+      MARINADE_NATIVE_STAKER_AUTHORITY,
+    );
+    const activeAccounts = stakeAccounts.filter((account) => account.active_sol > 0);
+    if (activeAccounts.length === 0) {
       return [];
     }
 
-    const accounts = await this.chainProvider.getParsedMultipleAccounts(stakeAccounts);
-    let totalSol = 0;
-    const details = [];
-
-    for (const row of accounts) {
-      const address = row.address;
-      const stakeInfo = row?.account?.data?.parsed?.info?.stake?.delegation ?? {};
-      const voter = stakeInfo.voter ?? "";
-      if (MARINADE_VALIDATOR_VOTE_ACCOUNTS.size > 0 && !MARINADE_VALIDATOR_VOTE_ACCOUNTS.has(voter)) {
-        continue;
-      }
-
-      const activeSol = Number(stakeInfo.stake ?? 0) / 1_000_000_000;
-      totalSol += activeSol;
-      details.push({ stake_account: address, voter, active_sol: activeSol });
-    }
-
-    if (totalSol === 0) {
-      return [];
-    }
-
-    const price = (await this.priceProvider.getPriceUsd(SOL_MINT)) ?? 0;
+    const totalSol = activeAccounts.reduce((total, account) => total + account.active_sol, 0);
+    const quote = (await this.priceProvider.getQuote(SOL_MINT)) ?? {};
+    const usdValue = totalSol * safeNumber(quote.priceUsd);
     return [
       createPosition({
         walletAddress,
         protocol: this.protocolName,
         positionType: "staking",
         positionKey: `${walletAddress}:marinade_native:aggregate`,
-        quantity: [quantityComponent(SOL_MINT, TOKEN_SYMBOL_OVERRIDES[SOL_MINT] ?? "SOL", totalSol)],
-        usdValue: totalSol * price,
+        quantity: [
+          quantityComponent({
+            mint: SOL_MINT,
+            symbol: quote.symbol ?? "SOL",
+            name: "Marinade Native",
+            amount: totalSol,
+            iconUrl: quote.iconUrl ?? null,
+            decimals: 9,
+            priceUsd: quote.priceUsd ?? null,
+            priceChange24h: quote.priceChange24h ?? null,
+            usdValue,
+          }),
+        ],
+        usdValue,
         raw: {
-          native_stake_accounts: details,
-          configured_accounts: [...configured].sort(),
-          discovered_accounts: [...discovered].sort(),
-          note: "Native stake accounts are auto-discovered from wallet stake instructions and merged with configured list",
+          mint: SOL_MINT,
+          amount: String(totalSol),
+          unit_price_usd: quote.priceUsd ?? null,
+          price_change_24h: quote.priceChange24h ?? null,
+          display_name: "Marinade Native",
+          display_symbol: "mNative",
+          native_stake_accounts: activeAccounts,
+          active_account_count: activeAccounts.length,
         },
       }),
     ];
@@ -200,38 +310,110 @@ export class RaydiumLpAdapter {
     this.protocolName = "raydium";
     this.chainProvider = chainProvider;
     this.priceProvider = priceProvider;
+    this.connection = new Connection(chainProvider.rpcUrl, "confirmed");
   }
 
   async collectPositions(walletAddress) {
-    const balances = await this.chainProvider.getTokenBalances(walletAddress);
-    const positions = [];
+    const owner = new PublicKey(walletAddress);
+    const raydium = await withRetry(
+      () => Raydium.load({ connection: this.connection, owner, disableLoadToken: true, blockhashCommitment: "confirmed" }),
+      { attempts: 3, baseDelayMs: 600 },
+    );
+    const ownerPositions = await withRetry(() => raydium.clmm.getOwnerPositionInfo({}), {
+      attempts: 3,
+      baseDelayMs: 700,
+    });
 
-    for (const balance of balances) {
-      const lpName = RAYDIUM_LP_MINTS[balance.mint];
-      if (!lpName) {
+    if (ownerPositions.length === 0) {
+      return [];
+    }
+
+    const poolIds = [...new Set(ownerPositions.map((position) => position.poolId.toBase58()))];
+    const poolInfoList = await withRetry(() => raydium.api.fetchPoolById({ ids: poolIds.join(",") }), {
+      attempts: 3,
+      baseDelayMs: 700,
+    });
+    const poolInfoById = Object.fromEntries(poolInfoList.map((pool) => [pool.id, pool]));
+    const epochInfo = await withRetry(() => this.connection.getEpochInfo("confirmed"), { attempts: 3, baseDelayMs: 500 });
+
+    const positions = [];
+    for (const ownerPosition of ownerPositions) {
+      const poolInfo = poolInfoById[ownerPosition.poolId.toBase58()];
+      if (!poolInfo) {
         continue;
       }
 
-      const price = (await this.priceProvider.getPriceUsd(balance.mint)) ?? 0;
+      const amounts = PositionUtils.getAmountsFromLiquidity({
+        poolInfo,
+        ownerPosition,
+        liquidity: ownerPosition.liquidity,
+        slippage: 0,
+        add: false,
+        epochInfo,
+      });
+
+      const quoteA = (await this.priceProvider.getQuote(poolInfo.mintA.address)) ?? {};
+      const quoteB = (await this.priceProvider.getQuote(poolInfo.mintB.address)) ?? {};
+      const amountA = safeNumber(amounts.amountA.amount?.toString()) / 10 ** poolInfo.mintA.decimals;
+      const amountB = safeNumber(amounts.amountB.amount?.toString()) / 10 ** poolInfo.mintB.decimals;
+      const usdValue = amountA * safeNumber(quoteA.priceUsd) + amountB * safeNumber(quoteB.priceUsd);
+      const rewardsUsd =
+        safeNumber(ownerPosition.tokenFeesOwedA?.toString()) / 10 ** poolInfo.mintA.decimals * safeNumber(quoteA.priceUsd) +
+        safeNumber(ownerPosition.tokenFeesOwedB?.toString()) / 10 ** poolInfo.mintB.decimals * safeNumber(quoteB.priceUsd);
+
+      const quantity = [
+        quantityComponent({
+          mint: poolInfo.mintA.address,
+          symbol: quoteA.symbol ?? poolInfo.mintA.symbol?.trim() ?? poolInfo.mintA.address.slice(0, 4),
+          name: quoteA.name ?? poolInfo.mintA.name?.trim() ?? poolInfo.mintA.symbol?.trim() ?? poolInfo.mintA.address,
+          amount: amountA,
+          iconUrl: quoteA.iconUrl ?? poolInfo.mintA.logoURI ?? null,
+          decimals: poolInfo.mintA.decimals,
+          priceUsd: quoteA.priceUsd ?? null,
+          priceChange24h: quoteA.priceChange24h ?? null,
+          usdValue: amountA * safeNumber(quoteA.priceUsd),
+        }),
+        quantityComponent({
+          mint: poolInfo.mintB.address,
+          symbol: quoteB.symbol ?? poolInfo.mintB.symbol?.trim() ?? poolInfo.mintB.address.slice(0, 4),
+          name: quoteB.name ?? poolInfo.mintB.name?.trim() ?? poolInfo.mintB.symbol?.trim() ?? poolInfo.mintB.address,
+          amount: amountB,
+          iconUrl: quoteB.iconUrl ?? poolInfo.mintB.logoURI ?? null,
+          decimals: poolInfo.mintB.decimals,
+          priceUsd: quoteB.priceUsd ?? null,
+          priceChange24h: quoteB.priceChange24h ?? null,
+          usdValue: amountB * safeNumber(quoteB.priceUsd),
+        }),
+      ];
+
       positions.push(
         createPosition({
           walletAddress,
           protocol: this.protocolName,
           positionType: "lp",
-          positionKey: `${walletAddress}:raydium:${balance.mint}`,
-          quantity: [quantityComponent(balance.mint, lpName, balance.amount)],
-          usdValue: balance.amount * price,
+          positionKey: `${walletAddress}:raydium:clmm:${ownerPosition.nftMint.toBase58()}`,
+          quantity,
+          usdValue,
+          rewardsUsd,
           raw: {
-            mint: balance.mint,
-            lp_name: lpName,
-            amount: String(balance.amount),
-            source: "raydium_mint_allowlist",
+            display_name: `${quantity[0].symbol} / ${quantity[1].symbol}`,
+            display_symbol: "CLMM",
+            pool_id: poolInfo.id,
+            pool_name: poolInfo.name ?? `${quantity[0].symbol}/${quantity[1].symbol}`,
+            pool_type: poolInfo.type ?? "Concentrated",
+            position_nft_mint: ownerPosition.nftMint.toBase58(),
+            liquidity: ownerPosition.liquidity.toString(),
+            tick_lower: ownerPosition.tickLower,
+            tick_upper: ownerPosition.tickUpper,
+            fee_apr_24h: safeNumber(poolInfo.day?.feeApr ?? 0),
+            tvl_usd: safeNumber(poolInfo.tvl),
+            pair_address: poolInfo.id,
           },
         }),
       );
     }
 
-    return positions;
+    return positions.sort((left, right) => right.usd_value - left.usd_value);
   }
 }
 
@@ -252,20 +434,32 @@ export class LpTokenAdapter {
         continue;
       }
 
-      const price = (await this.priceProvider.getPriceUsd(balance.mint)) ?? 0;
+      const quote = await this.priceProvider.getQuote(balance.mint);
+      const usdValue = balance.amount * safeNumber(quote?.priceUsd);
       positions.push(
         createPosition({
           walletAddress,
           protocol: this.protocolName,
           positionType: "lp",
           positionKey: `${walletAddress}:lp:${balance.mint}`,
-          quantity: [quantityComponent(balance.mint, lpName, balance.amount)],
-          usdValue: balance.amount * price,
+          quantity: [
+            quantityComponent({
+              mint: balance.mint,
+              symbol: lpName,
+              name: lpName,
+              amount: balance.amount,
+              decimals: balance.decimals,
+              priceUsd: quote?.priceUsd ?? null,
+              usdValue,
+            }),
+          ],
+          usdValue,
           raw: {
-            lp_name: lpName,
             mint: balance.mint,
             amount: String(balance.amount),
-            note: "LP token detected from configured mint allowlist",
+            display_name: lpName,
+            display_symbol: lpName,
+            unit_price_usd: quote?.priceUsd ?? null,
           },
         }),
       );

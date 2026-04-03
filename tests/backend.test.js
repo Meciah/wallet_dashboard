@@ -88,9 +88,14 @@ describe("backend db queries", () => {
     const runs = listIngestionRuns(db, 5);
 
     expect(positions).toHaveLength(1);
-    expect(positions[0].wallet_label).toBe("wallet_1");
+    expect(positions[0].wallet_label).toBe("3dhj...VK7R");
     expect(history[0].total_usd).toBe(123);
-    expect(allocation[0]).toEqual({ protocol: "wallet_tokens", total_usd: 123 });
+    expect(allocation[0]).toEqual({
+      protocol: "holdings",
+      protocol_label: "Holdings",
+      protocols: ["wallet_tokens"],
+      total_usd: 123,
+    });
     expect(prices.find((item) => item.mint === "mint-1")?.price_usd).toBe(2);
     expect(runs[0].status).toBe("success");
 

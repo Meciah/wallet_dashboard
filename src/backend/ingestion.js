@@ -1,4 +1,4 @@
-import { TRACKED_WALLETS, SCOPES, defaultRpcUrl } from "./config.js";
+import { SCOPES, TRACKED_WALLETS, defaultRpcUrl } from "./config.js";
 import {
   finishIngestionRun,
   insertPositionSnapshot,
@@ -9,14 +9,21 @@ import {
   upsertPrice,
 } from "./db.js";
 import { LpTokenAdapter, MarinadeAdapter, MarinadeNativeStakeAdapter, RaydiumLpAdapter, WalletTokenAdapter } from "./adapters.js";
-import { CoinGeckoPriceProvider, FallbackPriceProvider, SolanaRpcProvider, StaticPriceProvider } from "./providers.js";
+import {
+  CoinGeckoPriceProvider,
+  DexScreenerPriceProvider,
+  FallbackPriceProvider,
+  SolanaRpcProvider,
+  StaticPriceProvider,
+} from "./providers.js";
 import { utcNowIso } from "./utils.js";
 
 export async function runIngestion(db, options = {}) {
   const rpcUrl = options.rpcUrl ?? defaultRpcUrl();
   const chainProvider = options.chainProvider ?? new SolanaRpcProvider(rpcUrl);
   const priceProvider =
-    options.priceProvider ?? new FallbackPriceProvider([new CoinGeckoPriceProvider(), new StaticPriceProvider()]);
+    options.priceProvider ??
+    new FallbackPriceProvider([new CoinGeckoPriceProvider(), new DexScreenerPriceProvider(), new StaticPriceProvider()]);
 
   const adapters = [
     new WalletTokenAdapter(chainProvider, priceProvider),
@@ -39,17 +46,19 @@ export async function runIngestion(db, options = {}) {
         for (const position of positions) {
           upsertCurrentPosition(db, position);
           insertPositionSnapshot(db, position, snapshotTs);
+
           for (const quantity of position.quantity) {
-            const price = await priceProvider.getPriceUsd(quantity.mint);
+            const price = quantity.price_usd ?? (await priceProvider.getPriceUsd(quantity.mint));
             if (price !== null && price !== undefined) {
               upsertPrice(db, quantity.mint, Number(price), "provider_chain", null);
             }
           }
+
           positionsWritten += 1;
         }
       } catch (error) {
         errors += 1;
-        errorMessages.push(`wallet=${wallet.label} adapter=${adapter.protocolName} error=${error.message}`);
+        errorMessages.push(`wallet=${wallet.scope} adapter=${adapter.protocolName} error=${error.message}`);
       }
     }
   }

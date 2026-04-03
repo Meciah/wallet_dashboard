@@ -1,15 +1,53 @@
 import { readFileSync } from "node:fs";
-import { resolve, dirname } from "node:path";
 import { createRequire } from "node:module";
+import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { DB_PATH, TRACKED_WALLETS } from "./config.js";
+import { DB_PATH, TRACKED_WALLETS, getWalletMetadata, protocolPresentation, tokenMetadataForMint } from "./config.js";
 import { utcNowIso } from "./utils.js";
 
 const require = createRequire(import.meta.url);
 const { DatabaseSync } = require("node:sqlite");
 const __dirname = dirname(fileURLToPath(import.meta.url));
 export const SCHEMA_PATH = resolve(__dirname, "schema.sql");
+
+function normalizeLegacyQuantity(raw) {
+  if (!raw) {
+    return [];
+  }
+
+  if (Array.isArray(raw.quantity)) {
+    return raw.quantity;
+  }
+
+  if (raw.mint && raw.amount !== undefined) {
+    return [
+      {
+        mint: raw.mint,
+        symbol: raw.display_symbol ?? tokenMetadataForMint(raw.mint)?.symbol ?? raw.mint.slice(0, 4),
+        name: raw.display_name ?? tokenMetadataForMint(raw.mint)?.name ?? raw.display_symbol ?? raw.mint,
+        amount: Number(raw.amount),
+        decimals: raw.decimals ?? tokenMetadataForMint(raw.mint)?.decimals ?? null,
+        price_usd: raw.unit_price_usd ?? null,
+        price_change_24h: raw.price_change_24h ?? null,
+        usd_value: raw.usd_value ?? null,
+        icon_url: raw.icon_url ?? tokenMetadataForMint(raw.mint)?.icon_url ?? null,
+      },
+    ];
+  }
+
+  return [];
+}
+
+function createSummary(scope, totalUsd) {
+  return {
+    scope,
+    total_usd: Number(totalUsd ?? 0),
+    snapshot_ts: utcNowIso(),
+    pnl_24h: null,
+    pnl_7d: null,
+  };
+}
 
 export function connect(dbPath = DB_PATH) {
   const db = new DatabaseSync(resolve(dbPath));
@@ -38,7 +76,7 @@ export function seedWalletsAndProtocols(db) {
   `);
 
   for (const wallet of TRACKED_WALLETS) {
-    insertWallet.run(wallet.label, wallet.address);
+    insertWallet.run(wallet.scope, wallet.address);
   }
 
   const insertProtocol = db.prepare(`
@@ -94,6 +132,7 @@ export function getProtocolId(db, protocolName) {
 export function upsertCurrentPosition(db, position) {
   const walletId = getWalletId(db, position.wallet_address);
   const protocolId = getProtocolId(db, position.protocol);
+  const raw = { ...position.raw, quantity: position.quantity, rewards_usd: position.rewards_usd ?? 0, pnl_usd: position.pnl_usd ?? 0 };
 
   db.prepare(`
     INSERT INTO positions_current(
@@ -112,7 +151,7 @@ export function upsertCurrentPosition(db, position) {
     protocolId,
     position.position_type,
     position.position_key,
-    JSON.stringify(position.raw),
+    JSON.stringify(raw),
     position.usd_value,
     position.updated_at,
   );
@@ -148,16 +187,6 @@ export function savePortfolioSnapshot(db, summary) {
   `).run(summary.snapshot_ts, summary.scope, summary.total_usd, summary.pnl_24h ?? null, summary.pnl_7d ?? null);
 }
 
-function createSummary(scope, totalUsd) {
-  return {
-    scope,
-    total_usd: Number(totalUsd ?? 0),
-    snapshot_ts: utcNowIso(),
-    pnl_24h: null,
-    pnl_7d: null,
-  };
-}
-
 export function summarizeScope(db, scope) {
   if (scope === "combined") {
     const row = db.prepare("SELECT COALESCE(SUM(usd_value), 0) AS total FROM positions_current").get();
@@ -180,7 +209,7 @@ export function listCurrentPositions(db, scope) {
   const params = [];
   let query = `
     SELECT
-      w.label AS wallet_label,
+      w.label AS wallet_scope,
       w.address AS wallet_address,
       p.name AS protocol_name,
       p.category AS protocol_category,
@@ -201,17 +230,37 @@ export function listCurrentPositions(db, scope) {
 
   query += " ORDER BY pc.usd_value DESC";
 
-  return db.prepare(query).all(...params).map((row) => ({
-    wallet_label: row.wallet_label,
-    wallet_address: row.wallet_address,
-    protocol: row.protocol_name,
-    protocol_category: row.protocol_category,
-    position_type: row.position_type,
-    position_key: row.position_key,
-    usd_value: Number(row.usd_value),
-    updated_at: row.updated_at,
-    raw: JSON.parse(row.raw_json),
-  }));
+  return db.prepare(query).all(...params).map((row) => {
+    const raw = JSON.parse(row.raw_json);
+    const quantity = normalizeLegacyQuantity(raw);
+    const primary = quantity[0] ?? null;
+    const wallet = getWalletMetadata(row.wallet_scope);
+    const protocolInfo = protocolPresentation(row.protocol_name);
+
+    return {
+      wallet_scope: row.wallet_scope,
+      wallet_label: wallet?.label ?? row.wallet_scope,
+      wallet_address: row.wallet_address,
+      wallet_accent: wallet?.accent ?? null,
+      protocol: row.protocol_name,
+      protocol_label: protocolInfo.label,
+      protocol_section: protocolInfo.section,
+      protocol_category: row.protocol_category,
+      position_type: row.position_type,
+      position_key: row.position_key,
+      usd_value: Number(row.usd_value),
+      updated_at: row.updated_at,
+      quantity,
+      asset_mint: primary?.mint ?? raw.mint ?? null,
+      asset_symbol: primary?.symbol ?? raw.display_symbol ?? null,
+      asset_name: raw.display_name ?? primary?.name ?? raw.display_symbol ?? row.protocol_name,
+      icon_url: raw.icon_url ?? primary?.icon_url ?? null,
+      unit_price_usd: raw.unit_price_usd ?? primary?.price_usd ?? null,
+      price_change_24h: raw.price_change_24h ?? primary?.price_change_24h ?? null,
+      rewards_usd: Number(raw.rewards_usd ?? 0),
+      raw,
+    };
+  });
 }
 
 export function listPortfolioHistory(db, scope, limit = 100) {
@@ -254,13 +303,19 @@ export function listLatestPrices(db, limit = 200) {
       LIMIT ?
     `)
     .all(limit)
-    .map((row) => ({
-      mint: row.mint,
-      asof_ts: row.asof_ts,
-      price_usd: Number(row.price_usd),
-      source: row.source,
-      confidence: row.confidence,
-    }));
+    .map((row) => {
+      const metadata = tokenMetadataForMint(row.mint);
+      return {
+        mint: row.mint,
+        symbol: metadata?.symbol ?? null,
+        name: metadata?.name ?? null,
+        icon_url: metadata?.icon_url ?? null,
+        asof_ts: row.asof_ts,
+        price_usd: Number(row.price_usd),
+        source: row.source,
+        confidence: row.confidence,
+      };
+    });
 }
 
 export function listAllocation(db, scope, by = "protocol") {
@@ -284,12 +339,34 @@ export function listAllocation(db, scope, by = "protocol") {
   }
 
   query += " GROUP BY dim ORDER BY total_usd DESC";
+  const rows = db.prepare(query).all(...params);
 
-  return db.prepare(query).all(...params).map((row) =>
-    by === "protocol"
-      ? { protocol: row.dim, total_usd: Number(row.total_usd) }
-      : { wallet: row.dim, total_usd: Number(row.total_usd) },
-  );
+  if (by === "wallet") {
+    return rows.map((row) => {
+      const wallet = getWalletMetadata(row.dim);
+      return {
+        wallet_scope: row.dim,
+        wallet: wallet?.label ?? row.dim,
+        total_usd: Number(row.total_usd),
+      };
+    });
+  }
+
+  const grouped = new Map();
+  for (const row of rows) {
+    const presentation = protocolPresentation(row.dim);
+    const existing = grouped.get(presentation.section) ?? {
+      protocol: presentation.section,
+      protocol_label: presentation.label,
+      protocols: [],
+      total_usd: 0,
+    };
+    existing.total_usd += Number(row.total_usd);
+    existing.protocols.push(row.dim);
+    grouped.set(presentation.section, existing);
+  }
+
+  return [...grouped.values()].sort((left, right) => right.total_usd - left.total_usd);
 }
 
 export function listIngestionRuns(db, limit = 50) {
@@ -314,3 +391,4 @@ export function listIngestionRuns(db, limit = 50) {
 export function getLatestIngestionRun(db) {
   return listIngestionRuns(db, 1)[0] ?? null;
 }
+
