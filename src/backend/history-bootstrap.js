@@ -89,6 +89,26 @@ function collectHistoryFromGit(repoRoot, historyDir, scopes, execFileSyncImpl) {
   return snapshots;
 }
 
+function trimLegacyTestingSnapshots(history) {
+  if (history.length < 3) {
+    return history;
+  }
+
+  const ascending = [...history].sort((left, right) => new Date(left.snapshot_ts).getTime() - new Date(right.snapshot_ts).getTime());
+  const latestTotal = Number(ascending.at(-1)?.total_usd ?? 0);
+  if (latestTotal <= 0) {
+    return history;
+  }
+
+  const legacyFloor = latestTotal * 0.2;
+  const firstRealIndex = ascending.findIndex((snapshot) => Number(snapshot.total_usd ?? 0) >= legacyFloor);
+  if (firstRealIndex <= 0) {
+    return history;
+  }
+
+  return ascending.slice(firstRealIndex);
+}
+
 export function mergeHistorySnapshots(snapshots, scopes = SCOPES, limit = 300) {
   const grouped = Object.fromEntries(scopes.map((scope) => [scope, []]));
   const seen = new Set();
@@ -108,14 +128,13 @@ export function mergeHistorySnapshots(snapshots, scopes = SCOPES, limit = 300) {
   }
 
   for (const scope of scopes) {
-    grouped[scope] = grouped[scope]
+    grouped[scope] = trimLegacyTestingSnapshots(grouped[scope])
       .sort((left, right) => new Date(right.snapshot_ts).getTime() - new Date(left.snapshot_ts).getTime())
       .slice(0, limit);
   }
 
   return grouped;
 }
-
 export function loadSeedPortfolioHistory(options = {}) {
   const scopes = options.scopes ?? SCOPES;
   const repoRoot = resolve(options.repoRoot ?? process.cwd());

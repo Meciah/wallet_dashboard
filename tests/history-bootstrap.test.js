@@ -21,7 +21,7 @@ afterEach(() => {
 });
 
 describe("history bootstrap", () => {
-  it("merges current files with git history and deduplicates snapshots", () => {
+  it("merges git history and trims the initial low-value test snapshots", () => {
     const dir = mkdtempSync(join(tmpdir(), "wallet-dashboard-history-"));
     const historyDir = join(dir, "history");
     cleanupPaths.push(dir);
@@ -47,7 +47,7 @@ describe("history bootstrap", () => {
 
       const joined = args.join(" ");
       if (joined.includes("log") && joined.includes("history/combined.json")) {
-        return "headsha\noldsha\n";
+        return "headsha\nrealsha\nlegacysha\n";
       }
 
       if (joined.includes("show") && joined.includes("headsha:history/combined.json")) {
@@ -66,7 +66,7 @@ describe("history bootstrap", () => {
         });
       }
 
-      if (joined.includes("show") && joined.includes("oldsha:history/combined.json")) {
+      if (joined.includes("show") && joined.includes("realsha:history/combined.json")) {
         return JSON.stringify({
           scope: "combined",
           count: 1,
@@ -75,6 +75,23 @@ describe("history bootstrap", () => {
               snapshot_ts: "2026-04-04T11:53:02.836Z",
               scope: "combined",
               total_usd: 33067.81,
+              pnl_24h: null,
+              pnl_7d: null,
+            },
+          ],
+        });
+      }
+
+
+      if (joined.includes("show") && joined.includes("legacysha:history/combined.json")) {
+        return JSON.stringify({
+          scope: "combined",
+          count: 1,
+          history: [
+            {
+              snapshot_ts: "2026-04-02T23:57:45.880Z",
+              scope: "combined",
+              total_usd: 2390.25,
               pnl_24h: null,
               pnl_7d: null,
             },

@@ -124,9 +124,30 @@ function groupProtocolSections(positions) {
     .sort((left, right) => right.totalUsd - left.totalUsd);
 }
 
+function trimLegacyTestingHistory(history) {
+  if (history.length < 3) {
+    return history;
+  }
+
+  const ascending = [...history].sort((left, right) => new Date(left.snapshot_ts).getTime() - new Date(right.snapshot_ts).getTime());
+  const latestTotal = Number(ascending.at(-1)?.total_usd ?? 0);
+  if (latestTotal <= 0) {
+    return history;
+  }
+
+  const legacyFloor = latestTotal * 0.2;
+  const firstRealIndex = ascending.findIndex((point) => Number(point.total_usd ?? 0) >= legacyFloor);
+  if (firstRealIndex <= 0) {
+    return history;
+  }
+
+  return ascending.slice(firstRealIndex);
+}
+
 function filterHistory(history, range) {
   const days = HISTORY_RANGES.find(([label]) => label === range)?.[1] ?? Infinity;
-  const sorted = [...history].reverse();
+  const trimmed = trimLegacyTestingHistory(history);
+  const sorted = [...trimmed].reverse();
   if (!Number.isFinite(days)) {
     return sorted;
   }
