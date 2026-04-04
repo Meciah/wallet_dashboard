@@ -493,6 +493,15 @@ h3 {
   text-align: center;
 }
 
+.position-header span:first-child {
+  justify-self: start;
+  text-align: left;
+}
+
+.position-header span:not(:first-child) {
+  justify-self: end;
+  text-align: right;
+}
 .position-row {
   padding: 16px 0;
   border-top: 1px solid rgba(132, 149, 176, 0.08);
