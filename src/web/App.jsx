@@ -173,6 +173,14 @@ function totalForMint(positions, mint) {
   }, 0);
 }
 
+function totalValueForMint(positions, mint) {
+  return positions.reduce((total, position) => {
+    const mintTotal = (position.quantity ?? [])
+      .filter((asset) => asset.mint === mint)
+      .reduce((sum, asset) => sum + Number(asset.usd_value ?? 0), 0);
+    return total + mintTotal;
+  }, 0);
+}
 function totalValueForProtocol(allocation, protocolKey) {
   return allocation.find((entry) => entry.protocol === protocolKey)?.total_usd ?? 0;
 }
@@ -555,6 +563,7 @@ export function App() {
   const dailyDelta = trackedDailyDelta(positions);
   const urmomQuantity = totalForMint(positions, "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump");
   const solTracked = totalForMint(positions, "So11111111111111111111111111111111111111112");
+  const solTrackedUsd = totalValueForMint(positions, "So11111111111111111111111111111111111111112");
   const marinadeValue = totalValueForProtocol(protocolAllocation, "marinade");
   const raydiumValue = totalValueForProtocol(protocolAllocation, "raydium");
   const solPrice = prices.find((price) => price.mint === "So11111111111111111111111111111111111111112")?.price_usd ?? 0;
@@ -640,7 +649,11 @@ export function App() {
                     ),
                   )}
                 />
+<<<<<<< HEAD
                 <SummaryMetric label="SOL price" value={`${number(solTracked, 2)} SOL`} note={money(solPrice)} />
+=======
+                <SummaryMetric label="SOL holdings" value={`${number(solTracked, 2)} SOL`} note={money(solTrackedUsd)} />
+>>>>>>> 3d47c16 (refactor: show sol holdings summary)
                 <SummaryMetric label="Marinade" value={money(marinadeValue)} note="Native + liquid staking" tone="accent" />
                 <SummaryMetric label="Raydium" value={money(raydiumValue)} note="CLMM liquidity positions" tone="accent" />
               </div>
