@@ -4,6 +4,7 @@ import { Area, AreaChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "rec
 
 const DATA_BASE = `${import.meta.env.BASE_URL}data`;
 const HISTORY_RANGES = [
+  ["1D", 1],
   ["1W", 7],
   ["1M", 30],
   ["ALL", Infinity],
@@ -134,13 +135,21 @@ function filterHistory(history, range) {
   return sorted.filter((point) => new Date(point.snapshot_ts).getTime() >= cutoff);
 }
 
+function formatHistoryLabel(snapshotTs, range) {
+  const date = new Date(snapshotTs);
+  if (range === "1D") {
+    return date.toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" });
+  }
+
+  return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+}
+
 function chartHistory(history, range) {
   return filterHistory(history, range).map((point) => ({
     ...point,
-    label: new Date(point.snapshot_ts).toLocaleDateString(undefined, { month: "short", day: "numeric" }),
+    label: formatHistoryLabel(point.snapshot_ts, range),
   }));
 }
-
 function trackedDailyDelta(positions) {
   let delta = 0;
   let coveredUsd = 0;
@@ -264,6 +273,7 @@ function HistoryTooltip({ active, payload }) {
 
 function HistoryPanel({ history, range, onRangeChange }) {
   const data = chartHistory(history, range);
+  const sparseHistory = data.length === 1;
 
   return (
     <section className="hero-card chart-card">
@@ -306,6 +316,7 @@ function HistoryPanel({ history, range, onRangeChange }) {
               stroke="#35f2c2"
               strokeWidth={2.5}
               fill="url(#historyFill)"
+              dot={sparseHistory ? { r: 5, fill: "#35f2c2", stroke: "#eefef8", strokeWidth: 2 } : false}
               activeDot={{ r: 5, fill: "#35f2c2", stroke: "#eefef8", strokeWidth: 2 }}
             />
           </AreaChart>

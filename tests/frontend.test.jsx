@@ -383,6 +383,7 @@ describe("frontend dashboard", () => {
     await screen.findByText("Wallet Dashboard");
     await screen.findByText("Net worth");
     await screen.findByText("URMOM holdings");
+    expect(screen.getByRole("button", { name: "1D" })).toBeInTheDocument();
     expect(screen.getByText("Partial export")).toBeInTheDocument();
     expect(screen.getAllByText("Raydium").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Fees $10.10 | Rewards $2.40").length).toBeGreaterThan(0);

@@ -1,7 +1,8 @@
 import { DEFAULT_STATIC_OUT_DIR, DB_PATH, defaultRpcUrl } from "./config.js";
 import { serveApi } from "./api.js";
-import { applySchema, connect, seedWalletsAndProtocols, summarizeScope } from "./db.js";
+import { applySchema, connect, seedPortfolioSnapshots, seedWalletsAndProtocols, summarizeScope } from "./db.js";
 import { exportStaticJson } from "./export-static.js";
+import { loadSeedPortfolioHistory } from "./history-bootstrap.js";
 import { runIngestion } from "./ingestion.js";
 import { parseCliArgs, readIntOption, sleep } from "./utils.js";
 
@@ -24,11 +25,11 @@ async function commandInitDb(dbPath) {
   try {
     applySchema(db);
     seedWalletsAndProtocols(db);
+    seedPortfolioSnapshots(db, loadSeedPortfolioHistory());
   } finally {
     db.close();
   }
 }
-
 async function commandIngest(dbPath, rpcUrl) {
   const db = connect(dbPath);
   try {

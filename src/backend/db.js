@@ -183,10 +183,28 @@ export function insertPositionSnapshot(db, position, snapshotTs) {
 export function savePortfolioSnapshot(db, summary) {
   db.prepare(`
     INSERT INTO portfolio_snapshots(snapshot_ts, scope, total_usd, pnl_24h, pnl_7d)
-    VALUES(?, ?, ?, ?, ?)
-  `).run(summary.snapshot_ts, summary.scope, summary.total_usd, summary.pnl_24h ?? null, summary.pnl_7d ?? null);
+    SELECT ?, ?, ?, ?, ?
+    WHERE NOT EXISTS (
+      SELECT 1
+      FROM portfolio_snapshots
+      WHERE snapshot_ts = ? AND scope = ?
+    )
+  `).run(
+    summary.snapshot_ts,
+    summary.scope,
+    summary.total_usd,
+    summary.pnl_24h ?? null,
+    summary.pnl_7d ?? null,
+    summary.snapshot_ts,
+    summary.scope,
+  );
 }
 
+export function seedPortfolioSnapshots(db, snapshots = []) {
+  for (const snapshot of snapshots) {
+    savePortfolioSnapshot(db, snapshot);
+  }
+}
 export function summarizeScope(db, scope) {
   if (scope === "combined") {
     const row = db.prepare("SELECT COALESCE(SUM(usd_value), 0) AS total FROM positions_current").get();
