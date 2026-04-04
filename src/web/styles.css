@@ -475,13 +475,14 @@ h3 {
 }
 
 .position-table {
+  --table-columns: minmax(280px, 2.2fr) minmax(160px, 1fr) minmax(160px, 1fr) minmax(160px, 1fr);
   margin-top: 14px;
 }
 
 .position-header,
 .position-row {
-  grid-template-columns: minmax(220px, 2fr) repeat(3, minmax(120px, 1fr));
-  gap: 16px;
+  grid-template-columns: var(--table-columns);
+  gap: 20px;
   align-items: center;
 }
 
@@ -490,18 +491,26 @@ h3 {
   font-size: 0.86rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  text-align: center;
 }
 
-.position-header span:first-child {
-  justify-self: start;
+.position-header > span,
+.asset-cell,
+.position-col {
+  width: 100%;
+}
+
+.position-header span:first-child,
+.asset-cell {
+  justify-self: stretch;
   text-align: left;
 }
 
-.position-header span:not(:first-child) {
-  justify-self: end;
+.position-header span:not(:first-child),
+.position-col {
+  justify-self: stretch;
   text-align: right;
 }
+
 .position-row {
   padding: 16px 0;
   border-top: 1px solid rgba(132, 149, 176, 0.08);
@@ -548,9 +557,7 @@ h3 {
   display: grid;
   gap: 4px;
   justify-items: end;
-  text-align: right;
 }
-
 .price-col .positive,
 .positive {
   color: #6bf5b5;

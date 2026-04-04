@@ -649,11 +649,7 @@ export function App() {
                     ),
                   )}
                 />
-<<<<<<< HEAD
-                <SummaryMetric label="SOL price" value={`${number(solTracked, 2)} SOL`} note={money(solPrice)} />
-=======
                 <SummaryMetric label="SOL holdings" value={`${number(solTracked, 2)} SOL`} note={money(solTrackedUsd)} />
->>>>>>> 3d47c16 (refactor: show sol holdings summary)
                 <SummaryMetric label="Marinade" value={money(marinadeValue)} note="Native + liquid staking" tone="accent" />
                 <SummaryMetric label="Raydium" value={money(raydiumValue)} note="CLMM liquidity positions" tone="accent" />
               </div>
