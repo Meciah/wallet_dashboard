@@ -1,11 +1,284 @@
 {
   "scope": "wallet_3",
-  "count": 1,
+  "count": 40,
   "history": [
+    {
+      "snapshot_ts": "2026-04-04T13:51:44.090Z",
+      "scope": "wallet_3",
+      "total_usd": 1839.8375910075497,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
     {
       "snapshot_ts": "2026-04-04T12:50:38.400Z",
       "scope": "wallet_3",
       "total_usd": 1872.1916619503443,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T11:53:02.836Z",
+      "scope": "wallet_3",
+      "total_usd": 1872.1931576067443,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T11:27:25.617Z",
+      "scope": "wallet_3",
+      "total_usd": 1872.1919824481442,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T10:30:58.272Z",
+      "scope": "wallet_3",
+      "total_usd": 1872.1921961133444,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T09:35:21.903Z",
+      "scope": "wallet_3",
+      "total_usd": 1877.4089370240986,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T08:37:46.479Z",
+      "scope": "wallet_3",
+      "total_usd": 1902.4600621217976,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T06:57:57.950Z",
+      "scope": "wallet_3",
+      "total_usd": 1866.9771645241906,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T05:41:38.788Z",
+      "scope": "wallet_3",
+      "total_usd": 1870.1057775138026,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T04:29:17.236Z",
+      "scope": "wallet_3",
+      "total_usd": 1837.751279240608,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T04:27:55.612Z",
+      "scope": "wallet_3",
+      "total_usd": 1837.7511724080082,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T02:07:28.348Z",
+      "scope": "wallet_3",
+      "total_usd": 1804.3530909209426,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T23:56:16.191Z",
+      "scope": "wallet_3",
+      "total_usd": 1783.4864020135055,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T23:03:11.849Z",
+      "scope": "wallet_3",
+      "total_usd": 1812.703740608795,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T22:30:16.523Z",
+      "scope": "wallet_3",
+      "total_usd": 1812.7055871596551,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T21:31:15.117Z",
+      "scope": "wallet_3",
+      "total_usd": 1801.2267864371372,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T21:17:05.846Z",
+      "scope": "wallet_3",
+      "total_usd": 1792.877656445012,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T20:33:17.379Z",
+      "scope": "wallet_3",
+      "total_usd": 1748.0032590294218,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T19:36:37.130Z",
+      "scope": "wallet_3",
+      "total_usd": 1754.2317896850457,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T18:42:37.848Z",
+      "scope": "wallet_3",
+      "total_usd": 1754.2342213918757,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T17:32:17.576Z",
+      "scope": "wallet_3",
+      "total_usd": 1754.2316617004758,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T16:53:31.117Z",
+      "scope": "wallet_3",
+      "total_usd": 1754.2362691449957,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T15:59:51.766Z",
+      "scope": "wallet_3",
+      "total_usd": 1776.1513504611805,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T15:08:19.975Z",
+      "scope": "wallet_3",
+      "total_usd": 1756.3209880397071,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T15:06:19.549Z",
+      "scope": "wallet_3",
+      "total_usd": 1756.3204761014272,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T14:11:45.246Z",
+      "scope": "wallet_3",
+      "total_usd": 1761.532081361351,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T13:21:34.022Z",
+      "scope": "wallet_3",
+      "total_usd": 1761.5260660865608,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T11:59:15.160Z",
+      "scope": "wallet_3",
+      "total_usd": 1734.4027071092726,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T11:09:43.894Z",
+      "scope": "wallet_3",
+      "total_usd": 1740.666334651587,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T08:01:12.170Z",
+      "scope": "wallet_3",
+      "total_usd": 1708.3117887751653,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T06:44:57.698Z",
+      "scope": "wallet_3",
+      "total_usd": 1717.6985911301613,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T05:02:48.108Z",
+      "scope": "wallet_3",
+      "total_usd": 1692.6507361585448,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T03:02:54.406Z",
+      "scope": "wallet_3",
+      "total_usd": 1650.9072121894367,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T02:42:35.439Z",
+      "scope": "wallet_3",
+      "total_usd": 1690.5600019890433,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T02:02:56.174Z",
+      "scope": "wallet_3",
+      "total_usd": 1702.0403541740811,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-02T23:57:45.880Z",
+      "scope": "wallet_3",
+      "total_usd": 1.0100542264399999,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-02T23:01:41.218Z",
+      "scope": "wallet_3",
+      "total_usd": 1.01159004128,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-02T22:29:06.812Z",
+      "scope": "wallet_3",
+      "total_usd": 1.0100542264399999,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-02T21:35:29.544Z",
+      "scope": "wallet_3",
+      "total_usd": 1.01056616472,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-02T18:45:48.266Z",
+      "scope": "wallet_3",
+      "total_usd": 0.9762374622,
       "pnl_24h": null,
       "pnl_7d": null
     }

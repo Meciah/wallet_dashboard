@@ -1,11 +1,284 @@
 {
   "scope": "combined",
-  "count": 1,
+  "count": 40,
   "history": [
+    {
+      "snapshot_ts": "2026-04-04T13:51:44.090Z",
+      "scope": "combined",
+      "total_usd": 32821.86305321112,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
     {
       "snapshot_ts": "2026-04-04T12:50:38.400Z",
       "scope": "combined",
       "total_usd": 33049.98198968702,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T11:53:02.836Z",
+      "scope": "combined",
+      "total_usd": 33067.81054470941,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T11:27:25.617Z",
+      "scope": "combined",
+      "total_usd": 33041.19498915976,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T10:30:58.272Z",
+      "scope": "combined",
+      "total_usd": 33046.049022962405,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T09:35:21.903Z",
+      "scope": "combined",
+      "total_usd": 33045.19949484479,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T08:37:46.479Z",
+      "scope": "combined",
+      "total_usd": 33285.520149571355,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T06:57:57.950Z",
+      "scope": "combined",
+      "total_usd": 33085.81907884612,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T05:41:38.788Z",
+      "scope": "combined",
+      "total_usd": 33052.93502170409,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T04:29:17.236Z",
+      "scope": "combined",
+      "total_usd": 32815.76144329165,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T04:27:55.612Z",
+      "scope": "combined",
+      "total_usd": 32813.33937835039,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-04T02:07:28.348Z",
+      "scope": "combined",
+      "total_usd": 32754.003308401436,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T23:56:16.191Z",
+      "scope": "combined",
+      "total_usd": 32640.478761084378,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T23:03:11.849Z",
+      "scope": "combined",
+      "total_usd": 32802.83378575029,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T22:30:16.523Z",
+      "scope": "combined",
+      "total_usd": 32837.00247527267,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T21:31:15.117Z",
+      "scope": "combined",
+      "total_usd": 32763.06351771506,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T21:17:05.846Z",
+      "scope": "combined",
+      "total_usd": 32692.211222058682,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T20:33:17.379Z",
+      "scope": "combined",
+      "total_usd": 32351.43952612991,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T19:36:37.130Z",
+      "scope": "combined",
+      "total_usd": 32366.552718859344,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T18:42:37.848Z",
+      "scope": "combined",
+      "total_usd": 32412.860426076284,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T17:32:17.576Z",
+      "scope": "combined",
+      "total_usd": 32364.115471111083,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T16:53:31.117Z",
+      "scope": "combined",
+      "total_usd": 32451.856390048444,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T15:59:51.766Z",
+      "scope": "combined",
+      "total_usd": 32612.3784026428,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T15:08:19.975Z",
+      "scope": "combined",
+      "total_usd": 32420.95054971848,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T15:06:19.549Z",
+      "scope": "combined",
+      "total_usd": 32411.2040180522,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T14:11:45.246Z",
+      "scope": "combined",
+      "total_usd": 32330.043541788342,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T13:21:34.022Z",
+      "scope": "combined",
+      "total_usd": 32215.52179470955,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T11:59:15.160Z",
+      "scope": "combined",
+      "total_usd": 32199.545328402164,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T11:09:43.894Z",
+      "scope": "combined",
+      "total_usd": 32286.85835860704,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T08:01:12.170Z",
+      "scope": "combined",
+      "total_usd": 31964.926568214578,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T06:44:57.698Z",
+      "scope": "combined",
+      "total_usd": 31931.586884759527,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T05:02:48.108Z",
+      "scope": "combined",
+      "total_usd": 31708.92846426569,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T03:02:54.406Z",
+      "scope": "combined",
+      "total_usd": 31393.190922252816,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T02:42:35.439Z",
+      "scope": "combined",
+      "total_usd": 31625.61373836496,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-03T02:02:56.174Z",
+      "scope": "combined",
+      "total_usd": 31729.269246528565,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-02T23:57:45.880Z",
+      "scope": "combined",
+      "total_usd": 2390.2542388596803,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-02T23:01:41.218Z",
+      "scope": "combined",
+      "total_usd": 2393.88868524416,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-02T22:29:06.812Z",
+      "scope": "combined",
+      "total_usd": 2390.2542388596803,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-02T21:35:29.544Z",
+      "scope": "combined",
+      "total_usd": 2391.46572098784,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
+      "snapshot_ts": "2026-04-02T18:45:48.266Z",
+      "scope": "combined",
+      "total_usd": 2199.0107044334,
       "pnl_24h": null,
       "pnl_7d": null
     }
