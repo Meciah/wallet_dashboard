@@ -147,7 +147,7 @@ function trimLegacyTestingHistory(history) {
 function filterHistory(history, range) {
   const days = HISTORY_RANGES.find(([label]) => label === range)?.[1] ?? Infinity;
   const trimmed = trimLegacyTestingHistory(history);
-  const sorted = [...trimmed].reverse();
+  const sorted = [...trimmed].sort((left, right) => new Date(left.snapshot_ts).getTime() - new Date(right.snapshot_ts).getTime());
   if (!Number.isFinite(days)) {
     return sorted;
   }
