@@ -171,6 +171,25 @@ function chartHistory(history, range) {
     label: formatHistoryLabel(point.snapshot_ts, range),
   }));
 }
+
+function historyDomain(points) {
+  const values = points.map((point) => Number(point.total_usd ?? 0)).filter((value) => Number.isFinite(value));
+  if (!values.length) {
+    return [0, 1];
+  }
+
+  const minValue = Math.min(...values);
+  const maxValue = Math.max(...values);
+
+  if (minValue === maxValue) {
+    const padding = Math.max(Math.abs(minValue) * 0.01, 100);
+    return [minValue - padding, maxValue + padding];
+  }
+
+  const spread = maxValue - minValue;
+  const padding = Math.max(spread * 0.18, maxValue * 0.0025, 50);
+  return [minValue - padding, maxValue + padding];
+}
 function trackedDailyDelta(positions) {
   let delta = 0;
   let coveredUsd = 0;
@@ -295,6 +314,7 @@ function HistoryTooltip({ active, payload }) {
 function HistoryPanel({ history, range, onRangeChange }) {
   const data = chartHistory(history, range);
   const sparseHistory = data.length === 1;
+  const domain = historyDomain(data);
 
   return (
     <section className="hero-card chart-card">
@@ -330,7 +350,14 @@ function HistoryPanel({ history, range, onRangeChange }) {
               content={<HistoryTooltip />}
             />
             <XAxis dataKey="label" tick={{ fill: "#6f7f9c", fontSize: 12 }} axisLine={false} tickLine={false} />
-            <YAxis tickFormatter={compactMoney} tick={{ fill: "#6f7f9c", fontSize: 12 }} axisLine={false} tickLine={false} />
+            <YAxis
+              domain={domain}
+              tickCount={6}
+              tickFormatter={compactMoney}
+              tick={{ fill: "#6f7f9c", fontSize: 12 }}
+              axisLine={false}
+              tickLine={false}
+            />
             <Area
               type="monotone"
               dataKey="total_usd"
