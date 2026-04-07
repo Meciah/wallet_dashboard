@@ -1,7 +1,14 @@
 {
   "scope": "wallet_1",
-  "count": 99,
+  "count": 100,
   "history": [
+    {
+      "snapshot_ts": "2026-04-07T13:14:14.672Z",
+      "scope": "wallet_1",
+      "total_usd": 4748.041948537264,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
     {
       "snapshot_ts": "2026-04-07T11:52:13.703Z",
       "scope": "wallet_1",
