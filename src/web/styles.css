@@ -342,6 +342,23 @@ h3 {
   min-height: 420px;
 }
 
+
+.history-performance {
+  display: grid;
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.history-performance strong {
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  line-height: 1;
+}
+
+.history-performance span {
+  color: var(--soft);
+  font-size: 0.94rem;
+}
+
 .history-tooltip {
   display: grid;
   gap: 6px;

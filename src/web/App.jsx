@@ -39,6 +39,15 @@ function money(value) {
   }).format(numeric);
 }
 
+function signedMoney(value) {
+  const numeric = Number(value ?? 0);
+  if (!Number.isFinite(numeric)) {
+    return money(0);
+  }
+
+  return `${numeric > 0 ? "+" : ""}${money(numeric)}`;
+}
+
 function compactMoney(value) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
@@ -172,6 +181,7 @@ function chartHistory(history, range) {
   }));
 }
 
+
 function historyDomain(points) {
   const values = points.map((point) => Number(point.total_usd ?? 0)).filter((value) => Number.isFinite(value));
   if (!values.length) {
@@ -190,6 +200,31 @@ function historyDomain(points) {
   const padding = Math.max(spread * 0.18, maxValue * 0.0025, 50);
   return [minValue - padding, maxValue + padding];
 }
+function historyPerformance(points) {
+  if (!points.length) {
+    return {
+      absolute: 0,
+      percent: 0,
+    };
+  }
+
+  const startingValue = Number(points[0]?.total_usd ?? 0);
+  const endingValue = Number(points.at(-1)?.total_usd ?? 0);
+  const absolute = endingValue - startingValue;
+
+  if (startingValue <= 0) {
+    return {
+      absolute,
+      percent: 0,
+    };
+  }
+
+  return {
+    absolute,
+    percent: (absolute / startingValue) * 100,
+  };
+}
+
 function trackedDailyDelta(positions) {
   let delta = 0;
   let coveredUsd = 0;
@@ -315,6 +350,8 @@ function HistoryPanel({ history, range, onRangeChange }) {
   const data = chartHistory(history, range);
   const sparseHistory = data.length === 1;
   const domain = historyDomain(data);
+  const performance = historyPerformance(data);
+  const performanceTone = performance.absolute >= 0 ? "positive" : "negative";
 
   return (
     <section className="hero-card chart-card">
@@ -322,6 +359,12 @@ function HistoryPanel({ history, range, onRangeChange }) {
         <div>
           <span className="panel-kicker">History</span>
           <h2>Portfolio history</h2>
+          {data.length ? (
+            <div className="history-performance">
+              <strong className={performanceTone}>{pct(performance.percent)}</strong>
+              <span>{signedMoney(performance.absolute)} over {range}</span>
+            </div>
+          ) : null}
         </div>
         <div className="segmented-control">
           {HISTORY_RANGES.map(([label]) => (
