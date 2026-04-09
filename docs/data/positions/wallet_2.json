@@ -13,222 +13,222 @@
       "protocol_category": "staking",
       "position_type": "staking",
       "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:marinade_native:aggregate",
-      "usd_value": 16903.184660251503,
-      "updated_at": "2026-04-09T17:57:18.449Z",
+      "usd_value": 16818.331945421003,
+      "updated_at": "2026-04-09T19:10:40.791Z",
       "quantity": [
         {
           "mint": "So11111111111111111111111111111111111111112",
           "symbol": "SOL",
-          "amount": 200.03768828700004,
+          "amount": 200.09913082000003,
           "name": "Marinade Native",
           "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
           "decimals": 9,
-          "price_usd": 84.5,
-          "price_change_24h": 0.67,
-          "usd_value": 16903.184660251503
+          "price_usd": 84.05,
+          "price_change_24h": 1.25,
+          "usd_value": 16818.331945421003
         }
       ],
       "asset_mint": "So11111111111111111111111111111111111111112",
       "asset_symbol": "SOL",
       "asset_name": "Marinade Native",
       "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
-      "unit_price_usd": 84.5,
-      "price_change_24h": 0.67,
+      "unit_price_usd": 84.05,
+      "price_change_24h": 1.25,
       "rewards_usd": 0,
       "raw": {
         "mint": "So11111111111111111111111111111111111111112",
-        "amount": "200.03768828700004",
-        "unit_price_usd": 84.5,
-        "price_change_24h": 0.67,
+        "amount": "200.09913082000003",
+        "unit_price_usd": 84.05,
+        "price_change_24h": 1.25,
         "display_name": "Marinade Native",
         "display_symbol": "mNative",
         "native_stake_accounts": [
           {
             "address": "FFiFkKB9EchGtAPYwDgQqoqTcCdGJXkLbBKGj5NaZMf",
             "voter": "3vwstewNgWAwN2uyuJduoZVVhmiwvAbwCxrjeJG6bASy",
-            "active_sol": 2.289019881,
+            "active_sol": 2.289704669,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "cKn9S5uaFZmwKdDaNgr8SfBkBoya2Ee4grpYhawoaN1",
             "voter": "74y2qkCaJ5L17hTsz3E8jftNxTBCTvdz4P2L6qTHDW59",
-            "active_sol": 1.516299505,
+            "active_sol": 1.516752933,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "2faoL8D9BevgLYHfpBp7YFf4oeYv5EHqAcDRJd6y6XmJ",
             "voter": "773eL4qyoHUi6s3pWWEWTnaYXELNs4nY5deMevpSF5YE",
-            "active_sol": 15.77349967,
+            "active_sol": 15.778466909,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "2yeyAMPhhFA32xgCshq8BQ3qE2hG3C4qtPruTwnbxTNz",
             "voter": "GdSJPrzj8q1QJV53s1cHMcpbPhodgB9kjG7X9kq8Z56r",
-            "active_sol": 2.989180231,
+            "active_sol": 2.990121617,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "2zUwm9WdEDFdTmVSsQDm2AcJj6MJZcQYgHnuqkHnxsCX",
             "voter": "3jkJVgfz1zrHSy6YLK6g96eTj49kCnDj2i8AbbKLZhkk",
-            "active_sol": 2.81893282,
+            "active_sol": 2.81982054,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "3MugtDQYjpfLRrWBGpySWVMhjUa6qVZLhCnCjk1mhBJ9",
             "voter": "5s3vajJvaAbabQvxFdiMfg14y23b2jvK6K2Mw4PYcYK",
-            "active_sol": 15.895419431,
+            "active_sol": 15.90042506,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "3Y6hZtF6FpJQwiBDgB6FCuj47Ejn63vFEeh4PphQmUgJ",
             "voter": "5DnWqsJceNamPNNUpMnVr1XQ8anSxcj9TXRD5Rn52prJ",
-            "active_sol": 0.346370266,
+            "active_sol": 0.346479394,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "4K1dqC3TwmbDieAWYd8uZB481dVorcvvKXkeF89LFVw9",
             "voter": "4BVYjw1ztUzUPsxsaCheWWwThT2X4rjogZytGnuWPUGg",
-            "active_sol": 1.181851779,
+            "active_sol": 1.18222404,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "4VAjxLwy22Fr56CLZyuUza22KzCrzhiQXJmMbdLTeH9W",
             "voter": "5szskKdH8nfnUuHTvn9hnhH3Xuvo7RVmcDDvD5WD7yNh",
-            "active_sol": 0.348627275,
+            "active_sol": 0.348737064,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "4aNzxqmGLcp7cN8HKTpvFf2URaioueBpJStDvDmTpVds",
             "voter": "GzjMbJQDVuBLFY69QwhhjDGDy2o5Q6nswXMuVTCWEFnp",
-            "active_sol": 1.634006033,
+            "active_sol": 1.634494805,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "6JKS5rN8LwoduZFUcG9ePt392dJsnegmCG7vwKZafRpz",
             "voter": "H6rbcwuQtadcv9JvxLM7GEskF6xFXnrNT3iPkk4RfyBE",
-            "active_sol": 1.759202929,
+            "active_sol": 1.75972921,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "7C66QPaAaSK1qvAnRtsdi6q3ZyBB64xLMS1GsiExAqkw",
             "voter": "i6PZjkPHGYmPfPE8LsJuLn5huZyusXhmysiDiHGPjxb",
-            "active_sol": 5.085147959,
+            "active_sol": 5.086669975,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "7ECZWcu4HpCqDt1cMWFcWAjZnLmGoPQoQ8cSro1hTraA",
             "voter": "6cvBCfFXugkTqgSFVPvzhoWaLbhHWvZfSsZadWP5rryR",
-            "active_sol": 5.238649568,
+            "active_sol": 5.240216839,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "7TQx6F1YbRtKZMcwf1bbT4SSpG19nTig2ZjmJJfnBbNn",
             "voter": "5cwxevV9u1poNgfc1tKxMfEGX4oKt1DZNSHg48Umubm3",
-            "active_sol": 2.433842601,
+            "active_sol": 2.43460943,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "7TkaASCtvFfpbJ9dFuqbtwKZFKkeTYi9jUQyKsQKeHtg",
             "voter": "4udPrmxccbP1NwDJ6vChFKs5qcqyjmQff6gsKXD1mdaj",
-            "active_sol": 2.005673692,
+            "active_sol": 2.006273463,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "7hwuUJBjBi9XhYAEFhdmqxEPhSGvKnJZw58cSE2HybRA",
             "voter": "Simpj3KyRQmpRkXuBvCQFS7DBBG6vqw93SkZb9UD1hp",
-            "active_sol": 0.770125291,
+            "active_sol": 0.770367822,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "7qMxR9AmPVUE8wXEGQAFPbmaag1x9iXP28zWkUjSwPsu",
             "voter": "GW8GgoeBpLM4TpeR2ePVcYYSoySBaKJgt2JiwoyjXRz3",
-            "active_sol": 5.283561825,
+            "active_sol": 5.285143153,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "7vhZC4DCpMaPrkPmHC5exHxVecg86e5YTkbSav3J76AU",
             "voter": "Ec55BotYhWgC3xRmZ2UpuJvyySwxZeUrvEDPrxxG7r9B",
-            "active_sol": 15.775528593,
+            "active_sol": 15.780498998,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "8Q6yDrX1Py4hzAiQE5yJR5JGad1AcWqs9gdoBx2DLdsL",
             "voter": "MicobSZgB9CZNvmnFSYbEtMjy7CUui5o6P3XoGTwZC5",
-            "active_sol": 1.052817797,
+            "active_sol": 1.053149343,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "8nhjvjYva2JWnGWsYjucTf6ofcSJnKA7ZRCbo6U2hwmX",
             "voter": "Fy6zNoZ1eCPpQX3JXeQ9Yd1HW1BFL8rrFmDvYYDnuxjT",
-            "active_sol": 1.024240692,
+            "active_sol": 1.024563399,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "9nWJo5NjSdZkhsBRtFBB83Xv5LnKNQcTnNSrLoKXwJND",
             "voter": "ExYX8UKQTCf2VPtV9jbfqikeTV6tPfhzauJ896o91wtj",
-            "active_sol": 1.632963055,
+            "active_sol": 1.633477524,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "9rcUJsP1Trzw3xDjkWw9Fikbw1GSNvBdZBHKPYa2okmc",
             "voter": "R2D2vs3bJwpNF2ejaB6UW1JdCZ5VstuAmuwxDuUUWNj",
-            "active_sol": 1.584328746,
+            "active_sol": 1.584802742,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "A4CHgeQRcBuSSpWQ25dKEWGwxV2JQUQ9Y1XNm2bK9kM9",
             "voter": "D3wscqsBCJGFzzoB7dB7wQfJzSEFVzu8Rxugfnfk7rdm",
-            "active_sol": 12.589658487,
+            "active_sol": 12.593625142,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "AEq42bAX981ZRoBnLq9bDbv7WiaYKq8UwQS6hSxEhGTE",
             "voter": "BrRf2kyJEuW8TgdeDjvJcKK4NzTzRtM9RB6WuVKXHxkN",
-            "active_sol": 2.336560164,
+            "active_sol": 2.337259027,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "AXudv9ox5yRkhjFjEjvLpdumEXfn1vq7hbrDiGPRVsM2",
             "voter": "8zuMRTXThoPTTPLLvaiKiJshLLCqGMt9BdRjjCL19xBc",
-            "active_sol": 1.403462376,
+            "active_sol": 1.403904555,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "B2KiJq4BquMegV4ndcLxCVhUg8Rixxe28cYm1EZnZ3xR",
             "voter": "FzUNgBRnVxawDytN9GM7BFwxFfekuMs7BcAGybn4AmMk",
-            "active_sol": 2.289018819,
+            "active_sol": 2.289703612,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "BL4D4a4WcdtdwAyWQ7zYTkGoqSSHHwgNvd2K2DNhVCa2",
             "voter": "5eJQDSbgTZSEmH3zSWDEdAKgjavUUn9BkouCFNLz1x93",
-            "active_sol": 6.111775038,
+            "active_sol": 6.113699852,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
@@ -242,154 +242,154 @@
           {
             "address": "C5P1T4PT422sACVdsF7ZGpErMiB5xM9eiUpHf5sBfnjw",
             "voter": "4FsAxdHQ6HmFrDD7yCwsKNApuA67QYSCMoLAy3NfySxJ",
-            "active_sol": 2.816531026,
+            "active_sol": 2.81741787,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "C5eenRVTm9mgXK5DuGRRhTWSgG41RqWbX3sf7bufK6BA",
             "voter": "EGg6LTZDgV9CgpPZnpTTzmebSSyaH91cQ2eoiDxiJPvm",
-            "active_sol": 7.948451811,
+            "active_sol": 7.950829864,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "CH25j4Y21R53jfzYQnQr5GMinCEFvyYNS3WeTDEC16hp",
             "voter": "5frYQSynysBe1akCVK9tNBJ5j8jgBgUsjAXAgqHxvykJ",
-            "active_sol": 0.199974384,
+            "active_sol": 0.200034238,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "CM1PbUd4pnKvVufYqVyCAX781qyzf8cPQVgnhhvM1NEj",
             "voter": "9KgZYnDzHhQANoJ43Z8czkgXYdTjtWLRrH9nDf42gqa",
-            "active_sol": 1.865166138,
+            "active_sol": 1.865724123,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "CRXeYM9fr48kaDCZUbpQiM7hKt1eRjPT3kqCz7X6fnZw",
             "voter": "2DNGsVZ9rg6RvT8bY4SGmGvyiVJ4xt9RL3NDd6uhfN46",
-            "active_sol": 2.080589822,
+            "active_sol": 2.081211996,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "CTqhbUzSZH5CXafef23whSQnAWZeobk5NZVBs53FwHG6",
             "voter": "RNXpSdqrJL6eoLrbW69Q9qsFviEwRpfFfk3HiRRRohq",
-            "active_sol": 2.595455776,
+            "active_sol": 2.596232246,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "Cxa8FsD7mPF5RGPDJVKzrFTtqycBatnqf2w8SDHG1Qwi",
             "voter": "5frYQSynysBe1akCVK9tNBJ5j8jgBgUsjAXAgqHxvykJ",
-            "active_sol": 1.401096436,
+            "active_sol": 1.401515804,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "DBB8oL5xFxJx48RGN9Dt1JmS1kgRnsfq9TvRRkEbwi2u",
             "voter": "4ibf8qJirtoBGg7gSD7V7CeCKoFB96PBYQ3J5QjSmAob",
-            "active_sol": 2.112410969,
+            "active_sol": 2.113042662,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "Db5GfMUZV7vJYZCZLzhCrfAuZVnNaMdCDM1mdjXFQTtJ",
             "voter": "BZZFpWeasotFsxhwiwTz37BqtV5BjQtfkrVxz73zqQV",
-            "active_sol": 1.346507472,
+            "active_sol": 1.346931524,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "DhWDurKP2onSexahWbusGJQu9tpQPeKZqT16rNKBTGGm",
             "voter": "QWmexgr4teHa2ZF85tyf2hvEwBvJ6ioAEr1h8DRjoie",
-            "active_sol": 1.764712981,
+            "active_sol": 1.765240914,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "Dq1ApDRo5aDbsdVysKfiqNaEGiA35f3jn7xpj2RtjPbg",
             "voter": "F3scMRjzSvXUa7JoK2uwBjNsYGi5sM84sDzE7FfGBo6o",
-            "active_sol": 2.289000417,
+            "active_sol": 2.289685223,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "DtB813Jt96gDCBGfMF7kfg6A3TfdsPuJKxJXNTT519qn",
             "voter": "DPsW8v7gkGUbPPRnraS5e163bDepd9tD537X9S231T2j",
-            "active_sol": 2.114539457,
+            "active_sol": 2.11517178,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "EAqi5FMzSpUBeAM973UcXZF7HdMYBm49d5rJyzM1zv3i",
             "voter": "HLXktVmNFeELB5uL5nrpP4WL7jyi3TMyekxASVjDhZ1t",
-            "active_sol": 1.231889107,
+            "active_sol": 1.232277147,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "F5TJU3sYuqVvH59Ro5PQtEDo3E8vxP1sPcxmfgzCrWVB",
             "voter": "AGJmwvFJmJqHsSCu4EPsZ4W5N2hpwWC3FNQJc8ZFJBsy",
-            "active_sol": 26.489372953,
+            "active_sol": 26.497714896,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "GHcmBDqZs9H7PVno6sPMWtfPFxrxpGZ9zVhkUb6nwnrv",
             "voter": "CNcaYdqkCwxDpKSVK8in5f6kqrTiZ5SuHsHFDqx6jNvu",
-            "active_sol": 0.756614011,
+            "active_sol": 0.756847455,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "GhBBu47a4VJyRRL5ahRk7rogCEqguYrVpPgAQp4Py9y8",
             "voter": "ENVaKoD7ytn58xJ8s5htFfQ8hqQt1G9dcPUDqbSwVcgB",
-            "active_sol": 2.847383485,
+            "active_sol": 2.848235614,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "GkVfFerjE9NSFjaEAjd1eVUGcoTzXSuDzgEp3P6qavdy",
             "voter": "7sBYPueerpq3kKjmuimJkGr7jmiM8ZZ74pXPMEcBSxo5",
-            "active_sol": 11.708361709,
+            "active_sol": 11.712050671,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "GqEESj2vK5wCdX5NFhoNtFx9j4a1sQEDqLHjRAeDZo89",
             "voter": "FwLsjPJdnSiuCvs1NXyR1cV6Sw5GRE6Lj2s1gZ9NNTmv",
-            "active_sol": 1.420646624,
+            "active_sol": 1.421094225,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "H1qKsQNYYP6eWbhYP1w42Q3RKUP34SEmDxBvWt41amjj",
             "voter": "4tuMshQNpAFpy1YtEHnSsE5EPN1mAT8FevWvn2UPJHNM",
-            "active_sol": 1.492722566,
+            "active_sol": 1.493169147,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "HjAx13Mx2hWLLveWANoZqUoA7PC2nQcoqb2Xt8YULGaQ",
             "voter": "6AAeoHYMUQfSdFGqubUmWVAasFkzJEq47oKpHNNTZxLN",
-            "active_sol": 2.125276316,
+            "active_sol": 2.12591212,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "J6pMm6yzcgDTPKP9qrGr1K79Li2XJXhbViogHHKPsvmp",
             "voter": "JnGGar3XbAN6J3cKGRbNajCuhqnc9XWrk6WWr6hDmuM",
-            "active_sol": 7.431783354,
+            "active_sol": 7.434007844,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
             "address": "JCBvLv6nVQaHqSq4HSs72uEUoqoQVGg2haGSJC2ujLAn",
             "voter": "EnRcbgr5r7EUS2P35szncy6TW6eWA9UQiU3yQRCDbh2P",
-            "active_sol": 1.421850877,
+            "active_sol": 1.422276267,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
@@ -406,13 +406,13 @@
           {
             "mint": "So11111111111111111111111111111111111111112",
             "symbol": "SOL",
-            "amount": 200.03768828700004,
+            "amount": 200.09913082000003,
             "name": "Marinade Native",
             "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
             "decimals": 9,
-            "price_usd": 84.5,
-            "price_change_24h": 0.67,
-            "usd_value": 16903.184660251503
+            "price_usd": 84.05,
+            "price_change_24h": 1.25,
+            "usd_value": 16818.331945421003
           }
         ],
         "rewards_usd": 0,
@@ -431,7 +431,7 @@
       "position_type": "wallet_balance",
       "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:token:9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
       "usd_value": 3741.560353134912,
-      "updated_at": "2026-04-09T17:57:17.820Z",
+      "updated_at": "2026-04-09T19:10:40.560Z",
       "quantity": [
         {
           "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
@@ -490,8 +490,8 @@
       "protocol_category": "lp",
       "position_type": "lp",
       "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:raydium:clmm:ENuL1URR3XceaqtMtAdXQTXgdBrjtrC8pbqPxRhZKNBN",
-      "usd_value": 2521.533666095812,
-      "updated_at": "2026-04-09T17:57:19.202Z",
+      "usd_value": 2517.4737783169116,
+      "updated_at": "2026-04-09T19:10:41.680Z",
       "quantity": [
         {
           "mint": "So11111111111111111111111111111111111111112",
@@ -500,9 +500,9 @@
           "name": "Solana",
           "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
           "decimals": 9,
-          "price_usd": 84.5,
-          "price_change_24h": 0.67,
-          "usd_value": 762.356705149
+          "price_usd": 84.05,
+          "price_change_24h": 1.25,
+          "usd_value": 758.2968173701
         },
         {
           "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
@@ -520,8 +520,8 @@
       "asset_symbol": "SOL",
       "asset_name": "SOL / URMOM",
       "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
-      "unit_price_usd": 84.5,
-      "price_change_24h": 0.67,
+      "unit_price_usd": 84.05,
+      "price_change_24h": 1.25,
       "rewards_usd": 1.43913e-8,
       "raw": {
         "display_name": "SOL / URMOM",
@@ -534,7 +534,7 @@
         "tick_lower": 0,
         "tick_upper": 71760,
         "fee_apr_24h": 0,
-        "tvl_usd": 4834.04,
+        "tvl_usd": 4803.14,
         "pair_address": "J2RwRUiUafbvJdfNMgEELY4h27gmQtV1YGwDUhez68yu",
         "fees_usd": 1.43913e-8,
         "fees": [
@@ -561,9 +561,9 @@
             "name": "Solana",
             "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
             "decimals": 9,
-            "price_usd": 84.5,
-            "price_change_24h": 0.67,
-            "usd_value": 762.356705149
+            "price_usd": 84.05,
+            "price_change_24h": 1.25,
+            "usd_value": 758.2968173701
           },
           {
             "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
@@ -592,8 +592,8 @@
       "protocol_category": "lp",
       "position_type": "lp",
       "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:raydium:clmm:5rs98PFHcud13vxcuqFy3h4t3Y3QzV3VxvyYQX15qyLq",
-      "usd_value": 2308.4951986413434,
-      "updated_at": "2026-04-09T17:57:19.201Z",
+      "usd_value": 2304.4787858632935,
+      "updated_at": "2026-04-09T19:10:41.679Z",
       "quantity": [
         {
           "mint": "So11111111111111111111111111111111111111112",
@@ -602,9 +602,9 @@
           "name": "Solana",
           "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
           "decimals": 9,
-          "price_usd": 84.5,
-          "price_change_24h": 0.67,
-          "usd_value": 754.1930661005
+          "price_usd": 84.05,
+          "price_change_24h": 1.25,
+          "usd_value": 750.17665332245
         },
         {
           "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
@@ -622,8 +622,8 @@
       "asset_symbol": "SOL",
       "asset_name": "SOL / URMOM",
       "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
-      "unit_price_usd": 84.5,
-      "price_change_24h": 0.67,
+      "unit_price_usd": 84.05,
+      "price_change_24h": 1.25,
       "rewards_usd": 1.42044e-8,
       "raw": {
         "display_name": "SOL / URMOM",
@@ -636,7 +636,7 @@
         "tick_lower": 23040,
         "tick_upper": 71760,
         "fee_apr_24h": 0,
-        "tvl_usd": 4834.04,
+        "tvl_usd": 4803.14,
         "pair_address": "J2RwRUiUafbvJdfNMgEELY4h27gmQtV1YGwDUhez68yu",
         "fees_usd": 1.42044e-8,
         "fees": [
@@ -663,9 +663,9 @@
             "name": "Solana",
             "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
             "decimals": 9,
-            "price_usd": 84.5,
-            "price_change_24h": 0.67,
-            "usd_value": 754.1930661005
+            "price_usd": 84.05,
+            "price_change_24h": 1.25,
+            "usd_value": 750.17665332245
           },
           {
             "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
@@ -694,8 +694,8 @@
       "protocol_category": "wallet",
       "position_type": "wallet_balance",
       "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:native:So11111111111111111111111111111111111111112",
-      "usd_value": 2235.499231407,
-      "updated_at": "2026-04-09T17:57:17.727Z",
+      "usd_value": 2223.5942059143,
+      "updated_at": "2026-04-09T19:10:40.512Z",
       "quantity": [
         {
           "mint": "So11111111111111111111111111111111111111112",
@@ -704,23 +704,23 @@
           "name": "Solana",
           "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
           "decimals": 9,
-          "price_usd": 84.5,
-          "price_change_24h": 0.67,
-          "usd_value": 2235.499231407
+          "price_usd": 84.05,
+          "price_change_24h": 1.25,
+          "usd_value": 2223.5942059143
         }
       ],
       "asset_mint": "So11111111111111111111111111111111111111112",
       "asset_symbol": "SOL",
       "asset_name": "Solana",
       "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
-      "unit_price_usd": 84.5,
-      "price_change_24h": 0.67,
+      "unit_price_usd": 84.05,
+      "price_change_24h": 1.25,
       "rewards_usd": 0,
       "raw": {
         "mint": "So11111111111111111111111111111111111111112",
         "amount": "26.455612206",
-        "unit_price_usd": 84.5,
-        "price_change_24h": 0.67,
+        "unit_price_usd": 84.05,
+        "price_change_24h": 1.25,
         "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
         "display_name": "Solana",
         "display_symbol": "SOL",
@@ -732,9 +732,9 @@
             "name": "Solana",
             "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
             "decimals": 9,
-            "price_usd": 84.5,
-            "price_change_24h": 0.67,
-            "usd_value": 2235.499231407
+            "price_usd": 84.05,
+            "price_change_24h": 1.25,
+            "usd_value": 2223.5942059143
           }
         ],
         "rewards_usd": 0,
