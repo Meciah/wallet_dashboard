@@ -14,7 +14,7 @@
       "position_type": "wallet_balance",
       "position_key": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R:token:9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
       "usd_value": 5168.435158681392,
-      "updated_at": "2026-04-10T19:41:59.157Z",
+      "updated_at": "2026-04-10T20:33:48.561Z",
       "quantity": [
         {
           "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
@@ -73,33 +73,33 @@
       "protocol_category": "wallet",
       "position_type": "wallet_balance",
       "position_key": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R:native:So11111111111111111111111111111111111111112",
-      "usd_value": 2.0341186464,
-      "updated_at": "2026-04-10T19:41:59.030Z",
+      "usd_value": 2.06585003435,
+      "updated_at": "2026-04-10T20:33:48.515Z",
       "quantity": [
         {
           "mint": "So11111111111111111111111111111111111111112",
           "symbol": "SOL",
-          "amount": 0.023874632,
+          "amount": 0.024164815,
           "name": "Solana",
           "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
           "decimals": 9,
-          "price_usd": 85.2,
-          "price_change_24h": 1.72,
-          "usd_value": 2.0341186464
+          "price_usd": 85.49,
+          "price_change_24h": 1.18,
+          "usd_value": 2.06585003435
         }
       ],
       "asset_mint": "So11111111111111111111111111111111111111112",
       "asset_symbol": "SOL",
       "asset_name": "Solana",
       "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
-      "unit_price_usd": 85.2,
-      "price_change_24h": 1.72,
+      "unit_price_usd": 85.49,
+      "price_change_24h": 1.18,
       "rewards_usd": 0,
       "raw": {
         "mint": "So11111111111111111111111111111111111111112",
-        "amount": "0.023874632",
-        "unit_price_usd": 85.2,
-        "price_change_24h": 1.72,
+        "amount": "0.024164815",
+        "unit_price_usd": 85.49,
+        "price_change_24h": 1.18,
         "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
         "display_name": "Solana",
         "display_symbol": "SOL",
@@ -107,13 +107,13 @@
           {
             "mint": "So11111111111111111111111111111111111111112",
             "symbol": "SOL",
-            "amount": 0.023874632,
+            "amount": 0.024164815,
             "name": "Solana",
             "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
             "decimals": 9,
-            "price_usd": 85.2,
-            "price_change_24h": 1.72,
-            "usd_value": 2.0341186464
+            "price_usd": 85.49,
+            "price_change_24h": 1.18,
+            "usd_value": 2.06585003435
           }
         ],
         "rewards_usd": 0,
