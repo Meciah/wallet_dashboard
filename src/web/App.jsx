@@ -99,6 +99,23 @@ function pct(value) {
   return `${numeric >= 0 ? "+" : ""}${numeric.toFixed(2)}%`;
 }
 
+function shareOfTotal(part, total) {
+  const numericPart = Number(part ?? 0);
+  const numericTotal = Number(total ?? 0);
+  if (!numericTotal || !Number.isFinite(numericPart) || !Number.isFinite(numericTotal)) {
+    return 0;
+  }
+  return Math.max(0, (numericPart / numericTotal) * 100);
+}
+
+function pluralize(count, singular, plural = `${singular}s`) {
+  return Number(count) === 1 ? singular : plural;
+}
+
+function humanizeStatus(status) {
+  return status ? status.replace(/_/g, " ") : "awaiting export";
+}
+
 function parseRunErrors(notes) {
   if (!notes || !notes.includes("details=")) {
     return [];
@@ -279,6 +296,15 @@ function EmptyState({ title, detail }) {
 }
 
 function StatusPill({ generated, latestRun, watchingForRefresh }) {
+  if (!generated?.generated_at) {
+    return (
+      <div className="status-pill muted">
+        <span>Awaiting export</span>
+        {watchingForRefresh ? <strong>Watching for update...</strong> : null}
+      </div>
+    );
+  }
+
   const ageMinutes = minutesSince(generated?.generated_at);
   const stale = ageMinutes > 45;
   const partial = latestRun?.status === "partial_success";
@@ -329,6 +355,16 @@ function SummaryMetric({ label, value, note, tone = "default" }) {
   );
 }
 
+function OverviewStat({ label, value, note, tone = "default" }) {
+  return (
+    <div className={`overview-stat ${tone}`}>
+      <span>{label}</span>
+      <strong>{value}</strong>
+      <small>{note}</small>
+    </div>
+  );
+}
+
 function HistoryTooltip({ active, payload }) {
   if (!active || !payload?.length) {
     return null;
@@ -352,6 +388,8 @@ function HistoryPanel({ history, range, onRangeChange }) {
   const domain = historyDomain(data);
   const performance = historyPerformance(data);
   const performanceTone = performance.absolute >= 0 ? "positive" : "negative";
+  const rangeStart = data[0] ?? null;
+  const rangeEnd = data.at(-1) ?? null;
 
   return (
     <section className="hero-card chart-card">
@@ -380,52 +418,78 @@ function HistoryPanel({ history, range, onRangeChange }) {
         </div>
       </div>
       {data.length ? (
-        <ResponsiveContainer width="100%" height={280}>
-          <AreaChart data={data}>
-            <defs>
-              <linearGradient id="historyFill" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#35f2c2" stopOpacity={0.34} />
-                <stop offset="95%" stopColor="#35f2c2" stopOpacity={0.02} />
-              </linearGradient>
-            </defs>
-            <Tooltip
-              cursor={{ stroke: "rgba(127, 141, 167, 0.5)", strokeWidth: 1, strokeDasharray: "4 6" }}
-              content={<HistoryTooltip />}
-            />
-            <XAxis dataKey="label" tick={{ fill: "#6f7f9c", fontSize: 12 }} axisLine={false} tickLine={false} />
-            <YAxis
-              domain={domain}
-              tickCount={6}
-              tickFormatter={compactMoney}
-              tick={{ fill: "#6f7f9c", fontSize: 12 }}
-              axisLine={false}
-              tickLine={false}
-            />
-            <Area
-              type="monotone"
-              dataKey="total_usd"
-              stroke="#35f2c2"
-              strokeWidth={2.5}
-              fill="url(#historyFill)"
-              dot={sparseHistory ? { r: 5, fill: "#35f2c2", stroke: "#eefef8", strokeWidth: 2 } : false}
-              activeDot={{ r: 5, fill: "#35f2c2", stroke: "#eefef8", strokeWidth: 2 }}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
+        <>
+          <ResponsiveContainer width="100%" height={300}>
+            <AreaChart data={data}>
+              <defs>
+                <linearGradient id="historyFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor="#35f2c2" stopOpacity={0.34} />
+                  <stop offset="95%" stopColor="#35f2c2" stopOpacity={0.02} />
+                </linearGradient>
+              </defs>
+              <Tooltip
+                cursor={{ stroke: "rgba(127, 141, 167, 0.5)", strokeWidth: 1, strokeDasharray: "4 6" }}
+                content={<HistoryTooltip />}
+              />
+              <XAxis dataKey="label" tick={{ fill: "#6f7f9c", fontSize: 12 }} axisLine={false} tickLine={false} />
+              <YAxis
+                domain={domain}
+                tickCount={6}
+                tickFormatter={compactMoney}
+                tick={{ fill: "#6f7f9c", fontSize: 12 }}
+                axisLine={false}
+                tickLine={false}
+              />
+              <Area
+                type="monotone"
+                dataKey="total_usd"
+                stroke="#35f2c2"
+                strokeWidth={2.5}
+                fill="url(#historyFill)"
+                dot={sparseHistory ? { r: 5, fill: "#35f2c2", stroke: "#eefef8", strokeWidth: 2 } : false}
+                activeDot={{ r: 5, fill: "#35f2c2", stroke: "#eefef8", strokeWidth: 2 }}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+          <div className="history-foot">
+            <div className="history-stat">
+              <span>Range start</span>
+              <strong>{money(rangeStart?.total_usd)}</strong>
+            </div>
+            <div className="history-stat">
+              <span>Range end</span>
+              <strong>{money(rangeEnd?.total_usd)}</strong>
+            </div>
+            <div className="history-stat">
+              <span>Samples</span>
+              <strong>{number(data.length, 0)}</strong>
+            </div>
+          </div>
+        </>
       ) : (
         <EmptyState title="No history yet" detail="Run at least one export cycle to draw the portfolio curve." />
       )}
     </section>
   );
 }
-function ProtocolChip({ section, active, onSelect }) {
+function ProtocolChip({ section, active, onSelect, portfolioTotal }) {
+  const positionCount = section.count ?? section.positions?.length ?? 0;
+  const share = shareOfTotal(section.totalUsd, portfolioTotal);
+  const meterWidth = share > 0 ? Math.max(share, 10) : 0;
+
   return (
     <button type="button" className={active ? "protocol-chip is-active" : "protocol-chip"} onClick={onSelect}>
       <span className="protocol-mark">{section.label.slice(0, 1)}</span>
-      <span>
+      <span className="protocol-chip-copy">
         <strong>{section.label}</strong>
-        <small>{money(section.totalUsd)}</small>
+        <small>
+          {money(section.totalUsd)} | {positionCount} {pluralize(positionCount, "position")}
+        </small>
+        <span className="protocol-meter" aria-hidden="true">
+          <span style={{ width: `${meterWidth}%` }} />
+        </span>
       </span>
+      <span className="protocol-share">{share > 0 ? `${number(share, 0)}%` : "--"}</span>
     </button>
   );
 }
@@ -481,11 +545,13 @@ function PositionRow({ position }) {
       </div>
 
       <div className="position-col">
+        <span className="position-mobile-label">Balance</span>
         {singleAsset ? <strong>{number(primary?.amount)}</strong> : <strong>{number(primary?.amount)} / {number(secondary?.amount)}</strong>}
         <span>{singleAsset ? primary?.symbol : `${primary?.symbol} / ${secondary?.symbol}`}</span>
       </div>
 
       <div className="position-col price-col">
+        <span className="position-mobile-label">Price / 24h</span>
         <strong>{singleAsset ? money(position.unit_price_usd) : position.raw?.pool_type ?? "CLMM"}</strong>
         <span className={singleAsset ? (Number(change) >= 0 ? "positive" : "negative") : ""}>
           {singleAsset ? pct(change) : lpSecondaryText(position)}
@@ -493,28 +559,37 @@ function PositionRow({ position }) {
       </div>
 
       <div className="position-col value-col">
+        <span className="position-mobile-label">Value</span>
         <strong>{money(position.usd_value)}</strong>
         <span>{position.protocol_label}</span>
       </div>
     </div>
   );
 }
-function ProtocolSection({ section }) {
+function ProtocolSection({ section, portfolioTotal }) {
   if (!section.positions.length) {
     return null;
   }
+
+  const share = shareOfTotal(section.totalUsd, portfolioTotal);
 
   return (
     <section className="protocol-section">
       <div className="protocol-section-head">
         <div>
           <span className="protocol-badge">{section.label.slice(0, 1)}</span>
-          <div>
+          <div className="protocol-section-copy">
             <h3>{section.label}</h3>
-            <span>{section.positions.length} positions</span>
+            <div className="protocol-section-meta">
+              <span>{section.positions.length} {pluralize(section.positions.length, "position")}</span>
+              <span>{number(share, 1)}% of portfolio</span>
+            </div>
           </div>
         </div>
-        <strong>{money(section.totalUsd)}</strong>
+        <div className="protocol-section-total">
+          <strong>{money(section.totalUsd)}</strong>
+          <span>{number(share, 1)}% allocated</span>
+        </div>
       </div>
 
       <div className="position-table">
@@ -532,7 +607,7 @@ function ProtocolSection({ section }) {
   );
 }
 
-function SidePanel({ latestRun, walletAllocation, generated, prices }) {
+function SidePanel({ latestRun, walletAllocation, generated, prices, totalUsd }) {
   const errors = parseRunErrors(latestRun?.notes);
   const solPrice = prices.find((price) => price.mint === "So11111111111111111111111111111111111111112")?.price_usd ?? null;
 
@@ -547,12 +622,22 @@ function SidePanel({ latestRun, walletAllocation, generated, prices }) {
         </div>
         <div className="wallet-split-list">
           {walletAllocation.length ? (
-            walletAllocation.map((wallet) => (
-              <div key={wallet.wallet_scope} className="wallet-split-row">
-                <span>{wallet.wallet}</span>
-                <strong>{money(wallet.total_usd)}</strong>
-              </div>
-            ))
+            walletAllocation.map((wallet) => {
+              const walletShare = shareOfTotal(wallet.total_usd, totalUsd);
+
+              return (
+                <div key={wallet.wallet_scope} className="allocation-row">
+                  <div className="wallet-split-row">
+                    <span>{wallet.wallet}</span>
+                    <strong>{money(wallet.total_usd)}</strong>
+                  </div>
+                  <div className="allocation-bar" aria-hidden="true">
+                    <span style={{ width: `${walletShare > 0 ? Math.max(walletShare, 10) : 0}%` }} />
+                  </div>
+                  <small>{number(walletShare, 1)}% of current scope</small>
+                </div>
+              );
+            })
           ) : (
             <EmptyState title="No allocation yet" detail="Wallet totals appear after the first successful export." />
           )}
@@ -663,6 +748,8 @@ export function App() {
   const sections = groupProtocolSections(positions);
   const visibleSections = protocolFilter === "all" ? sections : sections.filter((section) => section.key === protocolFilter);
   const dailyDelta = trackedDailyDelta(positions);
+  const summaryTotal = Number(summary?.total_usd ?? 0);
+  const trackedCoverage = shareOfTotal(dailyDelta.coveredUsd, summaryTotal);
   const urmomQuantity = totalForMint(positions, "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump");
   const solTracked = totalForMint(positions, "So11111111111111111111111111111111111111112");
   const solTrackedUsd = totalValueForMint(positions, "So11111111111111111111111111111111111111112");
@@ -671,7 +758,7 @@ export function App() {
   const solPrice = prices.find((price) => price.mint === "So11111111111111111111111111111111111111112")?.price_usd ?? 0;
   const scopeTitle = scope === "combined" ? "All wallets" : wallets.find((wallet) => wallet.scope === scope)?.label ?? scope;
   const selectedWallet = wallets.find((wallet) => wallet.scope === scope) ?? null;
-  const protocolTabs = [{ key: "all", label: "All", totalUsd: summary?.total_usd ?? 0 }, ...sections];
+  const protocolTabs = [{ key: "all", label: "All", totalUsd: summaryTotal, count: positions.length }, ...sections];
 
   const handleScopeChange = (nextScope) => {
     startTransition(() => {
@@ -699,6 +786,7 @@ export function App() {
         <div>
           <span className="page-kicker">Portfolio</span>
           <h1>Wallet Dashboard</h1>
+          <p className="page-subtitle">Track wallet balances, staking exposure, LP positions, and export freshness in one view.</p>
         </div>
         <div className="topbar-actions">
           <StatusPill generated={generated} latestRun={latestRun} watchingForRefresh={watchingForRefresh} />
@@ -715,6 +803,31 @@ export function App() {
 
       {!isLoading && !error ? (
         <>
+          <section className="overview-strip">
+            <OverviewStat
+              label="Wallets tracked"
+              value={number(wallets.length, 0)}
+              note={scope === "combined" ? "Combined scope plus every configured wallet." : "Switch scopes from the wallet selector above."}
+            />
+            <OverviewStat
+              label="Protocols live"
+              value={number(sections.length, 0)}
+              note={`${positions.length} priced ${pluralize(positions.length, "position")} in ${scopeTitle}.`}
+            />
+            <OverviewStat
+              label="24h coverage"
+              value={`${number(trackedCoverage, 0)}%`}
+              note={`${money(dailyDelta.coveredUsd)} has usable 24h change data.`}
+              tone={trackedCoverage >= 80 ? "good" : trackedCoverage >= 40 ? "default" : "warning"}
+            />
+            <OverviewStat
+              label="Latest run"
+              value={latestRun ? humanizeStatus(latestRun.status) : "Awaiting export"}
+              note={latestRun ? `${latestRun.error_count} errors | ${formatTimestamp(latestRun.ended_at ?? latestRun.started_at)}` : "Waiting for the first completed publish."}
+              tone={latestRun?.status === "success" ? "good" : latestRun?.status === "partial_success" ? "warning" : "default"}
+            />
+          </section>
+
           <section className="hero-grid">
             <section className="hero-card summary-card">
               <div className="panel-head compact">
@@ -751,7 +864,7 @@ export function App() {
                     ),
                   )}
                 />
-                <SummaryMetric label="SOL holdings" value={`${number(solTracked, 2)} SOL`} note={money(solTrackedUsd)} />
+                <SummaryMetric label="SOL holdings" value={`${number(solTracked, 2)} SOL`} note={solPrice ? `${money(solTrackedUsd)} | ${money(solPrice)} spot` : money(solTrackedUsd)} />
                 <SummaryMetric label="Marinade" value={money(marinadeValue)} note="Native + liquid staking" tone="accent" />
                 <SummaryMetric label="Raydium" value={money(raydiumValue)} note="CLMM liquidity positions" tone="accent" />
               </div>
@@ -774,12 +887,13 @@ export function App() {
                     section={section}
                     active={protocolFilter === section.key}
                     onSelect={() => setProtocolFilter(section.key)}
+                    portfolioTotal={summaryTotal}
                   />
                 ))}
               </div>
 
               {visibleSections.length ? (
-                visibleSections.map((section) => <ProtocolSection key={section.key} section={section} />)
+                visibleSections.map((section) => <ProtocolSection key={section.key} section={section} portfolioTotal={summaryTotal} />)
               ) : (
                 <section className="protocol-section">
                   <EmptyState title="No priced positions" detail="The current export has positions, but they still need market prices to render here." />
@@ -787,7 +901,7 @@ export function App() {
               )}
             </main>
 
-            <SidePanel latestRun={latestRun} walletAllocation={walletAllocation} generated={generated} prices={prices} />
+            <SidePanel latestRun={latestRun} walletAllocation={walletAllocation} generated={generated} prices={prices} totalUsd={summaryTotal} />
           </section>
         </>
       ) : null}
