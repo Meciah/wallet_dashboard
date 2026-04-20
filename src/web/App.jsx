@@ -178,7 +178,12 @@ function filterHistory(history, range) {
     return sorted;
   }
 
-  const cutoff = Date.now() - days * 24 * 60 * 60 * 1000;
+  const latestSnapshotTs = new Date(sorted.at(-1)?.snapshot_ts ?? 0).getTime();
+  if (!Number.isFinite(latestSnapshotTs) || latestSnapshotTs <= 0) {
+    return sorted;
+  }
+
+  const cutoff = latestSnapshotTs - days * 24 * 60 * 60 * 1000;
   return sorted.filter((point) => new Date(point.snapshot_ts).getTime() >= cutoff);
 }
 

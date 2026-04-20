@@ -32,6 +32,7 @@ function jsonResponse(body) {
 
 describe("frontend dashboard", () => {
   it("loads portfolio data, switches scope, shows partial export health, and opens manual refresh", async () => {
+    const dateNowSpy = vi.spyOn(Date, "now").mockReturnValue(new Date("2026-04-19T12:00:00.000Z").getTime());
     const openSpy = vi.spyOn(window, "open").mockImplementation(() => null);
     const responses = {
       "/data/generated.json": {
@@ -411,5 +412,6 @@ describe("frontend dashboard", () => {
     });
 
     openSpy.mockRestore();
+    dateNowSpy.mockRestore();
   });
 });
