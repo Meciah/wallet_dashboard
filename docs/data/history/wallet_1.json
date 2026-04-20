@@ -3,6 +3,13 @@
   "count": 300,
   "history": [
     {
+      "snapshot_ts": "2026-04-20T23:08:27.147Z",
+      "scope": "wallet_1",
+      "total_usd": 4938.269429737586,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
       "snapshot_ts": "2026-04-20T22:07:46.361Z",
       "scope": "wallet_1",
       "total_usd": 4938.289164093746,
@@ -2092,13 +2099,6 @@
       "snapshot_ts": "2026-04-04T08:37:46.479Z",
       "scope": "wallet_1",
       "total_usd": 5060.966085441238,
-      "pnl_24h": null,
-      "pnl_7d": null
-    },
-    {
-      "snapshot_ts": "2026-04-04T06:57:57.950Z",
-      "scope": "wallet_1",
-      "total_usd": 4966.554684796542,
       "pnl_24h": null,
       "pnl_7d": null
     }
