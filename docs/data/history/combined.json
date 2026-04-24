@@ -3,6 +3,13 @@
   "count": 300,
   "history": [
     {
+      "snapshot_ts": "2026-04-24T05:20:56.639Z",
+      "scope": "combined",
+      "total_usd": 35124.91564798271,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
       "snapshot_ts": "2026-04-24T02:26:17.807Z",
       "scope": "combined",
       "total_usd": 35383.59679200528,
@@ -2092,13 +2099,6 @@
       "snapshot_ts": "2026-04-06T07:08:43.291Z",
       "scope": "combined",
       "total_usd": 33411.259671855485,
-      "pnl_24h": null,
-      "pnl_7d": null
-    },
-    {
-      "snapshot_ts": "2026-04-06T05:21:33.719Z",
-      "scope": "combined",
-      "total_usd": 33793.37372692944,
       "pnl_24h": null,
       "pnl_7d": null
     }
