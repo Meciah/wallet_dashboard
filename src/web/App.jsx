@@ -9,6 +9,7 @@ const HISTORY_RANGES = [
   ["1M", 30],
   ["ALL", Infinity],
 ];
+const SOL_MINT = "So11111111111111111111111111111111111111112";
 
 function fetchJson(path) {
   return fetch(path, { cache: "no-store" }).then(async (response) => {
@@ -287,6 +288,49 @@ function totalValueForMint(positions, mint) {
     return total + mintTotal;
   }, 0);
 }
+
+function priceForMint(prices, mint) {
+  return prices.find((price) => price.mint === mint) ?? null;
+}
+
+function trackedTokenMetrics(tokens, positions, prices) {
+  return tokens.map((token) => {
+    const symbol = token.symbol ?? token.name ?? token.mint.slice(0, 4);
+    const quantity = totalForMint(positions, token.mint);
+    const exposureUsd = totalValueForMint(positions, token.mint);
+    const heldDigits = quantity >= 100 ? 0 : quantity >= 1 ? 2 : 4;
+    const price = priceForMint(prices, token.mint)?.price_usd;
+
+    return {
+      mint: token.mint,
+      label: `${symbol} spot`,
+      value: price === null || price === undefined ? "--" : money(price),
+      note: `${number(quantity, heldDigits)} ${symbol} held | ${money(exposureUsd)} exposure`,
+      tone: exposureUsd > 0 ? "accent" : "default",
+    };
+  });
+}
+
+function trackedTokenRows(tokens, positions, prices) {
+  return tokens.map((token) => {
+    const symbol = token.symbol ?? token.name ?? token.mint.slice(0, 4);
+    const price = priceForMint(prices, token.mint);
+    const quantity = totalForMint(positions, token.mint);
+    const exposureUsd = totalValueForMint(positions, token.mint);
+
+    return {
+      mint: token.mint,
+      symbol,
+      name: token.name ?? symbol,
+      icon_url: token.icon_url ?? null,
+      price_usd: price?.price_usd ?? null,
+      asof_ts: price?.asof_ts ?? null,
+      quantity,
+      exposure_usd: exposureUsd,
+    };
+  });
+}
+
 function totalValueForProtocol(allocation, protocolKey) {
   return allocation.find((entry) => entry.protocol === protocolKey)?.total_usd ?? 0;
 }
@@ -612,9 +656,76 @@ function ProtocolSection({ section, portfolioTotal }) {
   );
 }
 
+function TrackedTokensSection({ tokens }) {
+  if (!tokens.length) {
+    return null;
+  }
+
+  return (
+    <section className="protocol-section tracked-tokens-section">
+      <div className="protocol-section-head">
+        <div>
+          <span className="protocol-badge">T</span>
+          <div className="protocol-section-copy">
+            <h3>Tracked Tokens</h3>
+            <div className="protocol-section-meta">
+              <span>{tokens.length} watched tokens</span>
+              <span>Spot prices stay visible even with zero wallet exposure</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="tracked-token-table">
+        <div className="tracked-token-header">
+          <span>Token</span>
+          <span>Spot</span>
+          <span>Held</span>
+          <span>Exposure</span>
+        </div>
+        {tokens.map((token) => (
+          <div key={token.mint} className="tracked-token-row">
+            <div className="asset-cell">
+              <div className="asset-icons">
+                {token.icon_url ? (
+                  <img src={token.icon_url} alt="" />
+                ) : (
+                  <span className="asset-fallback">{token.symbol.slice(0, 2).toUpperCase()}</span>
+                )}
+              </div>
+              <div>
+                <strong>{token.symbol}</strong>
+                <span>{token.name}</span>
+              </div>
+            </div>
+
+            <div className="position-col">
+              <span className="position-mobile-label">Spot</span>
+              <strong>{token.price_usd === null || token.price_usd === undefined ? "--" : money(token.price_usd)}</strong>
+              <span>{token.asof_ts ? `As of ${formatTimestamp(token.asof_ts)}` : "Awaiting quote"}</span>
+            </div>
+
+            <div className="position-col">
+              <span className="position-mobile-label">Held</span>
+              <strong>{number(token.quantity, token.quantity >= 100 ? 0 : token.quantity >= 1 ? 2 : 4)}</strong>
+              <span>{token.symbol}</span>
+            </div>
+
+            <div className="position-col value-col">
+              <span className="position-mobile-label">Exposure</span>
+              <strong>{money(token.exposure_usd)}</strong>
+              <span>{token.quantity > 0 ? "Wallet exposure" : "No current holdings"}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 function SidePanel({ latestRun, walletAllocation, generated, prices, totalUsd }) {
   const errors = parseRunErrors(latestRun?.notes);
-  const solPrice = prices.find((price) => price.mint === "So11111111111111111111111111111111111111112")?.price_usd ?? null;
+  const solPrice = priceForMint(prices, SOL_MINT)?.price_usd ?? null;
 
   return (
     <aside className="side-panel">
@@ -709,6 +820,7 @@ export function App() {
 
   const generated = generatedQuery.data;
   const wallets = generated?.wallets ?? [];
+  const trackedTokens = generated?.tracked_tokens ?? [];
   const summary = summaryQuery.data?.summary;
   const positions = positionsQuery.data?.positions ?? [];
   const protocolAllocation = protocolAllocationQuery.data?.allocation ?? [];
@@ -755,12 +867,13 @@ export function App() {
   const dailyDelta = trackedDailyDelta(positions);
   const summaryTotal = Number(summary?.total_usd ?? 0);
   const trackedCoverage = shareOfTotal(dailyDelta.coveredUsd, summaryTotal);
-  const urmomQuantity = totalForMint(positions, "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump");
-  const solTracked = totalForMint(positions, "So11111111111111111111111111111111111111112");
-  const solTrackedUsd = totalValueForMint(positions, "So11111111111111111111111111111111111111112");
+  const trackedTokenCards = trackedTokenMetrics(trackedTokens, positions, prices);
+  const watchedTokenRows = trackedTokenRows(trackedTokens, positions, prices);
+  const solTracked = totalForMint(positions, SOL_MINT);
+  const solTrackedUsd = totalValueForMint(positions, SOL_MINT);
   const marinadeValue = totalValueForProtocol(protocolAllocation, "marinade");
   const raydiumValue = totalValueForProtocol(protocolAllocation, "raydium");
-  const solPrice = prices.find((price) => price.mint === "So11111111111111111111111111111111111111112")?.price_usd ?? 0;
+  const solPrice = priceForMint(prices, SOL_MINT)?.price_usd ?? 0;
   const scopeTitle = scope === "combined" ? "All wallets" : wallets.find((wallet) => wallet.scope === scope)?.label ?? scope;
   const selectedWallet = wallets.find((wallet) => wallet.scope === scope) ?? null;
   const protocolTabs = [{ key: "all", label: "All", totalUsd: summaryTotal, count: positions.length }, ...sections];
@@ -855,20 +968,9 @@ export function App() {
               </div>
 
               <div className="summary-grid">
-                <SummaryMetric
-                  label="URMOM holdings"
-                  value={number(urmomQuantity, 0)}
-                  note={money(
-                    positions.reduce(
-                      (total, position) =>
-                        total +
-                        (position.quantity ?? [])
-                          .filter((asset) => asset.mint === "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump")
-                          .reduce((sum, asset) => sum + Number(asset.usd_value ?? 0), 0),
-                      0,
-                    ),
-                  )}
-                />
+                {trackedTokenCards.map((token) => (
+                  <SummaryMetric key={token.mint} label={token.label} value={token.value} note={token.note} tone={token.tone} />
+                ))}
                 <SummaryMetric label="SOL holdings" value={`${number(solTracked, 2)} SOL`} note={solPrice ? `${money(solTrackedUsd)} | ${money(solPrice)} spot` : money(solTrackedUsd)} />
                 <SummaryMetric label="Marinade" value={money(marinadeValue)} note="Native + liquid staking" tone="accent" />
                 <SummaryMetric label="Raydium" value={money(raydiumValue)} note="CLMM liquidity positions" tone="accent" />
@@ -885,6 +987,8 @@ export function App() {
 
           <section className="content-layout">
             <main>
+              <TrackedTokensSection tokens={watchedTokenRows} />
+
               <div className="protocol-chip-row">
                 {protocolTabs.map((section) => (
                   <ProtocolChip

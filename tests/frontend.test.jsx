@@ -65,6 +65,22 @@ describe("frontend dashboard", () => {
             accent: "#b892ff",
           },
         ],
+        tracked_tokens: [
+          {
+            mint: "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+            symbol: "PUMP",
+            name: "Pump",
+            decimals: 6,
+            icon_url: "https://coin-images.coingecko.com/coins/images/67164/large/pump.jpg",
+          },
+          {
+            mint: "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
+            symbol: "URMOM",
+            name: "URMOM",
+            decimals: 6,
+            icon_url: "https://img-v1.raydium.io/icon/9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump.png",
+          },
+        ],
       },
       "/data/summary/combined.json": {
         scope: "combined",
@@ -348,8 +364,9 @@ describe("frontend dashboard", () => {
         ],
       },
       "/data/prices.json": {
-        count: 2,
+        count: 3,
         prices: [
+          { mint: "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn", symbol: "PUMP", name: "Pump", icon_url: "https://coin-images.coingecko.com/coins/images/67164/large/pump.jpg", asof_ts: "2026-04-02T18:46:10.302Z", price_usd: 0.00184, source: "provider_chain", confidence: null },
           { mint: "So11111111111111111111111111111111111111112", symbol: "SOL", name: "Solana", icon_url: null, asof_ts: "2026-04-02T18:46:10.302Z", price_usd: 78.586, source: "provider_chain", confidence: null },
           { mint: "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump", symbol: "URMOM", name: "URMOM", icon_url: null, asof_ts: "2026-04-02T18:46:10.302Z", price_usd: 0.00016554, source: "provider_chain", confidence: null },
         ],
@@ -383,7 +400,10 @@ describe("frontend dashboard", () => {
 
     await screen.findByText("Wallet Dashboard");
     await screen.findByText("Net worth");
-    await screen.findByText("URMOM holdings");
+    await screen.findByText("Tracked Tokens");
+    await screen.findByText("PUMP spot");
+    await screen.findByText("URMOM spot");
+    await screen.findByText("Spot prices stay visible even with zero wallet exposure");
     await screen.findByText("+13.19%");
     expect(screen.getByText("+$474.80 over 1M")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "1D" })).toBeInTheDocument();

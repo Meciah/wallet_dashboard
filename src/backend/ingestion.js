@@ -1,4 +1,4 @@
-import { SCOPES, TRACKED_WALLETS, defaultRpcUrl } from "./config.js";
+import { SCOPES, TRACKED_TOKENS, TRACKED_WALLETS, defaultRpcUrl } from "./config.js";
 import {
   finishIngestionRun,
   insertPositionSnapshot,
@@ -17,6 +17,24 @@ import {
   StaticPriceProvider,
 } from "./providers.js";
 import { utcNowIso } from "./utils.js";
+
+export async function syncTrackedTokenPrices(db, priceProvider) {
+  const errorMessages = [];
+
+  for (const token of TRACKED_TOKENS) {
+    try {
+      const quote = await priceProvider.getQuote(token.mint);
+      const price = quote?.priceUsd ?? null;
+      if (price !== null) {
+        upsertPrice(db, token.mint, Number(price), "provider_chain", null);
+      }
+    } catch (error) {
+      errorMessages.push(`tracked_token=${token.symbol} error=${error.message}`);
+    }
+  }
+
+  return errorMessages;
+}
 
 export async function runIngestion(db, options = {}) {
   const rpcUrl = options.rpcUrl ?? defaultRpcUrl();
@@ -39,8 +57,8 @@ export async function runIngestion(db, options = {}) {
   let errors = 0;
   let positionsWritten = 0;
 
-  for (const wallet of TRACKED_WALLETS) {
-    for (const adapter of adapters) {
+  for (const adapter of adapters) {
+    for (const wallet of TRACKED_WALLETS) {
       try {
         const positions = await adapter.collectPositions(wallet.address);
         for (const position of positions) {
@@ -62,6 +80,10 @@ export async function runIngestion(db, options = {}) {
       }
     }
   }
+
+  const trackedTokenErrors = await syncTrackedTokenPrices(db, priceProvider);
+  errors += trackedTokenErrors.length;
+  errorMessages.push(...trackedTokenErrors);
 
   for (const scope of SCOPES) {
     const summary = summarizeScope(db, scope);

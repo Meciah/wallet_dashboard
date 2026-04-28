@@ -1,13 +1,53 @@
 {
-  "count": 1,
+  "count": 6,
   "runs": [
     {
+      "id": 6,
+      "started_at": "2026-04-28T22:27:35.959Z",
+      "ended_at": "2026-04-28T22:30:13.413Z",
+      "status": "partial_success",
+      "error_count": 6,
+      "notes": "positions_written=9; errors=6; details=wallet=wallet_2 adapter=marinade error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=marinade_native error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_1 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"88148815-6cba-41db-80d4-fe4048180a76\" } \r\n | wallet=wallet_2 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"6c6540a4-a4c7-43e5-a204-44fe8a46084e\" } \r\n | wallet=wallet_3 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"1e1b009e-549a-4903-b3c9-c043934dc1a0\" } \r\n | wallet=wallet_2 adapter=lp_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n"
+    },
+    {
+      "id": 5,
+      "started_at": "2026-04-28T22:22:12.584Z",
+      "ended_at": "2026-04-28T22:24:07.351Z",
+      "status": "partial_success",
+      "error_count": 8,
+      "notes": "positions_written=6; errors=8; details=wallet=wallet_2 adapter=marinade error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=marinade error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=marinade_native error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_1 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"38acda91-fd2a-4acb-ba4f-2ee9a574468c\" } \r\n | wallet=wallet_2 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"3da66b81-735d-4a39-b57b-d0c2b0a629c0\" } \r\n | wallet=wallet_3 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"bd48e00f-a114-4ce3-812f-dd636f868d53\" } \r\n | wallet=wallet_2 adapter=lp_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=lp_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n"
+    },
+    {
+      "id": 4,
+      "started_at": "2026-04-28T22:19:47.635Z",
+      "ended_at": "2026-04-28T22:21:39.425Z",
+      "status": "partial_success",
+      "error_count": 7,
+      "notes": "positions_written=6; errors=7; details=wallet=wallet_1 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"e344e1a8-ccc1-45f9-9689-8086ffe65ff0\" } \r\n | wallet=wallet_2 adapter=marinade error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_2 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"b19824d9-289b-4647-8b6e-45091a97e857\" } \r\n | wallet=wallet_2 adapter=lp_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=marinade error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"f077426c-cecb-4090-8c1d-4a74209850dd\" } \r\n | wallet=wallet_3 adapter=lp_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n"
+    },
+    {
+      "id": 3,
+      "started_at": "2026-04-28T22:16:34.123Z",
+      "ended_at": "2026-04-28T22:18:19.546Z",
+      "status": "partial_success",
+      "error_count": 7,
+      "notes": "positions_written=6; errors=7; details=wallet=wallet_1 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"657ee9ad-f5f5-4375-9189-fc7475e226fb\" } \r\n | wallet=wallet_2 adapter=marinade error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_2 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"ee663bd8-6e0a-4862-9033-3fe44a7628ba\" } \r\n | wallet=wallet_2 adapter=lp_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=marinade error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"e3812a5c-0d53-4e58-80bb-bc3da234aa1d\" } \r\n | wallet=wallet_3 adapter=lp_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n"
+    },
+    {
+      "id": 2,
+      "started_at": "2026-04-28T22:12:24.367Z",
+      "ended_at": "2026-04-28T22:14:02.303Z",
+      "status": "partial_success",
+      "error_count": 9,
+      "notes": "positions_written=4; errors=9; details=wallet=wallet_1 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"4759cfbb-1338-413b-8012-4617c1ea2b5b\" } \r\n | wallet=wallet_2 adapter=wallet_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_2 adapter=marinade error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_2 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"49d9ffab-eb87-4f61-b4f3-eb51d9ebf3bc\" } \r\n | wallet=wallet_2 adapter=lp_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=wallet_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=marinade error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"79635ce8-ff19-42f7-abbe-ee6ffa106e29\" } \r\n | wallet=wallet_3 adapter=lp_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n"
+    },
+    {
       "id": 1,
-      "started_at": "2026-04-28T22:55:32.130Z",
-      "ended_at": "2026-04-28T22:55:37.300Z",
-      "status": "success",
-      "error_count": 0,
-      "notes": "positions_written=9; errors=0; details="
+      "started_at": "2026-04-28T21:48:56.339Z",
+      "ended_at": "2026-04-28T21:50:34.294Z",
+      "status": "partial_success",
+      "error_count": 9,
+      "notes": "positions_written=3; errors=9; details=wallet=wallet_1 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"86028f44-4200-43eb-8dac-68148960af3a\" } \r\n | wallet=wallet_2 adapter=wallet_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_2 adapter=marinade error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_2 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"bb018a50-7020-4c7c-aef4-15bdbac1aa39\" } \r\n | wallet=wallet_2 adapter=lp_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=wallet_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=marinade error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"e0c0603d-035f-4fa8-ac41-373d8074b47d\" } \r\n | wallet=wallet_3 adapter=lp_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n"
     }
   ]
 }

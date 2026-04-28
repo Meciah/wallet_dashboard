@@ -7,6 +7,7 @@ import {
   MSOL_MINT,
   RAYDIUM_LP_MINTS,
   SOL_MINT,
+  TRACKED_TOKENS,
   tokenMetadataForMint,
 } from "./config.js";
 import { utcNowIso, withRetry } from "./utils.js";
@@ -23,6 +24,21 @@ function decimalAmount(value, decimals = 0) {
 
   const numeric = safeNumber(typeof value?.toString === "function" ? value.toString() : value, 0);
   return numeric / 10 ** Number(decimals ?? 0);
+}
+
+function mergeTokenBalanceSets(...balanceSets) {
+  const byMint = new Map();
+
+  for (const balances of balanceSets) {
+    for (const balance of balances ?? []) {
+      byMint.set(balance.mint, {
+        ...(byMint.get(balance.mint) ?? {}),
+        ...balance,
+      });
+    }
+  }
+
+  return [...byMint.values()];
 }
 
 function quantityComponent({ mint, symbol, amount, name, iconUrl, decimals, priceUsd, priceChange24h, usdValue }) {
@@ -123,6 +139,7 @@ export class WalletTokenAdapter {
 
   async collectPositions(walletAddress) {
     const positions = [];
+    const trackedMints = TRACKED_TOKENS.map((token) => token.mint);
 
     const solQuote = (await this.priceProvider.getQuote(SOL_MINT)) ?? {};
     const solAmount = await this.chainProvider.getSolBalance(walletAddress);
@@ -158,7 +175,36 @@ export class WalletTokenAdapter {
       }),
     );
 
-    const tokenBalances = await this.chainProvider.getTokenBalances(walletAddress);
+    let tokenBalances = [];
+    try {
+      tokenBalances = mergeTokenBalanceSets(
+        tokenBalances,
+        (await this.chainProvider.getTrackedTokenBalances?.(walletAddress, trackedMints)) ?? [],
+      );
+    } catch {
+      tokenBalances = [];
+    }
+
+    try {
+      tokenBalances = mergeTokenBalanceSets(tokenBalances, await this.chainProvider.getTokenBalances(walletAddress));
+    } catch {
+      // Keep any tracked-token balances we already captured if the broad scan is rate-limited.
+    }
+
+    const missingTrackedMints = trackedMints.filter(
+      (mint) => !tokenBalances.some((token) => token.mint === mint),
+    );
+    if (missingTrackedMints.length > 0) {
+      try {
+        tokenBalances = mergeTokenBalanceSets(
+          tokenBalances,
+          (await this.chainProvider.getTrackedTokenBalances?.(walletAddress, missingTrackedMints)) ?? [],
+        );
+      } catch {
+        // Keep the partial wallet scan if mint-specific backfill is also rate-limited.
+      }
+    }
+
     for (const token of tokenBalances) {
       const quote = await this.priceProvider.getQuote(token.mint);
       if (this.shouldSkipToken(token, quote)) {

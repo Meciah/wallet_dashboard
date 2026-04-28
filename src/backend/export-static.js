@@ -1,7 +1,14 @@
 import { execFileSync } from "node:child_process";
 import { join, resolve } from "node:path";
 
-import { DEFAULT_GITHUB_REPOSITORY, DEFAULT_STATIC_OUT_DIR, DEFAULT_WORKFLOW_URL, SCOPES, TRACKED_WALLETS } from "./config.js";
+import {
+  DEFAULT_GITHUB_REPOSITORY,
+  DEFAULT_STATIC_OUT_DIR,
+  DEFAULT_WORKFLOW_URL,
+  SCOPES,
+  TRACKED_TOKENS,
+  TRACKED_WALLETS,
+} from "./config.js";
 import {
   getLatestIngestionRun,
   listAllocation,
@@ -46,6 +53,7 @@ function createGeneratedMetadata(db, generatedAt) {
     latest_run_started_at: latestRun?.started_at ?? null,
     latest_run_ended_at: latestRun?.ended_at ?? null,
     wallets: TRACKED_WALLETS,
+    tracked_tokens: TRACKED_TOKENS,
   };
 }
 

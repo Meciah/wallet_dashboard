@@ -1,7 +1,7 @@
 {
   "scope": "wallet_2",
   "by": "protocol",
-  "count": 3,
+  "count": 2,
   "allocation": [
     {
       "protocol": "marinade",
@@ -9,7 +9,7 @@
       "protocols": [
         "marinade_native"
       ],
-      "total_usd": 16840.867917335523
+      "total_usd": 16848.91804540308
     },
     {
       "protocol": "holdings",
@@ -17,15 +17,7 @@
       "protocols": [
         "wallet_tokens"
       ],
-      "total_usd": 5599.135204980571
-    },
-    {
-      "protocol": "raydium",
-      "protocol_label": "Raydium",
-      "protocols": [
-        "raydium"
-      ],
-      "total_usd": 4739.496041154165
+      "total_usd": 5600.160293581251
     }
   ]
 }

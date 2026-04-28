@@ -5,6 +5,7 @@ export const DEFAULT_WORKFLOW_URL = `https://github.com/${DEFAULT_GITHUB_REPOSIT
 
 export const SOL_MINT = "So11111111111111111111111111111111111111112";
 export const MSOL_MINT = "mSoLzYCxHdYgdzUevW6Y8k9sW5M2YfLQ7fPjYq4Jp7";
+export const PUMP_MINT = "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn";
 export const URMOM_MINT = "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump";
 
 export const TRACKED_WALLETS = [
@@ -49,6 +50,12 @@ export const TOKEN_METADATA_OVERRIDES = {
     decimals: 9,
     icon_url: "https://storage.googleapis.com/marinade-static-assets/msol-token.png",
   },
+  [PUMP_MINT]: {
+    symbol: "PUMP",
+    name: "Pump",
+    decimals: 6,
+    icon_url: "https://coin-images.coingecko.com/coins/images/67164/large/pump.jpg",
+  },
   [URMOM_MINT]: {
     symbol: "URMOM",
     name: "URMOM",
@@ -56,6 +63,13 @@ export const TOKEN_METADATA_OVERRIDES = {
     icon_url: "https://img-v1.raydium.io/icon/9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump.png",
   },
 };
+
+export const TRACKED_TOKENS = [PUMP_MINT, URMOM_MINT]
+  .map((mint) => {
+    const metadata = TOKEN_METADATA_OVERRIDES[mint];
+    return metadata ? { mint, ...metadata } : null;
+  })
+  .filter(Boolean);
 
 export const STATIC_PRICE_OVERRIDES = {
   [SOL_MINT]: 78.65,
@@ -70,6 +84,7 @@ export const MARINADE_NATIVE_STAKER_AUTHORITY = "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnp
 export const COINGECKO_IDS_BY_MINT = {
   [SOL_MINT]: "solana",
   [MSOL_MINT]: "marinade-staked-sol",
+  [PUMP_MINT]: "pump-fun",
 };
 
 export function defaultRpcUrl() {

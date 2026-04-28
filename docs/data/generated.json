@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-04-28T22:55:37.753Z",
-  "last_successful_export_at": "2026-04-28T22:55:37.753Z",
-  "commit_sha": "a6ba95fb4a2a0ef6dcd81494c19ac675265ef279",
+  "generated_at": "2026-04-28T23:16:08.798Z",
+  "last_successful_export_at": "2026-04-28T23:16:08.798Z",
+  "commit_sha": null,
   "repository": "Meciah/wallet_dashboard",
-  "workflow_url": "https://github.com/Meciah/wallet_dashboard/actions/runs/25081873760",
+  "workflow_url": "https://github.com/Meciah/wallet_dashboard/actions/workflows/update-data.yml",
   "manual_refresh_url": "https://github.com/Meciah/wallet_dashboard/actions/workflows/update-data.yml",
-  "latest_run_status": "success",
-  "latest_run_started_at": "2026-04-28T22:55:32.130Z",
-  "latest_run_ended_at": "2026-04-28T22:55:37.300Z",
+  "latest_run_status": "partial_success",
+  "latest_run_started_at": "2026-04-28T22:27:35.959Z",
+  "latest_run_ended_at": "2026-04-28T22:30:13.413Z",
   "wallets": [
     {
       "scope": "wallet_1",
@@ -26,6 +26,22 @@
       "label": "CRsH...9zcf",
       "address": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf",
       "accent": "#b892ff"
+    }
+  ],
+  "tracked_tokens": [
+    {
+      "mint": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+      "symbol": "PUMP",
+      "name": "Pump",
+      "decimals": 6,
+      "icon_url": "https://coin-images.coingecko.com/coins/images/67164/large/pump.jpg"
+    },
+    {
+      "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
+      "symbol": "URMOM",
+      "name": "URMOM",
+      "decimals": 6,
+      "icon_url": "https://img-v1.raydium.io/icon/9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump.png"
     }
   ]
 }

@@ -9,7 +9,7 @@ import {
   RaydiumLpAdapter,
   WalletTokenAdapter,
 } from "../src/backend/adapters.js";
-import { MSOL_MINT, SOL_MINT, URMOM_MINT } from "../src/backend/config.js";
+import { MSOL_MINT, PUMP_MINT, SOL_MINT, URMOM_MINT } from "../src/backend/config.js";
 import { FallbackPriceProvider, SolanaRpcProvider, StaticPriceProvider } from "../src/backend/providers.js";
 
 class FakeChainProvider {
@@ -49,6 +49,7 @@ class FakePriceProvider {
     return {
       [SOL_MINT]: { mint, priceUsd: 100, symbol: "SOL", name: "Solana", priceChange24h: -4.2 },
       [MSOL_MINT]: { mint, priceUsd: 120, symbol: "mSOL", name: "Marinade Staked SOL", priceChange24h: -3.8 },
+      [PUMP_MINT]: { mint, priceUsd: 0.00184, symbol: "PUMP", name: "Pump", priceChange24h: 4.2 },
       [URMOM_MINT]: { mint, priceUsd: 0.000165, symbol: "URMOM", name: "URMOM", priceChange24h: -0.61 },
       RewardMint123: { mint, priceUsd: 2, symbol: "RWD", name: "Reward Token", priceChange24h: 4.2 },
       TokenMint123: { mint, priceUsd: 2, symbol: "TKX", name: "Token X", priceChange24h: 1.5 },
@@ -84,6 +85,169 @@ describe("providers and adapters", () => {
     const provider = new SolanaRpcProvider("https://rpc.example", { fetchImpl: fetchMock });
     await expect(provider.getSolBalance("3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R")).resolves.toBe(1);
     expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("reads balances from both SPL Token and Token-2022 programs", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            result: {
+              value: [
+                {
+                  pubkey: "legacy-token-account",
+                  account: {
+                    data: {
+                      parsed: {
+                        info: {
+                          mint: URMOM_MINT,
+                          state: "initialized",
+                          tokenAmount: { uiAmountString: "12.5", decimals: 6 },
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          }),
+          { status: 200, headers: { "content-type": "application/json" } },
+        ),
+      )
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            result: {
+              value: [
+                {
+                  pubkey: "token-2022-account",
+                  account: {
+                    data: {
+                      parsed: {
+                        info: {
+                          mint: PUMP_MINT,
+                          state: "initialized",
+                          tokenAmount: { uiAmountString: "270407.354066", decimals: 6 },
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          }),
+          { status: 200, headers: { "content-type": "application/json" } },
+        ),
+      );
+
+    const provider = new SolanaRpcProvider("https://rpc.example", { fetchImpl: fetchMock });
+    const balances = await provider.getTokenBalances("3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R");
+
+    expect(balances).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ mint: URMOM_MINT, amount: 12.5 }),
+        expect.objectContaining({ mint: PUMP_MINT, amount: 270407.354066, symbol: "PUMP" }),
+      ]),
+    );
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+  });
+
+  it("keeps Token-2022 balances when the legacy token scan is rate-limited", async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(new Response("Too Many Requests", { status: 429 }))
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            result: {
+              value: [
+                {
+                  pubkey: "token-2022-account",
+                  account: {
+                    data: {
+                      parsed: {
+                        info: {
+                          mint: PUMP_MINT,
+                          state: "initialized",
+                          tokenAmount: { uiAmountString: "602011.912025", decimals: 6 },
+                        },
+                      },
+                    },
+                  },
+                },
+              ],
+            },
+          }),
+          { status: 200, headers: { "content-type": "application/json" } },
+        ),
+      );
+
+    const provider = new SolanaRpcProvider("https://rpc.example", { fetchImpl: fetchMock });
+    const balances = await provider.getTokenBalances("CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf");
+
+    expect(balances).toEqual([expect.objectContaining({ mint: PUMP_MINT, amount: 602011.912025 })]);
+  });
+
+  it("falls back to tracked-token lookups when the full token scan fails", async () => {
+    const chainProvider = {
+      async getSolBalance() {
+        return 1.5;
+      },
+      async getTokenBalances() {
+        throw new Error("rate limited");
+      },
+      async getTrackedTokenBalances() {
+        return [{ mint: PUMP_MINT, amount: 270407.354066, decimals: 6, symbol: "PUMP", name: "Pump" }];
+      },
+    };
+
+    const walletPositions = await new WalletTokenAdapter(chainProvider, new FakePriceProvider()).collectPositions("wallet");
+
+    expect(walletPositions.find((position) => position.raw.display_symbol === "PUMP")?.usd_value).toBeCloseTo(497.5495, 4);
+    expect(walletPositions).toHaveLength(2);
+  });
+
+  it("keeps prefetched tracked tokens when the broader token scan is rate-limited", async () => {
+    const callOrder = [];
+    const chainProvider = {
+      async getSolBalance() {
+        return 1.5;
+      },
+      async getTrackedTokenBalances() {
+        callOrder.push("tracked");
+        return [{ mint: PUMP_MINT, amount: 602011.912025, decimals: 6, symbol: "PUMP", name: "Pump" }];
+      },
+      async getTokenBalances() {
+        callOrder.push("scan");
+        throw new Error("rate limited");
+      },
+    };
+
+    const walletPositions = await new WalletTokenAdapter(chainProvider, new FakePriceProvider()).collectPositions("wallet");
+
+    expect(callOrder.slice(0, 2)).toEqual(["tracked", "scan"]);
+    expect(walletPositions.find((position) => position.raw.display_symbol === "PUMP")?.usd_value).toBeCloseTo(1107.7019, 4);
+  });
+
+  it("backfills tracked tokens that are missing from a partial wallet scan", async () => {
+    const chainProvider = {
+      async getSolBalance() {
+        return 1.5;
+      },
+      async getTokenBalances() {
+        return [{ mint: URMOM_MINT, amount: 12.5, decimals: 6, symbol: "URMOM", name: "URMOM" }];
+      },
+      async getTrackedTokenBalances(_walletAddress, mints) {
+        expect(mints).toContain(PUMP_MINT);
+        return [{ mint: PUMP_MINT, amount: 602011.912025, decimals: 6, symbol: "PUMP", name: "Pump" }];
+      },
+    };
+
+    const walletPositions = await new WalletTokenAdapter(chainProvider, new FakePriceProvider()).collectPositions("wallet");
+
+    expect(walletPositions.find((position) => position.raw.display_symbol === "PUMP")?.usd_value).toBeCloseTo(1107.7019, 4);
+    expect(walletPositions.find((position) => position.raw.display_symbol === "URMOM")?.usd_value).toBeCloseTo(0.0020625, 7);
   });
 
   it("returns expected positions for wallet, marinade, native stake, raydium, and lp adapters", async () => {

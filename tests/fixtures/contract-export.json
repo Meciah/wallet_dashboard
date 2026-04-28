@@ -28,6 +28,22 @@
         "address": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf",
         "accent": "#b892ff"
       }
+    ],
+    "tracked_tokens": [
+      {
+        "mint": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+        "symbol": "PUMP",
+        "name": "Pump",
+        "decimals": 6,
+        "icon_url": "https://coin-images.coingecko.com/coins/images/67164/large/pump.jpg"
+      },
+      {
+        "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
+        "symbol": "URMOM",
+        "name": "URMOM",
+        "decimals": 6,
+        "icon_url": "https://img-v1.raydium.io/icon/9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump.png"
+      }
     ]
   },
   "summary": {

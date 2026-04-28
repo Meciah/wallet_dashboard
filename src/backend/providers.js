@@ -4,6 +4,7 @@ import { COINGECKO_IDS_BY_MINT, STATIC_PRICE_OVERRIDES, tokenMetadataForMint } f
 import { withRetry } from "./utils.js";
 
 const TOKEN_PROGRAM_ID = "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA";
+const TOKEN_2022_PROGRAM_ID = "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb";
 const STAKE_PROGRAM_ID = "Stake11111111111111111111111111111111111111";
 const LAMPORTS_PER_SOL = 1_000_000_000;
 
@@ -20,6 +21,61 @@ function httpError(status, bodyText) {
 function normalizeSymbol(symbol, fallback) {
   const value = String(symbol ?? fallback ?? "").trim();
   return value || fallback || null;
+}
+
+function parseTokenAccountBalances(result) {
+  const balances = [];
+  for (const account of result?.value ?? []) {
+    const parsed = account?.account?.data?.parsed ?? {};
+    const info = parsed.info ?? {};
+    const tokenAmount = info.tokenAmount ?? {};
+    const amountText = tokenAmount.uiAmountString ?? tokenAmount.uiAmount;
+    const mint = info.mint;
+    if (amountText === undefined || mint === undefined) {
+      continue;
+    }
+
+    const amount = Number(amountText);
+    if (!Number.isFinite(amount) || amount === 0) {
+      continue;
+    }
+
+    const metadata = tokenMetadataForMint(mint);
+    balances.push({
+      mint,
+      amount,
+      decimals: Number(tokenAmount.decimals ?? metadata?.decimals ?? 0),
+      symbol: metadata?.symbol ?? null,
+      name: metadata?.name ?? null,
+      icon_url: metadata?.icon_url ?? null,
+      state: info.state ?? null,
+      token_account: account.pubkey,
+    });
+  }
+
+  return balances;
+}
+
+function mergeTokenBalancesByMint(balances) {
+  const byMint = new Map();
+
+  for (const balance of balances) {
+    const existing = byMint.get(balance.mint);
+    if (!existing) {
+      byMint.set(balance.mint, { ...balance });
+      continue;
+    }
+
+    existing.amount += Number(balance.amount ?? 0);
+    existing.decimals = existing.decimals ?? balance.decimals ?? null;
+    existing.symbol = existing.symbol ?? balance.symbol ?? null;
+    existing.name = existing.name ?? balance.name ?? null;
+    existing.icon_url = existing.icon_url ?? balance.icon_url ?? null;
+    existing.state = existing.state ?? balance.state ?? null;
+    existing.token_account = existing.token_account ?? balance.token_account ?? null;
+  }
+
+  return [...byMint.values()];
 }
 
 function mergeQuote(baseQuote, nextQuote) {
@@ -66,7 +122,7 @@ export class SolanaRpcProvider {
     return promise;
   }
 
-  async rpc(method, params) {
+  async rpc(method, params, retryOptions = {}) {
     const payload = { jsonrpc: "2.0", id: 1, method, params };
 
     return withRetry(async () => {
@@ -88,7 +144,7 @@ export class SolanaRpcProvider {
       }
 
       return body.result;
-    });
+    }, retryOptions);
   }
 
   async getSolBalance(walletAddress) {
@@ -102,43 +158,48 @@ export class SolanaRpcProvider {
   async getTokenBalances(walletAddress) {
     return this.cached(`tokens:${walletAddress}`, async () => {
       const address = normalizeAddress(walletAddress);
-      const result = await this.rpc("getTokenAccountsByOwner", [
-        address,
-        { programId: TOKEN_PROGRAM_ID },
-        { encoding: "jsonParsed", commitment: "confirmed" },
-      ]);
+      const requests = [TOKEN_PROGRAM_ID, TOKEN_2022_PROGRAM_ID].map((programId) =>
+        this.rpc("getTokenAccountsByOwner", [address, { programId }, { encoding: "jsonParsed", commitment: "confirmed" }]),
+      );
+      const settled = await Promise.allSettled(requests);
+      const results = settled.filter((result) => result.status === "fulfilled").map((result) => result.value);
 
-      const balances = [];
-      for (const account of result?.value ?? []) {
-        const parsed = account?.account?.data?.parsed ?? {};
-        const info = parsed.info ?? {};
-        const tokenAmount = info.tokenAmount ?? {};
-        const amountText = tokenAmount.uiAmountString ?? tokenAmount.uiAmount;
-        const mint = info.mint;
-        if (amountText === undefined || mint === undefined) {
-          continue;
-        }
-
-        const amount = Number(amountText);
-        if (!Number.isFinite(amount) || amount === 0) {
-          continue;
-        }
-
-        const metadata = tokenMetadataForMint(mint);
-        balances.push({
-          mint,
-          amount,
-          decimals: Number(tokenAmount.decimals ?? metadata?.decimals ?? 0),
-          symbol: metadata?.symbol ?? null,
-          name: metadata?.name ?? null,
-          icon_url: metadata?.icon_url ?? null,
-          state: info.state ?? null,
-          token_account: account.pubkey,
-        });
+      if (results.length === 0) {
+        throw settled[0]?.reason ?? new Error("Failed to load token balances");
       }
 
-      return balances;
+      return mergeTokenBalancesByMint(results.flatMap((result) => parseTokenAccountBalances(result)));
     });
+  }
+
+  async getTokenBalanceForMint(walletAddress, mint) {
+    return this.cached(`token:${walletAddress}:${mint}`, async () => {
+      const address = normalizeAddress(walletAddress);
+      const result = await this.rpc(
+        "getTokenAccountsByOwner",
+        [address, { mint: normalizeAddress(mint) }, { encoding: "jsonParsed", commitment: "confirmed" }],
+        { attempts: 6, baseDelayMs: 800, maxDelayMs: 8000 },
+      );
+
+      return mergeTokenBalancesByMint(parseTokenAccountBalances(result))[0] ?? null;
+    });
+  }
+
+  async getTrackedTokenBalances(walletAddress, mints) {
+    const balances = [];
+
+    for (const mint of mints) {
+      try {
+        const balance = await this.getTokenBalanceForMint(walletAddress, mint);
+        if (balance) {
+          balances.push(balance);
+        }
+      } catch {
+        continue;
+      }
+    }
+
+    return balances;
   }
 
   async getParsedMultipleAccounts(addresses) {
