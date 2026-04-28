@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-04-28T23:16:08.798Z",
-  "last_successful_export_at": "2026-04-28T23:16:08.798Z",
-  "commit_sha": null,
+  "generated_at": "2026-04-28T23:54:05.211Z",
+  "last_successful_export_at": "2026-04-28T23:54:05.211Z",
+  "commit_sha": "4ef78e5bc99426c26568ecebed8201b6583fc964",
   "repository": "Meciah/wallet_dashboard",
-  "workflow_url": "https://github.com/Meciah/wallet_dashboard/actions/workflows/update-data.yml",
+  "workflow_url": "https://github.com/Meciah/wallet_dashboard/actions/runs/25083740462",
   "manual_refresh_url": "https://github.com/Meciah/wallet_dashboard/actions/workflows/update-data.yml",
-  "latest_run_status": "partial_success",
-  "latest_run_started_at": "2026-04-28T22:27:35.959Z",
-  "latest_run_ended_at": "2026-04-28T22:30:13.413Z",
+  "latest_run_status": "success",
+  "latest_run_started_at": "2026-04-28T23:54:01.660Z",
+  "latest_run_ended_at": "2026-04-28T23:54:04.762Z",
   "wallets": [
     {
       "scope": "wallet_1",
