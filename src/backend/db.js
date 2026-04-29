@@ -3,7 +3,14 @@ import { createRequire } from "node:module";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { DB_PATH, TRACKED_WALLETS, getWalletMetadata, protocolPresentation, tokenMetadataForMint } from "./config.js";
+import {
+  DB_PATH,
+  HISTORY_SERIES,
+  TRACKED_WALLETS,
+  getWalletMetadata,
+  protocolPresentation,
+  tokenMetadataForMint,
+} from "./config.js";
 import { utcNowIso } from "./utils.js";
 
 const require = createRequire(import.meta.url);
@@ -64,8 +71,22 @@ export function withDb(dbPath, callback) {
   }
 }
 
+function ensurePortfolioSnapshotSeriesColumn(db) {
+  const columns = db.prepare("PRAGMA table_info(portfolio_snapshots)").all();
+  if (!columns.some((column) => column.name === "series")) {
+    db.exec(`ALTER TABLE portfolio_snapshots ADD COLUMN series TEXT NOT NULL DEFAULT '${HISTORY_SERIES.WITH_LIQUIDITY}'`);
+  }
+}
+
 export function applySchema(db, schemaPath = SCHEMA_PATH) {
+  const portfolioSnapshotsTable = db
+    .prepare("SELECT name FROM sqlite_master WHERE type = 'table' AND name = 'portfolio_snapshots'")
+    .get();
+  if (portfolioSnapshotsTable) {
+    ensurePortfolioSnapshotSeriesColumn(db);
+  }
   db.exec(readFileSync(schemaPath, "utf8"));
+  ensurePortfolioSnapshotSeriesColumn(db);
 }
 
 export function seedWalletsAndProtocols(db) {
@@ -181,28 +202,35 @@ export function insertPositionSnapshot(db, position, snapshotTs) {
 }
 
 export function savePortfolioSnapshot(db, summary) {
+  savePortfolioSnapshotSeries(db, summary, HISTORY_SERIES.WITH_LIQUIDITY);
+}
+
+export function savePortfolioSnapshotSeries(db, summary, series = HISTORY_SERIES.WITH_LIQUIDITY) {
   db.prepare(`
-    INSERT INTO portfolio_snapshots(snapshot_ts, scope, total_usd, pnl_24h, pnl_7d)
-    SELECT ?, ?, ?, ?, ?
+    INSERT INTO portfolio_snapshots(snapshot_ts, scope, series, total_usd, pnl_24h, pnl_7d)
+    SELECT ?, ?, ?, ?, ?, ?
     WHERE NOT EXISTS (
       SELECT 1
       FROM portfolio_snapshots
-      WHERE snapshot_ts = ? AND scope = ?
+      WHERE snapshot_ts = ? AND scope = ? AND COALESCE(series, ?) = ?
     )
   `).run(
     summary.snapshot_ts,
     summary.scope,
+    series,
     summary.total_usd,
     summary.pnl_24h ?? null,
     summary.pnl_7d ?? null,
     summary.snapshot_ts,
     summary.scope,
+    HISTORY_SERIES.WITH_LIQUIDITY,
+    series,
   );
 }
 
 export function seedPortfolioSnapshots(db, snapshots = []) {
   for (const snapshot of snapshots) {
-    savePortfolioSnapshot(db, snapshot);
+    savePortfolioSnapshotSeries(db, snapshot, snapshot.series ?? HISTORY_SERIES.WITH_LIQUIDITY);
   }
 }
 export function summarizeScope(db, scope) {
@@ -217,6 +245,32 @@ export function summarizeScope(db, scope) {
       FROM positions_current pc
       JOIN wallets w ON w.id = pc.wallet_id
       WHERE w.label = ?
+    `)
+    .get(scope);
+
+  return createSummary(scope, row?.total);
+}
+
+export function summarizeHistoryScope(db, scope) {
+  if (scope === "combined") {
+    const row = db
+      .prepare(`
+        SELECT COALESCE(SUM(pc.usd_value), 0) AS total
+        FROM positions_current pc
+        JOIN protocols p ON p.id = pc.protocol_id
+        WHERE p.category != 'lp'
+      `)
+      .get();
+    return createSummary(scope, row?.total);
+  }
+
+  const row = db
+    .prepare(`
+      SELECT COALESCE(SUM(pc.usd_value), 0) AS total
+      FROM positions_current pc
+      JOIN wallets w ON w.id = pc.wallet_id
+      JOIN protocols p ON p.id = pc.protocol_id
+      WHERE w.label = ? AND p.category != 'lp'
     `)
     .get(scope);
 
@@ -281,19 +335,23 @@ export function listCurrentPositions(db, scope) {
   });
 }
 
-export function listPortfolioHistory(db, scope, limit = 100) {
-  return db
-    .prepare(`
-      SELECT snapshot_ts, scope, total_usd, pnl_24h, pnl_7d
+export function listPortfolioHistory(db, scope, limit = 100, series = HISTORY_SERIES.WITH_LIQUIDITY) {
+  const params = [scope, HISTORY_SERIES.WITH_LIQUIDITY, series];
+  const query = `
+      SELECT snapshot_ts, scope, COALESCE(series, ?) AS series, total_usd, pnl_24h, pnl_7d
       FROM portfolio_snapshots
-      WHERE scope = ?
-      ORDER BY snapshot_ts DESC
-      LIMIT ?
-    `)
-    .all(scope, limit)
+      WHERE scope = ? AND COALESCE(series, ?) = ?
+      ORDER BY snapshot_ts DESC LIMIT ?
+  `;
+  params.push(limit);
+
+  return db
+    .prepare(query)
+    .all(HISTORY_SERIES.WITH_LIQUIDITY, ...params)
     .map((row) => ({
       snapshot_ts: row.snapshot_ts,
       scope: row.scope,
+      series: row.series,
       total_usd: Number(row.total_usd),
       pnl_24h: row.pnl_24h,
       pnl_7d: row.pnl_7d,

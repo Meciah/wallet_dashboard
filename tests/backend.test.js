@@ -15,13 +15,16 @@ import {
   listIngestionRuns,
   listLatestPrices,
   listPortfolioHistory,
+  savePortfolioSnapshotSeries,
   savePortfolioSnapshot,
   seedWalletsAndProtocols,
   startIngestionRun,
+  summarizeHistoryScope,
   summarizeScope,
   upsertCurrentPosition,
   upsertPrice,
 } from "../src/backend/db.js";
+import { HISTORY_SERIES } from "../src/backend/config.js";
 
 function createTempDb() {
   const dir = mkdtempSync(join(tmpdir(), "wallet-dashboard-"));
@@ -71,9 +74,23 @@ describe("backend db queries", () => {
         usd_value: 75,
       }),
     );
+    upsertCurrentPosition(
+      db,
+      makePosition({
+        wallet_address: "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS",
+        protocol: "raydium",
+        position_type: "lp",
+        position_key: "position-3",
+        quantity: [{ mint: "mint-3", symbol: "M3", amount: 3 }],
+        usd_value: 25,
+      }),
+    );
 
     const summary = summarizeScope(db, "wallet_1");
     savePortfolioSnapshot(db, summary);
+    const coreSummary = summarizeHistoryScope(db, "combined");
+    coreSummary.snapshot_ts = "2026-04-28T18:45:48.266Z";
+    savePortfolioSnapshotSeries(db, coreSummary, HISTORY_SERIES.CORE);
     upsertPrice(db, "mint-1", 1, "seed");
     upsertPrice(db, "mint-1", 2, "seed");
     upsertPrice(db, "mint-2", 5, "seed");
@@ -84,12 +101,14 @@ describe("backend db queries", () => {
     const positions = listCurrentPositions(db, "wallet_1");
     const allocation = listAllocation(db, "combined", "protocol");
     const prices = listLatestPrices(db);
-    const history = listPortfolioHistory(db, "wallet_1", 5);
+    const history = listPortfolioHistory(db, "wallet_1", 5, HISTORY_SERIES.WITH_LIQUIDITY);
+    const coreHistory = listPortfolioHistory(db, "combined", 5, HISTORY_SERIES.CORE);
     const runs = listIngestionRuns(db, 5);
 
     expect(positions).toHaveLength(1);
     expect(positions[0].wallet_label).toBe("3dhj...VK7R");
     expect(history[0].total_usd).toBe(123);
+    expect(coreHistory[0].total_usd).toBe(198);
     expect(allocation[0]).toEqual({
       protocol: "holdings",
       protocol_label: "Holdings",

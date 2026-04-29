@@ -351,6 +351,11 @@ describe("frontend dashboard", () => {
         scope: "combined",
         count: 2,
         history: [
+          { snapshot_ts: "2026-03-20T18:46:10.302Z", total_usd: 3400, scope: "combined", pnl_24h: null, pnl_7d: null },
+          { snapshot_ts: "2026-04-02T18:46:10.302Z", total_usd: 3873.9, scope: "combined", pnl_24h: null, pnl_7d: null },
+        ],
+        count_with_liquidity: 2,
+        history_with_liquidity: [
           { snapshot_ts: "2026-03-20T18:46:10.302Z", total_usd: 3600, scope: "combined", pnl_24h: null, pnl_7d: null },
           { snapshot_ts: "2026-04-02T18:46:10.302Z", total_usd: 4074.8, scope: "combined", pnl_24h: null, pnl_7d: null },
         ],
@@ -359,6 +364,11 @@ describe("frontend dashboard", () => {
         scope: "wallet_2",
         count: 2,
         history: [
+          { snapshot_ts: "2026-03-20T18:46:10.302Z", total_usd: 500.3, scope: "wallet_2", pnl_24h: null, pnl_7d: null },
+          { snapshot_ts: "2026-04-02T18:46:10.302Z", total_usd: 612.5, scope: "wallet_2", pnl_24h: null, pnl_7d: null },
+        ],
+        count_with_liquidity: 2,
+        history_with_liquidity: [
           { snapshot_ts: "2026-03-20T18:46:10.302Z", total_usd: 500.3, scope: "wallet_2", pnl_24h: null, pnl_7d: null },
           { snapshot_ts: "2026-04-02T18:46:10.302Z", total_usd: 612.5, scope: "wallet_2", pnl_24h: null, pnl_7d: null },
         ],
@@ -404,12 +414,18 @@ describe("frontend dashboard", () => {
     await screen.findByText("PUMP spot");
     await screen.findByText("URMOM spot");
     await screen.findByText("Spot prices stay visible even with zero wallet exposure");
-    await screen.findByText("+13.19%");
-    expect(screen.getByText("+$474.80 over 1M")).toBeInTheDocument();
+    await screen.findByText("Excludes liquidity positions");
+    await screen.findByText("+13.94%");
+    expect(screen.getByText("+$473.90 over 1M")).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "1D" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "With LP" })).toBeInTheDocument();
     expect(screen.getByText("Partial export")).toBeInTheDocument();
     expect(screen.getAllByText("Raydium").length).toBeGreaterThan(0);
     expect(screen.getAllByText("Fees $10.10 | Rewards $2.40").length).toBeGreaterThan(0);
+
+    await userEvent.click(screen.getByRole("button", { name: "With LP" }));
+    await screen.findByText("Includes liquidity positions");
+    await screen.findByText("+13.19%");
 
     const wallet2Button = screen.getAllByText("ELKy...caGS")[0].closest("button");
     await userEvent.click(wallet2Button);

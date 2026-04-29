@@ -2,6 +2,10 @@ export const DB_PATH = "portfolio.db";
 export const DEFAULT_STATIC_OUT_DIR = "docs/data";
 export const DEFAULT_GITHUB_REPOSITORY = "Meciah/wallet_dashboard";
 export const DEFAULT_WORKFLOW_URL = `https://github.com/${DEFAULT_GITHUB_REPOSITORY}/actions/workflows/update-data.yml`;
+export const HISTORY_SERIES = {
+  CORE: "core",
+  WITH_LIQUIDITY: "with_liquidity",
+};
 
 export const SOL_MINT = "So11111111111111111111111111111111111111112";
 export const MSOL_MINT = "mSoLzYCxHdYgdzUevW6Y8k9sW5M2YfLQ7fPjYq4Jp7";

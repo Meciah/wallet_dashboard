@@ -55,6 +55,7 @@ CREATE TABLE IF NOT EXISTS portfolio_snapshots (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   snapshot_ts TEXT NOT NULL,
   scope TEXT NOT NULL,
+  series TEXT NOT NULL DEFAULT 'with_liquidity',
   total_usd REAL NOT NULL,
   pnl_24h REAL,
   pnl_7d REAL
@@ -81,3 +82,4 @@ CREATE TABLE IF NOT EXISTS ingestion_runs (
 CREATE INDEX IF NOT EXISTS idx_positions_current_wallet ON positions_current(wallet_id);
 CREATE INDEX IF NOT EXISTS idx_positions_snapshots_wallet_time ON positions_snapshots(wallet_id, snapshot_ts);
 CREATE INDEX IF NOT EXISTS idx_portfolio_snapshots_scope_time ON portfolio_snapshots(scope, snapshot_ts);
+CREATE INDEX IF NOT EXISTS idx_portfolio_snapshots_scope_series_time ON portfolio_snapshots(scope, series, snapshot_ts);

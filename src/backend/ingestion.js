@@ -1,9 +1,10 @@
-import { SCOPES, TRACKED_TOKENS, TRACKED_WALLETS, defaultRpcUrl } from "./config.js";
+import { HISTORY_SERIES, SCOPES, TRACKED_TOKENS, TRACKED_WALLETS, defaultRpcUrl } from "./config.js";
 import {
   finishIngestionRun,
   insertPositionSnapshot,
-  savePortfolioSnapshot,
+  savePortfolioSnapshotSeries,
   startIngestionRun,
+  summarizeHistoryScope,
   summarizeScope,
   upsertCurrentPosition,
   upsertPrice,
@@ -86,9 +87,13 @@ export async function runIngestion(db, options = {}) {
   errorMessages.push(...trackedTokenErrors);
 
   for (const scope of SCOPES) {
-    const summary = summarizeScope(db, scope);
-    summary.snapshot_ts = snapshotTs;
-    savePortfolioSnapshot(db, summary);
+    const coreSummary = summarizeHistoryScope(db, scope);
+    coreSummary.snapshot_ts = snapshotTs;
+    savePortfolioSnapshotSeries(db, coreSummary, HISTORY_SERIES.CORE);
+
+    const summaryWithLiquidity = summarizeScope(db, scope);
+    summaryWithLiquidity.snapshot_ts = snapshotTs;
+    savePortfolioSnapshotSeries(db, summaryWithLiquidity, HISTORY_SERIES.WITH_LIQUIDITY);
   }
 
   const status = errors === 0 ? "success" : "partial_success";

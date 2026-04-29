@@ -9,6 +9,10 @@ const HISTORY_RANGES = [
   ["1M", 30],
   ["ALL", Infinity],
 ];
+const HISTORY_MODES = [
+  ["core", "Core"],
+  ["with_liquidity", "With LP"],
+];
 const SOL_MINT = "So11111111111111111111111111111111111111112";
 
 function fetchJson(path) {
@@ -431,7 +435,7 @@ function HistoryTooltip({ active, payload }) {
   );
 }
 
-function HistoryPanel({ history, range, onRangeChange }) {
+function HistoryPanel({ history, historyMode, range, onHistoryModeChange, onRangeChange }) {
   const data = chartHistory(history, range);
   const sparseHistory = data.length === 1;
   const domain = historyDomain(data);
@@ -439,6 +443,8 @@ function HistoryPanel({ history, range, onRangeChange }) {
   const performanceTone = performance.absolute >= 0 ? "positive" : "negative";
   const rangeStart = data[0] ?? null;
   const rangeEnd = data.at(-1) ?? null;
+  const modeNote =
+    historyMode === "with_liquidity" ? "Includes liquidity positions" : "Excludes liquidity positions";
 
   return (
     <section className="hero-card chart-card">
@@ -446,6 +452,7 @@ function HistoryPanel({ history, range, onRangeChange }) {
         <div>
           <span className="panel-kicker">History</span>
           <h2>Portfolio history</h2>
+          <div className="history-mode-note">{modeNote}</div>
           {data.length ? (
             <div className="history-performance">
               <strong className={performanceTone}>{pct(performance.percent)}</strong>
@@ -453,17 +460,31 @@ function HistoryPanel({ history, range, onRangeChange }) {
             </div>
           ) : null}
         </div>
-        <div className="segmented-control">
-          {HISTORY_RANGES.map(([label]) => (
-            <button
-              key={label}
-              type="button"
-              className={range === label ? "is-active" : ""}
-              onClick={() => onRangeChange(label)}
-            >
-              {label}
-            </button>
-          ))}
+        <div className="history-controls">
+          <div className="segmented-control">
+            {HISTORY_MODES.map(([mode, label]) => (
+              <button
+                key={mode}
+                type="button"
+                className={historyMode === mode ? "is-active" : ""}
+                onClick={() => onHistoryModeChange(mode)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+          <div className="segmented-control">
+            {HISTORY_RANGES.map(([label]) => (
+              <button
+                key={label}
+                type="button"
+                className={range === label ? "is-active" : ""}
+                onClick={() => onRangeChange(label)}
+              >
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
       {data.length ? (
@@ -795,6 +816,7 @@ function SidePanel({ latestRun, walletAllocation, generated, prices, totalUsd })
 export function App() {
   const queryClient = useQueryClient();
   const [scope, setScope] = useState("combined");
+  const [historyMode, setHistoryMode] = useState("core");
   const [historyRange, setHistoryRange] = useState("1M");
   const [protocolFilter, setProtocolFilter] = useState("all");
   const [watchingForRefresh, setWatchingForRefresh] = useState(false);
@@ -826,9 +848,11 @@ export function App() {
   const protocolAllocation = protocolAllocationQuery.data?.allocation ?? [];
   const walletAllocation = walletAllocationQuery.data?.allocation ?? [];
   const history = historyQuery.data?.history ?? [];
+  const historyWithLiquidity = historyQuery.data?.history_with_liquidity ?? [];
   const prices = pricesQuery.data?.prices ?? [];
   const runs = runsQuery.data?.runs ?? [];
   const latestRun = runs[0] ?? null;
+  const visibleHistory = historyMode === "with_liquidity" ? historyWithLiquidity : history;
 
   useEffect(() => {
     if (!watchingForRefresh || !refreshBaseline || !generated?.generated_at) {
@@ -982,7 +1006,13 @@ export function App() {
               </div>
             </section>
 
-            <HistoryPanel history={history} range={historyRange} onRangeChange={setHistoryRange} />
+            <HistoryPanel
+              history={visibleHistory}
+              historyMode={historyMode}
+              range={historyRange}
+              onHistoryModeChange={setHistoryMode}
+              onRangeChange={setHistoryRange}
+            />
           </section>
 
           <section className="content-layout">

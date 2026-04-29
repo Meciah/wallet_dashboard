@@ -2,6 +2,7 @@ import { execFileSync } from "node:child_process";
 import { join, resolve } from "node:path";
 
 import {
+  HISTORY_SERIES,
   DEFAULT_GITHUB_REPOSITORY,
   DEFAULT_STATIC_OUT_DIR,
   DEFAULT_WORKFLOW_URL,
@@ -65,6 +66,7 @@ function buildAggregatePayload(db, generated) {
     allocation_protocol: {},
     allocation_wallet: {},
     history: {},
+    history_with_liquidity: {},
     prices: listLatestPrices(db, 500),
     ingestion_runs: listIngestionRuns(db, 100),
   };
@@ -74,7 +76,8 @@ function buildAggregatePayload(db, generated) {
     payload.positions[scope] = listCurrentPositions(db, scope);
     payload.allocation_protocol[scope] = listAllocation(db, scope, "protocol");
     payload.allocation_wallet[scope] = listAllocation(db, scope, "wallet");
-    payload.history[scope] = listPortfolioHistory(db, scope, 300);
+    payload.history[scope] = listPortfolioHistory(db, scope, 300, HISTORY_SERIES.CORE);
+    payload.history_with_liquidity[scope] = listPortfolioHistory(db, scope, 300, HISTORY_SERIES.WITH_LIQUIDITY);
   }
 
   return payload;
@@ -117,6 +120,8 @@ function writeSplitPayloads(outDir, aggregate) {
       scope,
       count: aggregate.history[scope].length,
       history: aggregate.history[scope],
+      count_with_liquidity: aggregate.history_with_liquidity[scope].length,
+      history_with_liquidity: aggregate.history_with_liquidity[scope],
     });
   }
 }

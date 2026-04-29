@@ -2,9 +2,9 @@ import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { relative, resolve } from "node:path";
 
-import { DEFAULT_STATIC_OUT_DIR, SCOPES } from "./config.js";
+import { DEFAULT_STATIC_OUT_DIR, HISTORY_SERIES, SCOPES } from "./config.js";
 
-function normalizeSnapshot(snapshot, fallbackScope) {
+function normalizeSnapshot(snapshot, fallbackScope, fallbackSeries = HISTORY_SERIES.WITH_LIQUIDITY) {
   if (!snapshot?.snapshot_ts) {
     return null;
   }
@@ -18,6 +18,7 @@ function normalizeSnapshot(snapshot, fallbackScope) {
   return {
     snapshot_ts: timestamp,
     scope: snapshot.scope ?? fallbackScope,
+    series: snapshot.series ?? fallbackSeries,
     total_usd: totalUsd,
     pnl_24h: snapshot.pnl_24h ?? null,
     pnl_7d: snapshot.pnl_7d ?? null,
@@ -27,9 +28,74 @@ function normalizeSnapshot(snapshot, fallbackScope) {
 function parseHistoryPayload(payloadText, fallbackScope) {
   try {
     const payload = JSON.parse(payloadText);
-    return (payload.history ?? [])
-      .map((snapshot) => normalizeSnapshot(snapshot, fallbackScope))
+    const hasSeparateCoreHistory = Array.isArray(payload.history_with_liquidity);
+    const history = (payload.history ?? [])
+      .map((snapshot) =>
+        normalizeSnapshot(
+          snapshot,
+          fallbackScope,
+          hasSeparateCoreHistory ? HISTORY_SERIES.CORE : HISTORY_SERIES.WITH_LIQUIDITY,
+        ),
+      )
       .filter(Boolean);
+    const historyWithLiquidity = (payload.history_with_liquidity ?? [])
+      .map((snapshot) => normalizeSnapshot(snapshot, fallbackScope, HISTORY_SERIES.WITH_LIQUIDITY))
+      .filter(Boolean);
+    return [...history, ...historyWithLiquidity];
+  } catch {
+    return [];
+  }
+}
+
+function readGeneratedTimestamp(payloadText) {
+  try {
+    const payload = JSON.parse(payloadText);
+    const timestamp = payload.latest_run_started_at ?? payload.generated_at ?? payload.last_successful_export_at ?? null;
+    return timestamp ? new Date(timestamp).toISOString() : null;
+  } catch {
+    return null;
+  }
+}
+
+function parsePositionsPayload(payloadText, fallbackScope, snapshotTs) {
+  if (!snapshotTs) {
+    return [];
+  }
+
+  try {
+    const payload = JSON.parse(payloadText);
+    if (!Array.isArray(payload.positions)) {
+      return [];
+    }
+
+    const scope = payload.scope ?? fallbackScope;
+    let coreTotalUsd = 0;
+
+    for (const position of payload.positions) {
+      const usdValue = Number(position?.usd_value ?? 0);
+      if (Number.isNaN(usdValue)) {
+        continue;
+      }
+
+      const protocolCategory = position?.protocol_category ?? position?.raw?.protocol_category ?? null;
+      const positionType = position?.position_type ?? position?.raw?.position_type ?? null;
+      if (protocolCategory !== "lp" && positionType !== "lp") {
+        coreTotalUsd += usdValue;
+      }
+    }
+
+    return [
+      normalizeSnapshot(
+        {
+          snapshot_ts: snapshotTs,
+          scope,
+          series: HISTORY_SERIES.CORE,
+          total_usd: coreTotalUsd,
+        },
+        scope,
+        HISTORY_SERIES.CORE,
+      ),
+    ].filter(Boolean);
   } catch {
     return [];
   }
@@ -89,6 +155,103 @@ function collectHistoryFromGit(repoRoot, historyDir, scopes, execFileSyncImpl) {
   return snapshots;
 }
 
+function collectPositionSnapshotsFromGit(repoRoot, dataDir, scopes, execFileSyncImpl) {
+  const snapshots = [];
+  const generatedRelativePath = relative(repoRoot, resolve(dataDir, "generated.json")).replaceAll("\\", "/");
+  if (!generatedRelativePath || generatedRelativePath.startsWith("..")) {
+    return snapshots;
+  }
+
+  const generatedTimestampCache = new Map();
+  const historyPayloadCache = new Map();
+  const readCommitTimestamp = (commit, commitDate) => {
+    if (generatedTimestampCache.has(commit)) {
+      return generatedTimestampCache.get(commit);
+    }
+
+    let timestamp = null;
+    try {
+      const generatedText = execFileSyncImpl("git", ["show", `${commit}:${generatedRelativePath}`], {
+        cwd: repoRoot,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"],
+      });
+      timestamp = readGeneratedTimestamp(generatedText);
+    } catch {
+      timestamp = commitDate ? new Date(commitDate).toISOString() : null;
+    }
+
+    generatedTimestampCache.set(commit, timestamp);
+    return timestamp;
+  };
+
+  for (const scope of scopes) {
+    const filePath = resolve(dataDir, "positions", `${scope}.json`);
+    const relativePath = relative(repoRoot, filePath).replaceAll("\\", "/");
+    const historyRelativePath = relative(repoRoot, resolve(dataDir, "history", `${scope}.json`)).replaceAll("\\", "/");
+    if (!relativePath || relativePath.startsWith("..")) {
+      continue;
+    }
+
+    let commits = [];
+    try {
+      const logOutput = execFileSyncImpl("git", ["log", "--format=%H %cI", "--max-count=400", "--", relativePath], {
+        cwd: repoRoot,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"],
+      });
+      commits = logOutput
+        .split(/\r?\n/)
+        .filter(Boolean)
+        .map((line) => {
+          const [commit, commitDate] = line.split(" ");
+          return { commit, commitDate };
+        });
+    } catch {
+      continue;
+    }
+
+    for (const { commit, commitDate } of commits) {
+      try {
+        if (historyRelativePath && !historyRelativePath.startsWith("..")) {
+          const historyCacheKey = `${commit}:${historyRelativePath}`;
+          let hasSeparateCoreHistory = historyPayloadCache.get(historyCacheKey);
+          if (hasSeparateCoreHistory === undefined) {
+            try {
+              const historyText = execFileSyncImpl("git", ["show", `${commit}:${historyRelativePath}`], {
+                cwd: repoRoot,
+                encoding: "utf8",
+                stdio: ["ignore", "pipe", "ignore"],
+              });
+              const payload = JSON.parse(historyText);
+              hasSeparateCoreHistory = Array.isArray(payload.history_with_liquidity);
+            } catch {
+              hasSeparateCoreHistory = false;
+            }
+            historyPayloadCache.set(historyCacheKey, hasSeparateCoreHistory);
+          }
+
+          if (hasSeparateCoreHistory) {
+            continue;
+          }
+        }
+
+        const positionsText = execFileSyncImpl("git", ["show", `${commit}:${relativePath}`], {
+          cwd: repoRoot,
+          encoding: "utf8",
+          stdio: ["ignore", "pipe", "ignore"],
+        });
+        const snapshotTs = readCommitTimestamp(commit, commitDate);
+        snapshots.push(...parsePositionsPayload(positionsText, scope, snapshotTs));
+      } catch {
+        continue;
+      }
+    }
+  }
+
+  return snapshots;
+}
+
 function trimLegacyTestingSnapshots(history) {
   if (history.length < 3) {
     return history;
@@ -110,7 +273,7 @@ function trimLegacyTestingSnapshots(history) {
 }
 
 export function mergeHistorySnapshots(snapshots, scopes = SCOPES, limit = 300) {
-  const grouped = Object.fromEntries(scopes.map((scope) => [scope, []]));
+  const grouped = new Map();
   const seen = new Set();
 
   for (const snapshot of snapshots) {
@@ -118,34 +281,51 @@ export function mergeHistorySnapshots(snapshots, scopes = SCOPES, limit = 300) {
       continue;
     }
 
-    const key = `${snapshot.scope}:${snapshot.snapshot_ts}`;
+    const series = snapshot.series ?? HISTORY_SERIES.WITH_LIQUIDITY;
+    const key = `${snapshot.scope}:${series}:${snapshot.snapshot_ts}`;
     if (seen.has(key)) {
       continue;
     }
 
     seen.add(key);
-    grouped[snapshot.scope].push(snapshot);
+    const groupKey = `${snapshot.scope}:${series}`;
+    const existing = grouped.get(groupKey) ?? [];
+    existing.push({ ...snapshot, series });
+    grouped.set(groupKey, existing);
   }
 
+  const merged = [];
   for (const scope of scopes) {
-    grouped[scope] = trimLegacyTestingSnapshots(grouped[scope])
-      .sort((left, right) => new Date(right.snapshot_ts).getTime() - new Date(left.snapshot_ts).getTime())
-      .slice(0, limit);
+    for (const series of Object.values(HISTORY_SERIES)) {
+      const groupKey = `${scope}:${series}`;
+      const seriesHistory = grouped.get(groupKey) ?? [];
+
+      merged.push(
+        ...trimLegacyTestingSnapshots(seriesHistory)
+          .sort((left, right) => new Date(right.snapshot_ts).getTime() - new Date(left.snapshot_ts).getTime())
+          .slice(0, limit),
+      );
+    }
   }
 
-  return grouped;
+  return merged;
 }
 export function loadSeedPortfolioHistory(options = {}) {
   const scopes = options.scopes ?? SCOPES;
   const repoRoot = resolve(options.repoRoot ?? process.cwd());
   const historyDir = resolve(options.historyDir ?? `${DEFAULT_STATIC_OUT_DIR}/history`);
+  const dataDir = resolve(options.dataDir ?? DEFAULT_STATIC_OUT_DIR);
   const readFileSyncImpl = options.readFileSyncImpl ?? readFileSync;
   const existsSyncImpl = options.existsSyncImpl ?? existsSync;
   const execFileSyncImpl = options.execFileSyncImpl ?? execFileSync;
 
   const fileSnapshots = collectHistoryFromFiles(historyDir, scopes, readFileSyncImpl, existsSyncImpl);
   const gitSnapshots = collectHistoryFromGit(repoRoot, historyDir, scopes, execFileSyncImpl);
-  const grouped = mergeHistorySnapshots([...fileSnapshots, ...gitSnapshots], scopes, options.limit ?? 300);
+  const gitPositionSnapshots = collectPositionSnapshotsFromGit(repoRoot, dataDir, scopes, execFileSyncImpl);
 
-  return scopes.flatMap((scope) => grouped[scope]);
+  return mergeHistorySnapshots(
+    [...fileSnapshots, ...gitSnapshots, ...gitPositionSnapshots],
+    scopes,
+    options.limit ?? 300,
+  );
 }

@@ -1,5 +1,6 @@
 import { createServer } from "node:http";
 
+import { HISTORY_SERIES } from "./config.js";
 import {
   listAllocation,
   listCurrentPositions,
@@ -108,8 +109,18 @@ export function serveApi(dbPath, { host = "127.0.0.1", port = 8080 } = {}) {
         }
 
         const limit = readLimit(url, 100, 1000);
-        const history = withDb(dbPath, (db) => listPortfolioHistory(db, scope, limit));
-        sendJson(response, 200, { scope, count: history.length, history });
+        const payload = withDb(dbPath, (db) => {
+          const history = listPortfolioHistory(db, scope, limit, HISTORY_SERIES.CORE);
+          const historyWithLiquidity = listPortfolioHistory(db, scope, limit, HISTORY_SERIES.WITH_LIQUIDITY);
+          return {
+            scope,
+            count: history.length,
+            history,
+            count_with_liquidity: historyWithLiquidity.length,
+            history_with_liquidity: historyWithLiquidity,
+          };
+        });
+        sendJson(response, 200, payload);
         return;
       }
 
