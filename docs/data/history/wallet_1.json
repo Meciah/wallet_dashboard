@@ -3,6 +3,14 @@
   "count": 300,
   "history": [
     {
+      "snapshot_ts": "2026-04-29T16:52:39.394Z",
+      "scope": "wallet_1",
+      "series": "core",
+      "total_usd": 4655.760382474301,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
       "snapshot_ts": "2026-04-29T16:13:02.256Z",
       "scope": "wallet_1",
       "series": "core",
@@ -2393,18 +2401,18 @@
       "total_usd": 5181.580469411848,
       "pnl_24h": null,
       "pnl_7d": null
-    },
-    {
-      "snapshot_ts": "2026-04-11T07:11:58.353Z",
-      "scope": "wallet_1",
-      "series": "core",
-      "total_usd": 5181.576844689598,
-      "pnl_24h": null,
-      "pnl_7d": null
     }
   ],
   "count_with_liquidity": 300,
   "history_with_liquidity": [
+    {
+      "snapshot_ts": "2026-04-29T16:52:39.394Z",
+      "scope": "wallet_1",
+      "series": "with_liquidity",
+      "total_usd": 4655.760382474301,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
     {
       "snapshot_ts": "2026-04-29T16:13:02.256Z",
       "scope": "wallet_1",
@@ -4794,14 +4802,6 @@
       "scope": "wallet_1",
       "series": "with_liquidity",
       "total_usd": 5399.003931881615,
-      "pnl_24h": null,
-      "pnl_7d": null
-    },
-    {
-      "snapshot_ts": "2026-04-19T16:00:43.189Z",
-      "scope": "wallet_1",
-      "series": "with_liquidity",
-      "total_usd": 5399.021451087265,
       "pnl_24h": null,
       "pnl_7d": null
     }
