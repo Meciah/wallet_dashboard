@@ -1,6 +1,6 @@
 {
   "scope": "combined",
-  "count": 9,
+  "count": 12,
   "positions": [
     {
       "wallet_scope": "wallet_2",
@@ -44,30 +44,51 @@
         "display_symbol": "mNative",
         "native_stake_accounts": [
           {
-            "address": "8nhjvjYva2JWnGWsYjucTf6ofcSJnKA7ZRCbo6U2hwmX",
-            "voter": "Fy6zNoZ1eCPpQX3JXeQ9Yd1HW1BFL8rrFmDvYYDnuxjT",
-            "active_sol": 1.027454815,
+            "address": "FFiFkKB9EchGtAPYwDgQqoqTcCdGJXkLbBKGj5NaZMf",
+            "voter": "3vwstewNgWAwN2uyuJduoZVVhmiwvAbwCxrjeJG6bASy",
+            "active_sol": 2.295839796,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
-            "address": "9nWJo5NjSdZkhsBRtFBB83Xv5LnKNQcTnNSrLoKXwJND",
-            "voter": "ExYX8UKQTCf2VPtV9jbfqikeTV6tPfhzauJ896o91wtj",
-            "active_sol": 1.638087293,
+            "address": "cKn9S5uaFZmwKdDaNgr8SfBkBoya2Ee4grpYhawoaN1",
+            "voter": "74y2qkCaJ5L17hTsz3E8jftNxTBCTvdz4P2L6qTHDW59",
+            "active_sol": 1.520816302,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
-            "address": "8Q6yDrX1Py4hzAiQE5yJR5JGad1AcWqs9gdoBx2DLdsL",
-            "voter": "MicobSZgB9CZNvmnFSYbEtMjy7CUui5o6P3XoGTwZC5",
-            "active_sol": 1.056119991,
+            "address": "2Cexh38htPbQoGDU4HnSWEWF51iPi4fdy5XoqKHrc2Wk",
+            "voter": "SFund7s2YPS7iCu7W2TobbuQEpVEAv9ZU7zHKiN1Gow",
+            "active_sol": 1e-9,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
-            "address": "4aNzxqmGLcp7cN8HKTpvFf2URaioueBpJStDvDmTpVds",
-            "voter": "GzjMbJQDVuBLFY69QwhhjDGDy2o5Q6nswXMuVTCWEFnp",
-            "active_sol": 1.638869301,
+            "address": "2faoL8D9BevgLYHfpBp7YFf4oeYv5EHqAcDRJd6y6XmJ",
+            "voter": "773eL4qyoHUi6s3pWWEWTnaYXELNs4nY5deMevpSF5YE",
+            "active_sol": 16.344585654,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "2zUwm9WdEDFdTmVSsQDm2AcJj6MJZcQYgHnuqkHnxsCX",
+            "voter": "3jkJVgfz1zrHSy6YLK6g96eTj49kCnDj2i8AbbKLZhkk",
+            "active_sol": 2.82777154,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "3FkrJFQ4NwjMGH9b6jkTMyAzAMZdNJ1vB1LnJLQbAki3",
+            "voter": "sdo2QoiSsPknraeCts5GeBkV3AYDdtuxJ3VpYCS1CxR",
+            "active_sol": 0.000490013,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "3MugtDQYjpfLRrWBGpySWVMhjUa6qVZLhCnCjk1mhBJ9",
+            "voter": "5s3vajJvaAbabQvxFdiMfg14y23b2jvK6K2Mw4PYcYK",
+            "active_sol": 15.945274025,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
@@ -75,20 +96,6 @@
             "address": "3Y6hZtF6FpJQwiBDgB6FCuj47Ejn63vFEeh4PphQmUgJ",
             "voter": "5DnWqsJceNamPNNUpMnVr1XQ8anSxcj9TXRD5Rn52prJ",
             "active_sol": 0.347457197,
-            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
-            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
-          },
-          {
-            "address": "H1qKsQNYYP6eWbhYP1w42Q3RKUP34SEmDxBvWt41amjj",
-            "voter": "4tuMshQNpAFpy1YtEHnSsE5EPN1mAT8FevWvn2UPJHNM",
-            "active_sol": 1.497170158,
-            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
-            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
-          },
-          {
-            "address": "JCBvLv6nVQaHqSq4HSs72uEUoqoQVGg2haGSJC2ujLAn",
-            "voter": "EnRcbgr5r7EUS2P35szncy6TW6eWA9UQiU3yQRCDbh2P",
-            "active_sol": 1.426086601,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
@@ -107,16 +114,16 @@
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
-            "address": "DhWDurKP2onSexahWbusGJQu9tpQPeKZqT16rNKBTGGm",
-            "voter": "QWmexgr4teHa2ZF85tyf2hvEwBvJ6ioAEr1h8DRjoie",
-            "active_sol": 1.769970808,
+            "address": "4aNzxqmGLcp7cN8HKTpvFf2URaioueBpJStDvDmTpVds",
+            "voter": "GzjMbJQDVuBLFY69QwhhjDGDy2o5Q6nswXMuVTCWEFnp",
+            "active_sol": 1.638869301,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
-            "address": "FFiFkKB9EchGtAPYwDgQqoqTcCdGJXkLbBKGj5NaZMf",
-            "voter": "3vwstewNgWAwN2uyuJduoZVVhmiwvAbwCxrjeJG6bASy",
-            "active_sol": 2.295839796,
+            "address": "5mxeaSUuNnmCWF4bzvWmfUz8qS2c3btXFoFvYuUjfAuK",
+            "voter": "6cvBCfFXugkTqgSFVPvzhoWaLbhHWvZfSsZadWP5rryR",
+            "active_sol": 1.419591261,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
@@ -128,79 +135,30 @@
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
-            "address": "HjAx13Mx2hWLLveWANoZqUoA7PC2nQcoqb2Xt8YULGaQ",
-            "voter": "6AAeoHYMUQfSdFGqubUmWVAasFkzJEq47oKpHNNTZxLN",
-            "active_sol": 2.131608407,
+            "address": "7C66QPaAaSK1qvAnRtsdi6q3ZyBB64xLMS1GsiExAqkw",
+            "voter": "i6PZjkPHGYmPfPE8LsJuLn5huZyusXhmysiDiHGPjxb",
+            "active_sol": 5.100301162,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
-            "address": "BL4D4a4WcdtdwAyWQ7zYTkGoqSSHHwgNvd2K2DNhVCa2",
-            "voter": "5eJQDSbgTZSEmH3zSWDEdAKgjavUUn9BkouCFNLz1x93",
-            "active_sol": 6.1309439,
+            "address": "7ECZWcu4HpCqDt1cMWFcWAjZnLmGoPQoQ8cSro1hTraA",
+            "voter": "6cvBCfFXugkTqgSFVPvzhoWaLbhHWvZfSsZadWP5rryR",
+            "active_sol": 2.41512183,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
-            "address": "DtB813Jt96gDCBGfMF7kfg6A3TfdsPuJKxJXNTT519qn",
-            "voter": "DPsW8v7gkGUbPPRnraS5e163bDepd9tD537X9S231T2j",
-            "active_sol": 2.120838456,
+            "address": "7TkaASCtvFfpbJ9dFuqbtwKZFKkeTYi9jUQyKsQKeHtg",
+            "voter": "4udPrmxccbP1NwDJ6vChFKs5qcqyjmQff6gsKXD1mdaj",
+            "active_sol": 2.011647769,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
-            "address": "B2KiJq4BquMegV4ndcLxCVhUg8Rixxe28cYm1EZnZ3xR",
-            "voter": "FzUNgBRnVxawDytN9GM7BFwxFfekuMs7BcAGybn4AmMk",
-            "active_sol": 2.295838735,
-            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
-            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
-          },
-          {
-            "address": "2faoL8D9BevgLYHfpBp7YFf4oeYv5EHqAcDRJd6y6XmJ",
-            "voter": "773eL4qyoHUi6s3pWWEWTnaYXELNs4nY5deMevpSF5YE",
-            "active_sol": 16.344585654,
-            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
-            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
-          },
-          {
-            "address": "C5eenRVTm9mgXK5DuGRRhTWSgG41RqWbX3sf7bufK6BA",
-            "voter": "EGg6LTZDgV9CgpPZnpTTzmebSSyaH91cQ2eoiDxiJPvm",
-            "active_sol": 8.548373128,
-            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
-            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
-          },
-          {
-            "address": "Fj1yFrG7ak5gZ3efhwpjjicADuAksrfDNSs6qXrzB3vG",
-            "voter": "647eBPzfDqmSVEg5cQofnjzeFr7PfwvHcDEcb22JWA5X",
-            "active_sol": 1.746219468,
-            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
-            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
-          },
-          {
-            "address": "CRXeYM9fr48kaDCZUbpQiM7hKt1eRjPT3kqCz7X6fnZw",
-            "voter": "2DNGsVZ9rg6RvT8bY4SGmGvyiVJ4xt9RL3NDd6uhfN46",
-            "active_sol": 2.086787648,
-            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
-            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
-          },
-          {
-            "address": "Av1obZdCAz2BoFZT3SrvpJ6aWHmk6BxggD7hqZphCaUH",
-            "voter": "5cwxevV9u1poNgfc1tKxMfEGX4oKt1DZNSHg48Umubm3",
-            "active_sol": 6.053199847,
-            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
-            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
-          },
-          {
-            "address": "AXudv9ox5yRkhjFjEjvLpdumEXfn1vq7hbrDiGPRVsM2",
-            "voter": "8zuMRTXThoPTTPLLvaiKiJshLLCqGMt9BdRjjCL19xBc",
-            "active_sol": 1.407866399,
-            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
-            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
-          },
-          {
-            "address": "F5TJU3sYuqVvH59Ro5PQtEDo3E8vxP1sPcxmfgzCrWVB",
-            "voter": "AGJmwvFJmJqHsSCu4EPsZ4W5N2hpwWC3FNQJc8ZFJBsy",
-            "active_sol": 26.572457801,
+            "address": "7hwuUJBjBi9XhYAEFhdmqxEPhSGvKnJZw58cSE2HybRA",
+            "voter": "Simpj3KyRQmpRkXuBvCQFS7DBBG6vqw93SkZb9UD1hp",
+            "active_sol": 2.865898098,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
@@ -212,6 +170,27 @@
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
+            "address": "7vhZC4DCpMaPrkPmHC5exHxVecg86e5YTkbSav3J76AU",
+            "voter": "Ec55BotYhWgC3xRmZ2UpuJvyySwxZeUrvEDPrxxG7r9B",
+            "active_sol": 15.825035836,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "8Q6yDrX1Py4hzAiQE5yJR5JGad1AcWqs9gdoBx2DLdsL",
+            "voter": "MicobSZgB9CZNvmnFSYbEtMjy7CUui5o6P3XoGTwZC5",
+            "active_sol": 1.056119991,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "8nhjvjYva2JWnGWsYjucTf6ofcSJnKA7ZRCbo6U2hwmX",
+            "voter": "Fy6zNoZ1eCPpQX3JXeQ9Yd1HW1BFL8rrFmDvYYDnuxjT",
+            "active_sol": 1.027454815,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
             "address": "9NtSs4j1R6WH8pov4MUwZ8AmFzvTjc3zdD6Ry77g44hG",
             "voter": "EJHf5N9is5spAF5Kz384tTvTV3CwTka6qzUoZrYm53SV",
             "active_sol": 2.651131699,
@@ -219,9 +198,177 @@
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
           {
-            "address": "7vhZC4DCpMaPrkPmHC5exHxVecg86e5YTkbSav3J76AU",
-            "voter": "Ec55BotYhWgC3xRmZ2UpuJvyySwxZeUrvEDPrxxG7r9B",
-            "active_sol": 15.825035836,
+            "address": "9nWJo5NjSdZkhsBRtFBB83Xv5LnKNQcTnNSrLoKXwJND",
+            "voter": "ExYX8UKQTCf2VPtV9jbfqikeTV6tPfhzauJ896o91wtj",
+            "active_sol": 1.638087293,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "A4CHgeQRcBuSSpWQ25dKEWGwxV2JQUQ9Y1XNm2bK9kM9",
+            "voter": "D3wscqsBCJGFzzoB7dB7wQfJzSEFVzu8Rxugfnfk7rdm",
+            "active_sol": 12.629166906,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "AEq42bAX981ZRoBnLq9bDbv7WiaYKq8UwQS6hSxEhGTE",
+            "voter": "BrRf2kyJEuW8TgdeDjvJcKK4NzTzRtM9RB6WuVKXHxkN",
+            "active_sol": 2.343503556,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "AGkP9RDWDEFpfXSPVQcnSzuc9ZNEH1RsHosXY3S5rAQ4",
+            "voter": "HLXktVmNFeELB5uL5nrpP4WL7jyi3TMyekxASVjDhZ1t",
+            "active_sol": 1.259221473,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "AXudv9ox5yRkhjFjEjvLpdumEXfn1vq7hbrDiGPRVsM2",
+            "voter": "8zuMRTXThoPTTPLLvaiKiJshLLCqGMt9BdRjjCL19xBc",
+            "active_sol": 1.407866399,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "Av1obZdCAz2BoFZT3SrvpJ6aWHmk6BxggD7hqZphCaUH",
+            "voter": "5cwxevV9u1poNgfc1tKxMfEGX4oKt1DZNSHg48Umubm3",
+            "active_sol": 6.053199847,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "B2KiJq4BquMegV4ndcLxCVhUg8Rixxe28cYm1EZnZ3xR",
+            "voter": "FzUNgBRnVxawDytN9GM7BFwxFfekuMs7BcAGybn4AmMk",
+            "active_sol": 2.295838735,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "BL4D4a4WcdtdwAyWQ7zYTkGoqSSHHwgNvd2K2DNhVCa2",
+            "voter": "5eJQDSbgTZSEmH3zSWDEdAKgjavUUn9BkouCFNLz1x93",
+            "active_sol": 6.1309439,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "C5P1T4PT422sACVdsF7ZGpErMiB5xM9eiUpHf5sBfnjw",
+            "voter": "4FsAxdHQ6HmFrDD7yCwsKNApuA67QYSCMoLAy3NfySxJ",
+            "active_sol": 3.392236664,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "C5eenRVTm9mgXK5DuGRRhTWSgG41RqWbX3sf7bufK6BA",
+            "voter": "EGg6LTZDgV9CgpPZnpTTzmebSSyaH91cQ2eoiDxiJPvm",
+            "active_sol": 8.548373128,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "CM1PbUd4pnKvVufYqVyCAX781qyzf8cPQVgnhhvM1NEj",
+            "voter": "9KgZYnDzHhQANoJ43Z8czkgXYdTjtWLRrH9nDf42gqa",
+            "active_sol": 1.870723285,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "CRXeYM9fr48kaDCZUbpQiM7hKt1eRjPT3kqCz7X6fnZw",
+            "voter": "2DNGsVZ9rg6RvT8bY4SGmGvyiVJ4xt9RL3NDd6uhfN46",
+            "active_sol": 2.086787648,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "DBB8oL5xFxJx48RGN9Dt1JmS1kgRnsfq9TvRRkEbwi2u",
+            "voter": "4ibf8qJirtoBGg7gSD7V7CeCKoFB96PBYQ3J5QjSmAob",
+            "active_sol": 2.118703499,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "DhWDurKP2onSexahWbusGJQu9tpQPeKZqT16rNKBTGGm",
+            "voter": "QWmexgr4teHa2ZF85tyf2hvEwBvJ6ioAEr1h8DRjoie",
+            "active_sol": 1.769970808,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "Dq1ApDRo5aDbsdVysKfiqNaEGiA35f3jn7xpj2RtjPbg",
+            "voter": "F3scMRjzSvXUa7JoK2uwBjNsYGi5sM84sDzE7FfGBo6o",
+            "active_sol": 2.29582037,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "DtB813Jt96gDCBGfMF7kfg6A3TfdsPuJKxJXNTT519qn",
+            "voter": "DPsW8v7gkGUbPPRnraS5e163bDepd9tD537X9S231T2j",
+            "active_sol": 2.120838456,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "Eii2bhjhavuccW5d1gkjuocm9FNwCuKYXYJqUaTZ1SxY",
+            "voter": "EJHf5N9is5spAF5Kz384tTvTV3CwTka6qzUoZrYm53SV",
+            "active_sol": 0.000147482,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "F5TJU3sYuqVvH59Ro5PQtEDo3E8vxP1sPcxmfgzCrWVB",
+            "voter": "AGJmwvFJmJqHsSCu4EPsZ4W5N2hpwWC3FNQJc8ZFJBsy",
+            "active_sol": 26.572457801,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "Fj1yFrG7ak5gZ3efhwpjjicADuAksrfDNSs6qXrzB3vG",
+            "voter": "647eBPzfDqmSVEg5cQofnjzeFr7PfwvHcDEcb22JWA5X",
+            "active_sol": 1.746219468,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "FqnHUnPkjsck5tdTx6zzSn4ULWJPhygmEM5TrPdeaiS8",
+            "voter": "HHLMTHR9YoyDNsWKVJBT5AKrX86iQjkiKRFRrnaFubgq",
+            "active_sol": 1.428391892,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "GhBBu47a4VJyRRL5ahRk7rogCEqguYrVpPgAQp4Py9y8",
+            "voter": "ENVaKoD7ytn58xJ8s5htFfQ8hqQt1G9dcPUDqbSwVcgB",
+            "active_sol": 2.855862446,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "GkVfFerjE9NSFjaEAjd1eVUGcoTzXSuDzgEp3P6qavdy",
+            "voter": "7sBYPueerpq3kKjmuimJkGr7jmiM8ZZ74pXPMEcBSxo5",
+            "active_sol": 12.803963583,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "GzkKrRF9M4m7C26uWenmg4jN161qsXG7uSQeBSnmUTLd",
+            "voter": "sdo2QoiSsPknraeCts5GeBkV3AYDdtuxJ3VpYCS1CxR",
+            "active_sol": 0.427282586,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "H1qKsQNYYP6eWbhYP1w42Q3RKUP34SEmDxBvWt41amjj",
+            "voter": "4tuMshQNpAFpy1YtEHnSsE5EPN1mAT8FevWvn2UPJHNM",
+            "active_sol": 1.497170158,
+            "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
+            "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
+          },
+          {
+            "address": "HjAx13Mx2hWLLveWANoZqUoA7PC2nQcoqb2Xt8YULGaQ",
+            "voter": "6AAeoHYMUQfSdFGqubUmWVAasFkzJEq47oKpHNNTZxLN",
+            "active_sol": 2.131608407,
             "authorized_staker": "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq",
             "authorized_withdrawer": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS"
           },
