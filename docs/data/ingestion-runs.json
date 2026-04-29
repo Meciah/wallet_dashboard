@@ -3,11 +3,11 @@
   "runs": [
     {
       "id": 1,
-      "started_at": "2026-04-29T00:08:20.276Z",
-      "ended_at": "2026-04-29T00:11:01.341Z",
-      "status": "partial_success",
-      "error_count": 8,
-      "notes": "positions_written=9; errors=8; details=wallet=wallet_1 adapter=marinade error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_2 adapter=marinade error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_3 adapter=marinade_native error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_1 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"e9870626-dfae-47e9-b330-61eb03da7374\" } \r\n | wallet=wallet_2 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"ac115197-2e03-4ee8-841d-6424185ed5c4\" } \r\n | wallet=wallet_3 adapter=raydium error=429 Too Many Requests:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429, \"message\":\"Too many requests for a specific RPC call\"}, \"id\": \"b514a9a6-0c2e-42ee-bf1c-4cc99b8c1f8b\" } \r\n | wallet=wallet_1 adapter=lp_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n | wallet=wallet_2 adapter=lp_tokens error=HTTP Error 429:  {\"jsonrpc\":\"2.0\",\"error\":{\"code\": 429,\"message\":\"Too many requests for a specific RPC call\"}, \"id\": 1 } \r\n"
+      "started_at": "2026-04-29T02:40:52.130Z",
+      "ended_at": "2026-04-29T02:40:57.739Z",
+      "status": "success",
+      "error_count": 0,
+      "notes": "positions_written=11; errors=0; details="
     }
   ]
 }

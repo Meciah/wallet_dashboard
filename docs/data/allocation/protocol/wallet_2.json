@@ -9,7 +9,7 @@
       "protocols": [
         "marinade_native"
       ],
-      "total_usd": 17039.495166643388
+      "total_usd": 17015.173298914153
     },
     {
       "protocol": "holdings",
@@ -17,7 +17,15 @@
       "protocols": [
         "wallet_tokens"
       ],
-      "total_usd": 5616.868561574799
+      "total_usd": 5597.77753449868
+    },
+    {
+      "protocol": "raydium",
+      "protocol_label": "Raydium",
+      "protocols": [
+        "raydium"
+      ],
+      "total_usd": 4736.343457496709
     }
   ]
 }
