@@ -66,6 +66,7 @@ Set these repository secrets before running the workflow:
 - `SOLANA_RPC_URL`: optional custom RPC URL
 
 When `DASHBOARD_PASSWORD` is present, the static export writes encrypted dashboard data to `docs/data/secure-data.json` instead of committing readable portfolio JSON. The browser unlock screen uses the same password to decrypt the payload locally.
+If `DASHBOARD_PASSWORD` or `TRACKED_WALLETS_JSON` is missing, the workflow runs tests and exits without refreshing data so it does not publish plaintext or fail scheduled runs.
 
 ## Project Layout
 - `src/backend/` Node CLI, data access, adapters, ingestion, export, API

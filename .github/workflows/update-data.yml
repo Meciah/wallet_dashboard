@@ -40,8 +40,11 @@ jobs:
           DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
           TRACKED_WALLETS_JSON: ${{ secrets.TRACKED_WALLETS_JSON }}
         run: |
-          test -n "$DASHBOARD_PASSWORD" || { echo "DASHBOARD_PASSWORD secret is required for encrypted Pages data."; exit 1; }
-          test -n "$TRACKED_WALLETS_JSON" || { echo "TRACKED_WALLETS_JSON secret is required to load private wallet addresses."; exit 1; }
+          if [ -z "$DASHBOARD_PASSWORD" ] || [ -z "$TRACKED_WALLETS_JSON" ]; then
+            echo "::warning::DASHBOARD_PASSWORD and TRACKED_WALLETS_JSON secrets are required to refresh encrypted portfolio data. Leaving committed Pages data unchanged."
+            exit 0
+          fi
+
           npm run init-db
           npm run ingest -- --rpc-url "$SOLANA_RPC_URL"
           npm run export-static
@@ -75,8 +78,11 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
 
-            test -n "$DASHBOARD_PASSWORD" || { echo "DASHBOARD_PASSWORD secret is required for encrypted Pages data."; exit 1; }
-            test -n "$TRACKED_WALLETS_JSON" || { echo "TRACKED_WALLETS_JSON secret is required to load private wallet addresses."; exit 1; }
+            if [ -z "$DASHBOARD_PASSWORD" ] || [ -z "$TRACKED_WALLETS_JSON" ]; then
+              echo "::warning::DASHBOARD_PASSWORD and TRACKED_WALLETS_JSON secrets are required to refresh encrypted portfolio data. Leaving committed Pages data unchanged."
+              exit 0
+            fi
+
             npm run init-db
             npm run ingest -- --rpc-url "$SOLANA_RPC_URL"
             npm run export-static
