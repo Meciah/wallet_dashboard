@@ -128,7 +128,7 @@ describe("history bootstrap", () => {
     });
   });
 
-  it("rebuilds core history from git-tracked position snapshots while preserving with-liquidity totals", () => {
+  it("rebuilds filtered history from git-tracked position snapshots", () => {
     const dir = mkdtempSync(join(tmpdir(), "wallet-dashboard-history-"));
     const historyDir = join(dir, "history");
     const dataDir = join(dir, "data");
@@ -190,9 +190,16 @@ describe("history bootstrap", () => {
       if (joined.includes("show") && joined.includes("newsha:data/positions/combined.json")) {
         return JSON.stringify({
           scope: "combined",
-          count: 2,
+          count: 3,
           positions: [
             { protocol_category: "wallet", position_type: "spot", usd_value: 100 },
+            {
+              protocol_category: "wallet",
+              position_type: "spot",
+              usd_value: 9000,
+              asset_symbol: "JUPHUB",
+              asset_name: "JupiterHub.io",
+            },
             { protocol_category: "lp", position_type: "lp", usd_value: 25 },
           ],
         });
@@ -225,10 +232,34 @@ describe("history bootstrap", () => {
 
     expect(snapshots).toEqual([
       {
+        snapshot_ts: "2026-04-28T22:55:32.130Z",
+        scope: "combined",
+        series: "core",
+        total_usd: 100,
+        pnl_24h: null,
+        pnl_7d: null,
+      },
+      {
         snapshot_ts: "2026-04-07T14:29:12.000Z",
         scope: "combined",
         series: "core",
         total_usd: 100,
+        pnl_24h: null,
+        pnl_7d: null,
+      },
+      {
+        snapshot_ts: "2026-04-28T22:55:32.130Z",
+        scope: "combined",
+        series: "with_liquidity",
+        total_usd: 125,
+        pnl_24h: null,
+        pnl_7d: null,
+      },
+      {
+        snapshot_ts: "2026-04-07T14:29:12.000Z",
+        scope: "combined",
+        series: "with_liquidity",
+        total_usd: 140,
         pnl_24h: null,
         pnl_7d: null,
       },

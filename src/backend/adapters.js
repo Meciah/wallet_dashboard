@@ -8,6 +8,7 @@ import {
   RAYDIUM_LP_MINTS,
   SOL_MINT,
   TRACKED_TOKENS,
+  shouldIgnoreTokenIdentity,
   tokenMetadataForMint,
 } from "./config.js";
 import { utcNowIso, withRetry } from "./utils.js";
@@ -126,6 +127,17 @@ export class WalletTokenAdapter {
     }
 
     if (KNOWN_LP_MINTS[token.mint] || RAYDIUM_LP_MINTS[token.mint]) {
+      return true;
+    }
+
+    if (
+      shouldIgnoreTokenIdentity(token) ||
+      shouldIgnoreTokenIdentity({
+        mint: token.mint,
+        symbol: quote?.symbol,
+        name: quote?.name,
+      })
+    ) {
       return true;
     }
 
