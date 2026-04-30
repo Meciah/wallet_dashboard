@@ -12,20 +12,20 @@
     "wallets": [
       {
         "scope": "wallet_1",
-        "label": "3dhj...VK7R",
-        "address": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R",
+        "label": "9Bwg...RrkJ",
+        "address": "9BwgiKbqpCx8pMAMBrJmuvPBJRc617pyD78tG2eMRrkJ",
         "accent": "#7ee787"
       },
       {
         "scope": "wallet_2",
-        "label": "ELKy...caGS",
-        "address": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS",
+        "label": "6kFs...EGDM",
+        "address": "6kFs7GfByyVNNr6YdH9r4m5wzUJHn21Cf7KXA9RREGDM",
         "accent": "#4ad8ff"
       },
       {
         "scope": "wallet_3",
-        "label": "CRsH...9zcf",
-        "address": "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf",
+        "label": "8ymi...mTXV",
+        "address": "8ymirZNvy4ESdFEG3g3RFaky6jX3qLzv5RdCPvhLmTXV",
         "accent": "#b892ff"
       }
     ],
@@ -80,8 +80,8 @@
     "wallet_1": [
       {
         "wallet_scope": "wallet_1",
-        "wallet_label": "3dhj...VK7R",
-        "wallet_address": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R",
+        "wallet_label": "9Bwg...RrkJ",
+        "wallet_address": "9BwgiKbqpCx8pMAMBrJmuvPBJRc617pyD78tG2eMRrkJ",
         "wallet_accent": "#7ee787",
         "protocol": "wallet_tokens",
         "protocol_label": "Holdings",
@@ -124,8 +124,8 @@
     "combined": [
       {
         "wallet_scope": "wallet_1",
-        "wallet_label": "3dhj...VK7R",
-        "wallet_address": "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R",
+        "wallet_label": "9Bwg...RrkJ",
+        "wallet_address": "9BwgiKbqpCx8pMAMBrJmuvPBJRc617pyD78tG2eMRrkJ",
         "wallet_accent": "#7ee787",
         "protocol": "wallet_tokens",
         "protocol_label": "Holdings",
@@ -192,7 +192,7 @@
     "wallet_1": [
       {
         "wallet_scope": "wallet_1",
-        "wallet": "3dhj...VK7R",
+        "wallet": "9Bwg...RrkJ",
         "total_usd": 50
       }
     ],
@@ -201,7 +201,7 @@
     "combined": [
       {
         "wallet_scope": "wallet_1",
-        "wallet": "3dhj...VK7R",
+        "wallet": "9Bwg...RrkJ",
         "total_usd": 50
       }
     ]

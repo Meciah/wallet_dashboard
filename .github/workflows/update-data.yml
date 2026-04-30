@@ -37,7 +37,11 @@ jobs:
       - name: Build latest portfolio snapshot
         env:
           SOLANA_RPC_URL: ${{ secrets.SOLANA_RPC_URL }}
+          DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
+          TRACKED_WALLETS_JSON: ${{ secrets.TRACKED_WALLETS_JSON }}
         run: |
+          test -n "$DASHBOARD_PASSWORD" || { echo "DASHBOARD_PASSWORD secret is required for encrypted Pages data."; exit 1; }
+          test -n "$TRACKED_WALLETS_JSON" || { echo "TRACKED_WALLETS_JSON secret is required to load private wallet addresses."; exit 1; }
           npm run init-db
           npm run ingest -- --rpc-url "$SOLANA_RPC_URL"
           npm run export-static
@@ -46,6 +50,8 @@ jobs:
       - name: Commit updated Pages assets
         env:
           SOLANA_RPC_URL: ${{ secrets.SOLANA_RPC_URL }}
+          DASHBOARD_PASSWORD: ${{ secrets.DASHBOARD_PASSWORD }}
+          TRACKED_WALLETS_JSON: ${{ secrets.TRACKED_WALLETS_JSON }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -69,6 +75,8 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
 
+            test -n "$DASHBOARD_PASSWORD" || { echo "DASHBOARD_PASSWORD secret is required for encrypted Pages data."; exit 1; }
+            test -n "$TRACKED_WALLETS_JSON" || { echo "TRACKED_WALLETS_JSON secret is required to load private wallet addresses."; exit 1; }
             npm run init-db
             npm run ingest -- --rpc-url "$SOLANA_RPC_URL"
             npm run export-static

@@ -43,7 +43,7 @@ describe("export contract", () => {
     applySchema(db);
     seedWalletsAndProtocols(db);
     upsertCurrentPosition(db, {
-      wallet_address: "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R",
+      wallet_address: "9BwgiKbqpCx8pMAMBrJmuvPBJRc617pyD78tG2eMRrkJ",
       protocol: "wallet_tokens",
       position_type: "wallet_balance",
       position_key: "contract-position",
@@ -60,5 +60,35 @@ describe("export contract", () => {
     expect(normalizePayload(aggregate)).toEqual(expected);
     expect(existsSync(join(outDir, "summary", "combined.json"))).toBe(true);
     expect(existsSync(join(outDir, "positions", "wallet_1.json"))).toBe(true);
+  });
+
+  it("writes encrypted data without plaintext split files when a dashboard password is configured", () => {
+    const dir = mkdtempSync(join(tmpdir(), "wallet-dashboard-contract-"));
+    cleanupPaths.push(dir);
+    const dbPath = join(dir, "portfolio.db");
+    const outDir = join(dir, "out");
+
+    const db = connect(dbPath);
+    applySchema(db);
+    seedWalletsAndProtocols(db);
+    upsertCurrentPosition(db, {
+      wallet_address: "9BwgiKbqpCx8pMAMBrJmuvPBJRc617pyD78tG2eMRrkJ",
+      protocol: "wallet_tokens",
+      position_type: "wallet_balance",
+      position_key: "encrypted-contract-position",
+      quantity: [{ mint: PUMP_MINT, symbol: "PUMP", amount: 1 }],
+      usd_value: 50,
+      raw: { source: "fixture" },
+      updated_at: "2026-04-02T18:45:48.266Z",
+    });
+    db.close();
+
+    exportStaticJson(dbPath, outDir, { password: "test-password" });
+    const secureText = readFileSync(join(outDir, "secure-data.json"), "utf8");
+
+    expect(existsSync(join(outDir, "secure-data.json"))).toBe(true);
+    expect(existsSync(join(outDir, "positions"))).toBe(false);
+    expect(existsSync(join(outDir, "portfolio-data.json"))).toBe(false);
+    expect(secureText).not.toContain("encrypted-contract-position");
   });
 });

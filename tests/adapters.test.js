@@ -30,7 +30,7 @@ class FakeChainProvider {
   }
 
   async getMarinadeNativeStakeAccounts(walletAddress) {
-    if (walletAddress !== "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS") {
+    if (walletAddress !== "6kFs7GfByyVNNr6YdH9r4m5wzUJHn21Cf7KXA9RREGDM") {
       return [];
     }
 
@@ -83,7 +83,7 @@ describe("providers and adapters", () => {
       );
 
     const provider = new SolanaRpcProvider("https://rpc.example", { fetchImpl: fetchMock });
-    await expect(provider.getSolBalance("3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R")).resolves.toBe(1);
+    await expect(provider.getSolBalance("9BwgiKbqpCx8pMAMBrJmuvPBJRc617pyD78tG2eMRrkJ")).resolves.toBe(1);
     expect(fetchMock).toHaveBeenCalledTimes(2);
   });
 
@@ -142,7 +142,7 @@ describe("providers and adapters", () => {
       );
 
     const provider = new SolanaRpcProvider("https://rpc.example", { fetchImpl: fetchMock });
-    const balances = await provider.getTokenBalances("3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R");
+    const balances = await provider.getTokenBalances("9BwgiKbqpCx8pMAMBrJmuvPBJRc617pyD78tG2eMRrkJ");
 
     expect(balances).toEqual(
       expect.arrayContaining([
@@ -184,7 +184,7 @@ describe("providers and adapters", () => {
       );
 
     const provider = new SolanaRpcProvider("https://rpc.example", { fetchImpl: fetchMock });
-    const balances = await provider.getTokenBalances("CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf");
+    const balances = await provider.getTokenBalances("8ymirZNvy4ESdFEG3g3RFaky6jX3qLzv5RdCPvhLmTXV");
 
     expect(balances).toEqual([expect.objectContaining({ mint: PUMP_MINT, amount: 602011.912025 })]);
   });
@@ -351,11 +351,11 @@ describe("providers and adapters", () => {
     const walletPositions = await new WalletTokenAdapter(chainProvider, priceProvider).collectPositions("wallet");
     const marinadePositions = await new MarinadeAdapter(chainProvider, priceProvider).collectPositions("wallet");
     const nativePositions = await new MarinadeNativeStakeAdapter(chainProvider, priceProvider).collectPositions(
-      "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS",
+      "6kFs7GfByyVNNr6YdH9r4m5wzUJHn21Cf7KXA9RREGDM",
     );
     const raydiumAdapter = new RaydiumLpAdapter(chainProvider, priceProvider);
     raydiumAdapter.connection = { getEpochInfo: vi.fn().mockResolvedValue({ epoch: 123 }) };
-    const raydiumPositions = await raydiumAdapter.collectPositions("ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS");
+    const raydiumPositions = await raydiumAdapter.collectPositions("6kFs7GfByyVNNr6YdH9r4m5wzUJHn21Cf7KXA9RREGDM");
     const lpPositions = await new LpTokenAdapter(chainProvider, priceProvider).collectPositions("wallet");
 
     expect(walletPositions).toHaveLength(2);

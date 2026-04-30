@@ -14,27 +14,60 @@ export const URMOM_MINT = "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump";
 export const ALLOWED_TOKEN_MINTS = [SOL_MINT, PUMP_MINT, URMOM_MINT];
 export const ALLOWED_TOKEN_SYMBOLS = ["SOL", "PUMP", "URMOM"];
 
-export const TRACKED_WALLETS = [
+const DEFAULT_WALLET_ACCENTS = ["#7ee787", "#4ad8ff", "#b892ff"];
+const DEMO_TRACKED_WALLETS = [
   {
     scope: "wallet_1",
-    label: "3dhj...VK7R",
-    address: "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R",
+    label: "9Bwg...RrkJ",
+    address: "9BwgiKbqpCx8pMAMBrJmuvPBJRc617pyD78tG2eMRrkJ",
     accent: "#7ee787",
   },
   {
     scope: "wallet_2",
-    label: "ELKy...caGS",
-    address: "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS",
+    label: "6kFs...EGDM",
+    address: "6kFs7GfByyVNNr6YdH9r4m5wzUJHn21Cf7KXA9RREGDM",
     accent: "#4ad8ff",
   },
   {
     scope: "wallet_3",
-    label: "CRsH...9zcf",
-    address: "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf",
+    label: "8ymi...mTXV",
+    address: "8ymirZNvy4ESdFEG3g3RFaky6jX3qLzv5RdCPvhLmTXV",
     accent: "#b892ff",
   },
 ];
 
+function shortAddress(address) {
+  return address ? `${address.slice(0, 4)}...${address.slice(-4)}` : "Wallet";
+}
+
+function normalizeTrackedWallet(wallet, index) {
+  const address = String(wallet?.address ?? "").trim();
+  if (!address) {
+    throw new Error(`TRACKED_WALLETS_JSON wallet ${index + 1} is missing an address`);
+  }
+
+  return {
+    scope: String(wallet.scope ?? `wallet_${index + 1}`).trim(),
+    label: String(wallet.label ?? shortAddress(address)).trim(),
+    address,
+    accent: String(wallet.accent ?? DEFAULT_WALLET_ACCENTS[index % DEFAULT_WALLET_ACCENTS.length]).trim(),
+  };
+}
+
+export function parseTrackedWallets(value) {
+  if (!value) {
+    return DEMO_TRACKED_WALLETS;
+  }
+
+  const wallets = JSON.parse(value);
+  if (!Array.isArray(wallets) || wallets.length === 0) {
+    throw new Error("TRACKED_WALLETS_JSON must be a non-empty JSON array");
+  }
+
+  return wallets.map(normalizeTrackedWallet);
+}
+
+export const TRACKED_WALLETS = parseTrackedWallets(process.env.TRACKED_WALLETS_JSON);
 export const SCOPES = [...TRACKED_WALLETS.map((wallet) => wallet.scope), "combined"];
 
 export const WALLET_METADATA_BY_SCOPE = Object.fromEntries(

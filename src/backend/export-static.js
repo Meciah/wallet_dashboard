@@ -1,4 +1,6 @@
 import { execFileSync } from "node:child_process";
+import { createCipheriv, pbkdf2Sync, randomBytes } from "node:crypto";
+import { existsSync, rmSync } from "node:fs";
 import { join, resolve } from "node:path";
 
 import {
@@ -21,6 +23,33 @@ import {
   withDb,
 } from "./db.js";
 import { utcNowIso, writeJsonFile } from "./utils.js";
+
+const ENCRYPTION_ITERATIONS = 250_000;
+
+function base64(buffer) {
+  return Buffer.from(buffer).toString("base64");
+}
+
+function encryptJsonPayload(payload, password) {
+  const salt = randomBytes(16);
+  const iv = randomBytes(12);
+  const key = pbkdf2Sync(password, salt, ENCRYPTION_ITERATIONS, 32, "sha256");
+  const cipher = createCipheriv("aes-256-gcm", key, iv);
+  const ciphertext = Buffer.concat([cipher.update(JSON.stringify(payload), "utf8"), cipher.final()]);
+  const tag = cipher.getAuthTag();
+
+  return {
+    version: 1,
+    kdf: "PBKDF2",
+    hash: "SHA-256",
+    iterations: ENCRYPTION_ITERATIONS,
+    cipher: "AES-GCM",
+    salt: base64(salt),
+    iv: base64(iv),
+    tag: base64(tag),
+    data: base64(ciphertext),
+  };
+}
 
 function inferRepositoryFromGit() {
   try {
@@ -126,15 +155,52 @@ function writeSplitPayloads(outDir, aggregate) {
   }
 }
 
-export function exportStaticJson(dbPath, outDir = DEFAULT_STATIC_OUT_DIR) {
+function removePath(path) {
+  if (existsSync(path)) {
+    rmSync(path, { recursive: true, force: true });
+  }
+}
+
+function removePlaintextPayloads(outDir) {
+  for (const path of [
+    "portfolio-data.json",
+    "generated.json",
+    "prices.json",
+    "ingestion-runs.json",
+    "summary",
+    "positions",
+    "allocation",
+    "history",
+  ]) {
+    removePath(join(outDir, path));
+  }
+}
+
+function writeEncryptedPayload(outDir, aggregate, password) {
+  removePlaintextPayloads(outDir);
+  writeJsonFile(join(outDir, "secure-data.json"), encryptJsonPayload(aggregate, password));
+}
+
+function dashboardPassword(options = {}) {
+  const password = options.password ?? process.env.DASHBOARD_PASSWORD ?? process.env.WALLET_DASHBOARD_PASSWORD ?? "";
+  return String(password).trim();
+}
+
+export function exportStaticJson(dbPath, outDir = DEFAULT_STATIC_OUT_DIR, options = {}) {
   const absoluteOutDir = resolve(outDir);
   return withDb(dbPath, (db) => {
     const generatedAt = utcNowIso();
     const generated = createGeneratedMetadata(db, generatedAt);
     const aggregate = buildAggregatePayload(db, generated);
+    const password = dashboardPassword(options);
 
-    writeJsonFile(join(absoluteOutDir, "portfolio-data.json"), aggregate);
-    writeSplitPayloads(absoluteOutDir, aggregate);
+    if (password) {
+      writeEncryptedPayload(absoluteOutDir, aggregate, password);
+    } else {
+      removePath(join(absoluteOutDir, "secure-data.json"));
+      writeJsonFile(join(absoluteOutDir, "portfolio-data.json"), aggregate);
+      writeSplitPayloads(absoluteOutDir, aggregate);
+    }
     return aggregate;
   });
 }

@@ -28,7 +28,7 @@ describe("local api", () => {
     applySchema(db);
     seedWalletsAndProtocols(db);
     upsertCurrentPosition(db, {
-      wallet_address: "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R",
+      wallet_address: "9BwgiKbqpCx8pMAMBrJmuvPBJRc617pyD78tG2eMRrkJ",
       protocol: "wallet_tokens",
       position_type: "wallet_balance",
       position_key: "api-position",

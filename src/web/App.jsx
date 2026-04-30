@@ -24,6 +24,56 @@ function fetchJson(path) {
   });
 }
 
+async function fetchSecurePayload() {
+  const response = await fetch(`${DATA_BASE}/secure-data.json`, { cache: "no-store" });
+  if (response.status === 404) {
+    return null;
+  }
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch secure data: ${response.status}`);
+  }
+
+  return response.json();
+}
+
+function base64ToBytes(value) {
+  const binary = window.atob(value);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+  return bytes;
+}
+
+async function decryptSecurePayload(payload, password) {
+  if (!payload || payload.version !== 1) {
+    throw new Error("Unsupported encrypted data format");
+  }
+
+  const encoder = new TextEncoder();
+  const keyMaterial = await window.crypto.subtle.importKey("raw", encoder.encode(password), "PBKDF2", false, ["deriveKey"]);
+  const key = await window.crypto.subtle.deriveKey(
+    {
+      name: "PBKDF2",
+      salt: base64ToBytes(payload.salt),
+      iterations: Number(payload.iterations),
+      hash: payload.hash,
+    },
+    keyMaterial,
+    { name: "AES-GCM", length: 256 },
+    false,
+    ["decrypt"],
+  );
+  const ciphertext = base64ToBytes(payload.data);
+  const tag = base64ToBytes(payload.tag);
+  const encrypted = new Uint8Array(ciphertext.length + tag.length);
+  encrypted.set(ciphertext);
+  encrypted.set(tag, ciphertext.length);
+  const decrypted = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: base64ToBytes(payload.iv) }, key, encrypted);
+  return JSON.parse(new TextDecoder().decode(decrypted));
+}
+
 function useDashboardQuery(key, path, options = {}) {
   return useQuery({
     queryKey: key,
@@ -344,6 +394,42 @@ function EmptyState({ title, detail }) {
     <div className="empty-state">
       <strong>{title}</strong>
       <span>{detail}</span>
+    </div>
+  );
+}
+
+function PasswordGate({ error, isUnlocking, onUnlock }) {
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    onUnlock(password);
+  };
+
+  return (
+    <div className="jup-shell secure-shell">
+      <section className="password-gate">
+        <div className="password-mark">WD</div>
+        <div>
+          <span className="panel-kicker">Private dashboard</span>
+          <h1>Wallet Dashboard</h1>
+        </div>
+        <form className="password-form" onSubmit={handleSubmit}>
+          <label htmlFor="dashboard-password">Password</label>
+          <input
+            id="dashboard-password"
+            type="password"
+            autoComplete="current-password"
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            autoFocus
+          />
+          {error ? <p className="password-error">{error}</p> : null}
+          <button type="submit" className="refresh-button" disabled={isUnlocking || !password}>
+            {isUnlocking ? "Unlocking..." : "Unlock"}
+          </button>
+        </form>
+      </section>
     </div>
   );
 }
@@ -821,36 +907,63 @@ export function App() {
   const [protocolFilter, setProtocolFilter] = useState("all");
   const [watchingForRefresh, setWatchingForRefresh] = useState(false);
   const [refreshBaseline, setRefreshBaseline] = useState(null);
+  const [secureData, setSecureData] = useState(null);
+  const [unlockError, setUnlockError] = useState("");
+  const [isUnlocking, setIsUnlocking] = useState(false);
   const deferredScope = useDeferredValue(scope);
 
+  const secureQuery = useQuery({
+    queryKey: ["secure-data"],
+    queryFn: fetchSecurePayload,
+    retry: false,
+  });
+  const securePayload = secureQuery.data ?? null;
+  const secureRequired = Boolean(securePayload);
+  const plainQueriesEnabled = secureQuery.isFetched && !secureRequired;
+
   const generatedQuery = useDashboardQuery(["generated"], `${DATA_BASE}/generated.json`, {
+    enabled: plainQueriesEnabled,
     refetchInterval: watchingForRefresh ? 20_000 : false,
   });
-  const summaryQuery = useDashboardQuery(["summary", deferredScope], `${DATA_BASE}/summary/${deferredScope}.json`);
-  const positionsQuery = useDashboardQuery(["positions", deferredScope], `${DATA_BASE}/positions/${deferredScope}.json`);
+  const summaryQuery = useDashboardQuery(["summary", deferredScope], `${DATA_BASE}/summary/${deferredScope}.json`, {
+    enabled: plainQueriesEnabled,
+  });
+  const positionsQuery = useDashboardQuery(["positions", deferredScope], `${DATA_BASE}/positions/${deferredScope}.json`, {
+    enabled: plainQueriesEnabled,
+  });
   const protocolAllocationQuery = useDashboardQuery(
     ["allocation", "protocol", deferredScope],
     `${DATA_BASE}/allocation/protocol/${deferredScope}.json`,
+    { enabled: plainQueriesEnabled },
   );
   const walletAllocationQuery = useDashboardQuery(
     ["allocation", "wallet", deferredScope],
     `${DATA_BASE}/allocation/wallet/${deferredScope}.json`,
+    { enabled: plainQueriesEnabled },
   );
-  const historyQuery = useDashboardQuery(["history", deferredScope], `${DATA_BASE}/history/${deferredScope}.json`);
-  const pricesQuery = useDashboardQuery(["prices"], `${DATA_BASE}/prices.json`);
-  const runsQuery = useDashboardQuery(["runs"], `${DATA_BASE}/ingestion-runs.json`);
+  const historyQuery = useDashboardQuery(["history", deferredScope], `${DATA_BASE}/history/${deferredScope}.json`, {
+    enabled: plainQueriesEnabled,
+  });
+  const pricesQuery = useDashboardQuery(["prices"], `${DATA_BASE}/prices.json`, { enabled: plainQueriesEnabled });
+  const runsQuery = useDashboardQuery(["runs"], `${DATA_BASE}/ingestion-runs.json`, { enabled: plainQueriesEnabled });
 
-  const generated = generatedQuery.data;
+  const generated = secureData?.generated ?? generatedQuery.data;
   const wallets = generated?.wallets ?? [];
   const trackedTokens = generated?.tracked_tokens ?? [];
-  const summary = summaryQuery.data?.summary;
-  const positions = positionsQuery.data?.positions ?? [];
-  const protocolAllocation = protocolAllocationQuery.data?.allocation ?? [];
-  const walletAllocation = walletAllocationQuery.data?.allocation ?? [];
-  const history = historyQuery.data?.history ?? [];
-  const historyWithLiquidity = historyQuery.data?.history_with_liquidity ?? [];
-  const prices = pricesQuery.data?.prices ?? [];
-  const runs = runsQuery.data?.runs ?? [];
+  const summary = secureData ? secureData.summary?.[deferredScope] : summaryQuery.data?.summary;
+  const positions = secureData ? secureData.positions?.[deferredScope] ?? [] : positionsQuery.data?.positions ?? [];
+  const protocolAllocation = secureData
+    ? secureData.allocation_protocol?.[deferredScope] ?? []
+    : protocolAllocationQuery.data?.allocation ?? [];
+  const walletAllocation = secureData
+    ? secureData.allocation_wallet?.[deferredScope] ?? []
+    : walletAllocationQuery.data?.allocation ?? [];
+  const history = secureData ? secureData.history?.[deferredScope] ?? [] : historyQuery.data?.history ?? [];
+  const historyWithLiquidity = secureData
+    ? secureData.history_with_liquidity?.[deferredScope] ?? []
+    : historyQuery.data?.history_with_liquidity ?? [];
+  const prices = secureData ? secureData.prices ?? [] : pricesQuery.data?.prices ?? [];
+  const runs = secureData ? secureData.ingestion_runs ?? [] : runsQuery.data?.runs ?? [];
   const latestRun = runs[0] ?? null;
   const visibleHistory = historyMode === "with_liquidity" ? historyWithLiquidity : history;
 
@@ -866,16 +979,19 @@ export function App() {
   }, [generated?.generated_at, queryClient, refreshBaseline, watchingForRefresh]);
 
   const isLoading =
-    generatedQuery.isLoading ||
-    summaryQuery.isLoading ||
-    positionsQuery.isLoading ||
-    protocolAllocationQuery.isLoading ||
-    walletAllocationQuery.isLoading ||
-    historyQuery.isLoading ||
-    pricesQuery.isLoading ||
-    runsQuery.isLoading;
+    secureQuery.isLoading ||
+    (!secureRequired &&
+      (generatedQuery.isLoading ||
+        summaryQuery.isLoading ||
+        positionsQuery.isLoading ||
+        protocolAllocationQuery.isLoading ||
+        walletAllocationQuery.isLoading ||
+        historyQuery.isLoading ||
+        pricesQuery.isLoading ||
+        runsQuery.isLoading));
 
   const error = [
+    secureQuery.error,
     generatedQuery.error,
     summaryQuery.error,
     positionsQuery.error,
@@ -885,6 +1001,27 @@ export function App() {
     pricesQuery.error,
     runsQuery.error,
   ].find(Boolean);
+
+  const handleUnlock = async (password) => {
+    if (!securePayload) {
+      return;
+    }
+
+    setUnlockError("");
+    setIsUnlocking(true);
+    try {
+      const nextData = await decryptSecurePayload(securePayload, password);
+      setSecureData(nextData);
+    } catch {
+      setUnlockError("Invalid password.");
+    } finally {
+      setIsUnlocking(false);
+    }
+  };
+
+  if (secureRequired && !secureData) {
+    return <PasswordGate error={unlockError} isUnlocking={isUnlocking} onUnlock={handleUnlock} />;
+  }
 
   const sections = groupProtocolSections(positions);
   const visibleSections = protocolFilter === "all" ? sections : sections.filter((section) => section.key === protocolFilter);

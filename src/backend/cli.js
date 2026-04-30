@@ -70,7 +70,7 @@ async function commandSummary(dbPath, scope) {
 
 async function commandExportStatic(dbPath, outDir) {
   exportStaticJson(dbPath, outDir);
-  process.stdout.write(`Wrote static export to ${outDir}\\portfolio-data.json\n`);
+  process.stdout.write(`Wrote static export to ${outDir}\n`);
 }
 
 async function main(argv = process.argv.slice(2)) {

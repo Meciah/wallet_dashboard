@@ -3,10 +3,10 @@
 JavaScript rewrite of the wallet dashboard: a Node.js CLI and local API for Solana portfolio ingestion, plus a React + Vite frontend deployed to GitHub Pages.
 
 ## What It Does
-- Tracks three configured Solana wallets
+- Tracks configured Solana wallets from `TRACKED_WALLETS_JSON`
 - Stores current positions, snapshots, prices, and ingestion runs in SQLite
 - Ingests wallet balances, Marinade mSOL exposure, Marinade native stake, Raydium LP allowlist positions, and legacy LP allowlist positions
-- Exports both an aggregate static payload and split JSON endpoints for GitHub Pages
+- Exports encrypted static dashboard data for GitHub Pages when `DASHBOARD_PASSWORD` is set
 - Serves a local read-only API with the same main summary/positions/allocation/history/prices/run views
 - Ships a mobile-first React dashboard that queries static JSON on page load
 
@@ -34,7 +34,9 @@ npm run build
 ## Frontend + Pages Model
 - Vite builds the frontend into `docs/`
 - Static portfolio data lives in `docs/data/`
-- The frontend queries split JSON files on load:
+- With `DASHBOARD_PASSWORD`, the static export writes only encrypted data:
+  - `data/secure-data.json`
+- Without `DASHBOARD_PASSWORD`, the frontend can still query split JSON files for local/testing use:
   - `data/generated.json`
   - `data/summary/<scope>.json`
   - `data/positions/<scope>.json`
@@ -43,7 +45,7 @@ npm run build
   - `data/history/<scope>.json`
   - `data/prices.json`
   - `data/ingestion-runs.json`
-- `docs/data/portfolio-data.json` remains as the aggregate compatibility artifact
+  - `data/portfolio-data.json`
 
 The dashboard includes a manual refresh control that opens the GitHub Actions workflow page and then re-checks published metadata for the next export.
 
@@ -57,6 +59,13 @@ The dashboard includes a manual refresh control that opens the GitHub Actions wo
 - exports static JSON
 - builds the React frontend
 - commits updated `docs/` assets back to `main`
+
+Set these repository secrets before running the workflow:
+- `DASHBOARD_PASSWORD`: unlock password for the browser gate and encryption key for `docs/data/secure-data.json`
+- `TRACKED_WALLETS_JSON`: JSON array of wallet objects, for example `[{"scope":"wallet_1","label":"Wallet 1","address":"...","accent":"#7ee787"}]`
+- `SOLANA_RPC_URL`: optional custom RPC URL
+
+When `DASHBOARD_PASSWORD` is present, the static export writes encrypted dashboard data to `docs/data/secure-data.json` instead of committing readable portfolio JSON. The browser unlock screen uses the same password to decrypt the payload locally.
 
 ## Project Layout
 - `src/backend/` Node CLI, data access, adapters, ingestion, export, API

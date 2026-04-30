@@ -48,20 +48,20 @@ describe("frontend dashboard", () => {
         wallets: [
           {
             scope: "wallet_1",
-            label: "3dhj...VK7R",
-            address: "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R",
+            label: "9Bwg...RrkJ",
+            address: "9BwgiKbqpCx8pMAMBrJmuvPBJRc617pyD78tG2eMRrkJ",
             accent: "#7ee787",
           },
           {
             scope: "wallet_2",
-            label: "ELKy...caGS",
-            address: "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS",
+            label: "6kFs...EGDM",
+            address: "6kFs7GfByyVNNr6YdH9r4m5wzUJHn21Cf7KXA9RREGDM",
             accent: "#4ad8ff",
           },
           {
             scope: "wallet_3",
-            label: "CRsH...9zcf",
-            address: "CRsHntQirTYe9zwZYYMJpt6Wm6TaZyncUYF4TgW39zcf",
+            label: "8ymi...mTXV",
+            address: "8ymirZNvy4ESdFEG3g3RFaky6jX3qLzv5RdCPvhLmTXV",
             accent: "#b892ff",
           },
         ],
@@ -96,8 +96,8 @@ describe("frontend dashboard", () => {
         positions: [
           {
             wallet_scope: "wallet_1",
-            wallet_label: "3dhj...VK7R",
-            wallet_address: "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R",
+            wallet_label: "9Bwg...RrkJ",
+            wallet_address: "9BwgiKbqpCx8pMAMBrJmuvPBJRc617pyD78tG2eMRrkJ",
             wallet_accent: "#7ee787",
             protocol: "wallet_tokens",
             protocol_label: "Holdings",
@@ -131,8 +131,8 @@ describe("frontend dashboard", () => {
           },
           {
             wallet_scope: "wallet_2",
-            wallet_label: "ELKy...caGS",
-            wallet_address: "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS",
+            wallet_label: "6kFs...EGDM",
+            wallet_address: "6kFs7GfByyVNNr6YdH9r4m5wzUJHn21Cf7KXA9RREGDM",
             wallet_accent: "#4ad8ff",
             protocol: "marinade_native",
             protocol_label: "Marinade",
@@ -166,8 +166,8 @@ describe("frontend dashboard", () => {
           },
           {
             wallet_scope: "wallet_2",
-            wallet_label: "ELKy...caGS",
-            wallet_address: "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS",
+            wallet_label: "6kFs...EGDM",
+            wallet_address: "6kFs7GfByyVNNr6YdH9r4m5wzUJHn21Cf7KXA9RREGDM",
             wallet_accent: "#4ad8ff",
             protocol: "raydium",
             protocol_label: "Raydium",
@@ -225,8 +225,8 @@ describe("frontend dashboard", () => {
         positions: [
           {
             wallet_scope: "wallet_2",
-            wallet_label: "ELKy...caGS",
-            wallet_address: "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS",
+            wallet_label: "6kFs...EGDM",
+            wallet_address: "6kFs7GfByyVNNr6YdH9r4m5wzUJHn21Cf7KXA9RREGDM",
             wallet_accent: "#4ad8ff",
             protocol: "marinade_native",
             protocol_label: "Marinade",
@@ -260,8 +260,8 @@ describe("frontend dashboard", () => {
           },
           {
             wallet_scope: "wallet_2",
-            wallet_label: "ELKy...caGS",
-            wallet_address: "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS",
+            wallet_label: "6kFs...EGDM",
+            wallet_address: "6kFs7GfByyVNNr6YdH9r4m5wzUJHn21Cf7KXA9RREGDM",
             wallet_accent: "#4ad8ff",
             protocol: "raydium",
             protocol_label: "Raydium",
@@ -337,15 +337,15 @@ describe("frontend dashboard", () => {
         by: "wallet",
         count: 2,
         allocation: [
-          { wallet_scope: "wallet_1", wallet: "3dhj...VK7R", total_usd: 3323.8 },
-          { wallet_scope: "wallet_2", wallet: "ELKy...caGS", total_usd: 751.0 },
+          { wallet_scope: "wallet_1", wallet: "9Bwg...RrkJ", total_usd: 3323.8 },
+          { wallet_scope: "wallet_2", wallet: "6kFs...EGDM", total_usd: 751.0 },
         ],
       },
       "/data/allocation/wallet/wallet_2.json": {
         scope: "wallet_2",
         by: "wallet",
         count: 1,
-        allocation: [{ wallet_scope: "wallet_2", wallet: "ELKy...caGS", total_usd: 612.5 }],
+        allocation: [{ wallet_scope: "wallet_2", wallet: "6kFs...EGDM", total_usd: 612.5 }],
       },
       "/data/history/combined.json": {
         scope: "combined",
@@ -427,12 +427,12 @@ describe("frontend dashboard", () => {
     await screen.findByText("Includes liquidity positions");
     await screen.findByText("+13.19%");
 
-    const wallet2Button = screen.getAllByText("ELKy...caGS")[0].closest("button");
+    const wallet2Button = screen.getAllByText("6kFs...EGDM")[0].closest("button");
     await userEvent.click(wallet2Button);
 
     await waitFor(() => {
       expect(wallet2Button).toHaveClass("is-active");
-      expect(screen.getByText("ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS")).toBeInTheDocument();
+      expect(screen.getByText("6kFs7GfByyVNNr6YdH9r4m5wzUJHn21Cf7KXA9RREGDM")).toBeInTheDocument();
     });
 
     await userEvent.click(screen.getByRole("button", { name: /Refresh export/i }));

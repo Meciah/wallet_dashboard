@@ -38,7 +38,7 @@ function createTempDb() {
 
 function makePosition(overrides = {}) {
   return {
-    wallet_address: "3dhjRbTXZaVeNkUNuXfdrfuJXGFwVhQJLYC39anFVK7R",
+    wallet_address: "9BwgiKbqpCx8pMAMBrJmuvPBJRc617pyD78tG2eMRrkJ",
     protocol: "wallet_tokens",
     position_type: "wallet_balance",
     position_key: "position-1",
@@ -67,7 +67,7 @@ describe("backend db queries", () => {
     upsertCurrentPosition(
       db,
       makePosition({
-        wallet_address: "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS",
+        wallet_address: "6kFs7GfByyVNNr6YdH9r4m5wzUJHn21Cf7KXA9RREGDM",
         protocol: "marinade",
         position_type: "staking",
         position_key: "position-2",
@@ -78,7 +78,7 @@ describe("backend db queries", () => {
     upsertCurrentPosition(
       db,
       makePosition({
-        wallet_address: "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS",
+        wallet_address: "6kFs7GfByyVNNr6YdH9r4m5wzUJHn21Cf7KXA9RREGDM",
         protocol: "raydium",
         position_type: "lp",
         position_key: "position-3",
@@ -107,7 +107,7 @@ describe("backend db queries", () => {
     const runs = listIngestionRuns(db, 5);
 
     expect(positions).toHaveLength(1);
-    expect(positions[0].wallet_label).toBe("3dhj...VK7R");
+    expect(positions[0].wallet_label).toBe("9Bwg...RrkJ");
     expect(history[0].total_usd).toBe(123);
     expect(coreHistory[0].total_usd).toBe(198);
     expect(allocation[0]).toEqual({
