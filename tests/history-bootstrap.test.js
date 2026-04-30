@@ -1,5 +1,6 @@
 // @vitest-environment node
 
+import { createCipheriv, pbkdf2Sync } from "node:crypto";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
@@ -14,6 +15,27 @@ function writeJson(path, payload) {
   mkdirSync(dirname(path), { recursive: true });
   writeFileSync(path, `${JSON.stringify(payload, null, 2)}\n`, "utf8");
 }
+
+function encryptSecurePayload(payload, password) {
+  const salt = Buffer.alloc(16, 1);
+  const iv = Buffer.alloc(12, 2);
+  const key = pbkdf2Sync(password, salt, 1_000, 32, "sha256");
+  const cipher = createCipheriv("aes-256-gcm", key, iv);
+  const ciphertext = Buffer.concat([cipher.update(JSON.stringify(payload), "utf8"), cipher.final()]);
+
+  return {
+    version: 1,
+    kdf: "PBKDF2",
+    hash: "SHA-256",
+    iterations: 1_000,
+    cipher: "AES-GCM",
+    salt: salt.toString("base64"),
+    iv: iv.toString("base64"),
+    tag: cipher.getAuthTag().toString("base64"),
+    data: ciphertext.toString("base64"),
+  };
+}
+
 afterEach(() => {
   while (cleanupPaths.length > 0) {
     rmSync(cleanupPaths.pop(), { recursive: true, force: true });
@@ -260,6 +282,154 @@ describe("history bootstrap", () => {
         scope: "combined",
         series: "with_liquidity",
         total_usd: 140,
+        pnl_24h: null,
+        pnl_7d: null,
+      },
+    ]);
+  });
+
+  it("coalesces same-second snapshots and prefers filtered position-derived totals", () => {
+    const dir = mkdtempSync(join(tmpdir(), "wallet-dashboard-history-"));
+    const historyDir = join(dir, "history");
+    const dataDir = join(dir, "data");
+    cleanupPaths.push(dir);
+
+    const merged = loadSeedPortfolioHistory({
+      repoRoot: dir,
+      historyDir,
+      dataDir,
+      scopes: ["combined"],
+      readFileSyncImpl: readFileSync,
+      existsSyncImpl: () => false,
+      execFileSyncImpl: vi.fn((command, args) => {
+        const joined = args.join(" ");
+        if (joined.includes("log") && joined.includes("data/positions/combined.json")) {
+          return "positionsha 2026-04-29T16:53:00+00:00\n";
+        }
+
+        if (joined.includes("show") && joined.includes("positionsha:data/generated.json")) {
+          return JSON.stringify({ latest_run_started_at: "2026-04-29T16:52:39.393Z" });
+        }
+
+        if (joined.includes("show") && joined.includes("positionsha:data/positions/combined.json")) {
+          return JSON.stringify({
+            scope: "combined",
+            positions: [
+              { protocol_category: "wallet", position_type: "spot", usd_value: 100 },
+              { protocol_category: "wallet", position_type: "spot", usd_value: 9000, asset_symbol: "JUPHUB" },
+              { protocol_category: "lp", position_type: "lp", usd_value: 25 },
+            ],
+          });
+        }
+
+        if (joined.includes("log") && joined.includes("history/combined.json")) {
+          return "historysha\n";
+        }
+
+        if (joined.includes("show") && joined.includes("historysha:history/combined.json")) {
+          return JSON.stringify({
+            scope: "combined",
+            history: [{ snapshot_ts: "2026-04-29T16:52:39.394Z", scope: "combined", total_usd: 9100 }],
+            history_with_liquidity: [
+              { snapshot_ts: "2026-04-29T16:52:39.394Z", scope: "combined", total_usd: 9125 },
+            ],
+          });
+        }
+
+        return "";
+      }),
+      limit: 10,
+    });
+
+    expect(merged).toEqual([
+      {
+        snapshot_ts: "2026-04-29T16:52:39.393Z",
+        scope: "combined",
+        series: "core",
+        total_usd: 100,
+        pnl_24h: null,
+        pnl_7d: null,
+      },
+      {
+        snapshot_ts: "2026-04-29T16:52:39.393Z",
+        scope: "combined",
+        series: "with_liquidity",
+        total_usd: 125,
+        pnl_24h: null,
+        pnl_7d: null,
+      },
+    ]);
+  });
+
+  it("seeds history from encrypted secure data when a dashboard password is available", () => {
+    const dir = mkdtempSync(join(tmpdir(), "wallet-dashboard-history-"));
+    const dataDir = join(dir, "data");
+    cleanupPaths.push(dir);
+
+    writeJson(
+      join(dataDir, "secure-data.json"),
+      encryptSecurePayload(
+        {
+          generated: { generated_at: "2026-04-30T00:01:21.892Z" },
+          positions: {
+            combined: [
+              { protocol_category: "wallet", position_type: "spot", usd_value: 80 },
+              { protocol_category: "lp", position_type: "lp", usd_value: 20 },
+            ],
+          },
+          history: {
+            combined: [{ snapshot_ts: "2026-04-29T23:00:00.000Z", scope: "combined", total_usd: 70 }],
+          },
+          history_with_liquidity: {
+            combined: [{ snapshot_ts: "2026-04-29T23:00:00.000Z", scope: "combined", total_usd: 90 }],
+          },
+        },
+        "secret",
+      ),
+    );
+
+    const snapshots = loadSeedPortfolioHistory({
+      repoRoot: dir,
+      historyDir: join(dataDir, "history"),
+      dataDir,
+      scopes: ["combined"],
+      password: "secret",
+      execFileSyncImpl: vi.fn(() => ""),
+      readFileSyncImpl: readFileSync,
+      existsSyncImpl: existsSync,
+      limit: 10,
+    });
+
+    expect(snapshots).toEqual([
+      {
+        snapshot_ts: "2026-04-30T00:01:21.892Z",
+        scope: "combined",
+        series: "core",
+        total_usd: 80,
+        pnl_24h: null,
+        pnl_7d: null,
+      },
+      {
+        snapshot_ts: "2026-04-29T23:00:00.000Z",
+        scope: "combined",
+        series: "core",
+        total_usd: 70,
+        pnl_24h: null,
+        pnl_7d: null,
+      },
+      {
+        snapshot_ts: "2026-04-30T00:01:21.892Z",
+        scope: "combined",
+        series: "with_liquidity",
+        total_usd: 100,
+        pnl_24h: null,
+        pnl_7d: null,
+      },
+      {
+        snapshot_ts: "2026-04-29T23:00:00.000Z",
+        scope: "combined",
+        series: "with_liquidity",
+        total_usd: 90,
         pnl_24h: null,
         pnl_7d: null,
       },
