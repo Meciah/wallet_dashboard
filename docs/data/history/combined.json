@@ -3,6 +3,14 @@
   "count": 300,
   "history": [
     {
+      "snapshot_ts": "2026-04-30T01:38:11.399Z",
+      "scope": "combined",
+      "series": "core",
+      "total_usd": 35881.42755770506,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
+    {
       "snapshot_ts": "2026-04-30T00:01:21.893Z",
       "scope": "combined",
       "series": "core",
@@ -2393,18 +2401,18 @@
       "total_usd": 28739.356752221993,
       "pnl_24h": null,
       "pnl_7d": null
-    },
-    {
-      "snapshot_ts": "2026-04-12T08:01:58.873Z",
-      "scope": "combined",
-      "series": "core",
-      "total_usd": 28757.458558868948,
-      "pnl_24h": null,
-      "pnl_7d": null
     }
   ],
   "count_with_liquidity": 300,
   "history_with_liquidity": [
+    {
+      "snapshot_ts": "2026-04-30T01:38:11.399Z",
+      "scope": "combined",
+      "series": "with_liquidity",
+      "total_usd": 42699.12545972788,
+      "pnl_24h": null,
+      "pnl_7d": null
+    },
     {
       "snapshot_ts": "2026-04-30T00:01:21.893Z",
       "scope": "combined",
@@ -4791,14 +4799,6 @@
     },
     {
       "snapshot_ts": "2026-04-20T16:06:26.967Z",
-      "scope": "combined",
-      "series": "with_liquidity",
-      "total_usd": 34737.33155609193,
-      "pnl_24h": null,
-      "pnl_7d": null
-    },
-    {
-      "snapshot_ts": "2026-04-20T16:06:26.966Z",
       "scope": "combined",
       "series": "with_liquidity",
       "total_usd": 34737.33155609193,

@@ -4,20 +4,20 @@
   "count": 3,
   "allocation": [
     {
-      "protocol": "marinade",
-      "protocol_label": "Marinade",
-      "protocols": [
-        "marinade_native"
-      ],
-      "total_usd": 16829.751180905696
-    },
-    {
       "protocol": "holdings",
       "protocol_label": "Holdings",
       "protocols": [
         "wallet_tokens"
       ],
-      "total_usd": 16558.141270865413
+      "total_usd": 18901.64606871756
+    },
+    {
+      "protocol": "marinade",
+      "protocol_label": "Marinade",
+      "protocols": [
+        "marinade_native"
+      ],
+      "total_usd": 16979.781488987497
     },
     {
       "protocol": "raydium",
@@ -25,7 +25,7 @@
       "protocols": [
         "raydium"
       ],
-      "total_usd": 6110.693469931377
+      "total_usd": 6817.697902022829
     }
   ]
 }
