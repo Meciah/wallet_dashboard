@@ -25,7 +25,7 @@ import {
   upsertCurrentPosition,
   upsertPrice,
 } from "../src/backend/db.js";
-import { HISTORY_SERIES } from "../src/backend/config.js";
+import { HISTORY_SERIES, PUMP_MINT, SOL_MINT, URMOM_MINT } from "../src/backend/config.js";
 
 function createTempDb() {
   const dir = mkdtempSync(join(tmpdir(), "wallet-dashboard-"));
@@ -42,7 +42,7 @@ function makePosition(overrides = {}) {
     protocol: "wallet_tokens",
     position_type: "wallet_balance",
     position_key: "position-1",
-    quantity: [{ mint: "mint-1", symbol: "M1", amount: 1 }],
+    quantity: [{ mint: PUMP_MINT, symbol: "PUMP", amount: 1 }],
     usd_value: 123,
     raw: { source: "test" },
     updated_at: "2026-04-02T18:45:48.266Z",
@@ -71,7 +71,7 @@ describe("backend db queries", () => {
         protocol: "marinade",
         position_type: "staking",
         position_key: "position-2",
-        quantity: [{ mint: "mint-2", symbol: "M2", amount: 2 }],
+        quantity: [{ mint: SOL_MINT, symbol: "SOL", amount: 2 }],
         usd_value: 75,
       }),
     );
@@ -82,7 +82,7 @@ describe("backend db queries", () => {
         protocol: "raydium",
         position_type: "lp",
         position_key: "position-3",
-        quantity: [{ mint: "mint-3", symbol: "M3", amount: 3 }],
+        quantity: [{ mint: URMOM_MINT, symbol: "URMOM", amount: 3 }],
         usd_value: 25,
       }),
     );
@@ -92,9 +92,9 @@ describe("backend db queries", () => {
     const coreSummary = summarizeHistoryScope(db, "combined");
     coreSummary.snapshot_ts = "2026-04-28T18:45:48.266Z";
     savePortfolioSnapshotSeries(db, coreSummary, HISTORY_SERIES.CORE);
-    upsertPrice(db, "mint-1", 1, "seed");
-    upsertPrice(db, "mint-1", 2, "seed");
-    upsertPrice(db, "mint-2", 5, "seed");
+    upsertPrice(db, PUMP_MINT, 1, "seed");
+    upsertPrice(db, PUMP_MINT, 2, "seed");
+    upsertPrice(db, SOL_MINT, 5, "seed");
 
     const runId = startIngestionRun(db);
     finishIngestionRun(db, runId, "success", 0, "ok");
@@ -116,7 +116,7 @@ describe("backend db queries", () => {
       protocols: ["wallet_tokens"],
       total_usd: 123,
     });
-    expect(prices.find((item) => item.mint === "mint-1")?.price_usd).toBe(2);
+    expect(prices.find((item) => item.mint === PUMP_MINT)?.price_usd).toBe(2);
     expect(runs[0].status).toBe("success");
 
     db.close();
@@ -127,7 +127,7 @@ describe("backend db queries", () => {
     cleanupPaths.push(dir);
     const snapshotTs = "2026-04-29T12:00:00.000Z";
     const goodPosition = makePosition({
-      quantity: [{ mint: "mint-1", symbol: "M1", name: "Token One", amount: 1 }],
+      quantity: [{ mint: PUMP_MINT, symbol: "PUMP", name: "Pump", amount: 1 }],
       usd_value: 123,
     });
     const scamPosition = makePosition({

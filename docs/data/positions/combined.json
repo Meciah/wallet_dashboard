@@ -1,6 +1,6 @@
 {
   "scope": "combined",
-  "count": 12,
+  "count": 11,
   "positions": [
     {
       "wallet_scope": "wallet_2",
@@ -406,66 +406,6 @@
             "price_usd": 83.01,
             "price_change_24h": -1.21,
             "usd_value": 16829.751180905696
-          }
-        ],
-        "rewards_usd": 0,
-        "pnl_usd": 0
-      }
-    },
-    {
-      "wallet_scope": "wallet_2",
-      "wallet_label": "ELKy...caGS",
-      "wallet_address": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS",
-      "wallet_accent": "#4ad8ff",
-      "protocol": "wallet_tokens",
-      "protocol_label": "Holdings",
-      "protocol_section": "holdings",
-      "protocol_category": "wallet",
-      "position_type": "wallet_balance",
-      "position_key": "ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS:token:Gy6Du8Ty2YXxRe8UzUavewy1RT78XBoVnZuVtYsSYcfM",
-      "usd_value": 9142.01685,
-      "updated_at": "2026-04-30T00:01:23.798Z",
-      "quantity": [
-        {
-          "mint": "Gy6Du8Ty2YXxRe8UzUavewy1RT78XBoVnZuVtYsSYcfM",
-          "symbol": "JUPHUB",
-          "amount": 528135,
-          "name": "JupiterHub.io",
-          "icon_url": null,
-          "decimals": 6,
-          "price_usd": 0.01731,
-          "price_change_24h": 72,
-          "usd_value": 9142.01685
-        }
-      ],
-      "asset_mint": "Gy6Du8Ty2YXxRe8UzUavewy1RT78XBoVnZuVtYsSYcfM",
-      "asset_symbol": "JUPHUB",
-      "asset_name": "JupiterHub.io",
-      "icon_url": null,
-      "unit_price_usd": 0.01731,
-      "price_change_24h": 72,
-      "rewards_usd": 0,
-      "raw": {
-        "mint": "Gy6Du8Ty2YXxRe8UzUavewy1RT78XBoVnZuVtYsSYcfM",
-        "amount": "528135",
-        "decimals": 6,
-        "state": "frozen",
-        "unit_price_usd": 0.01731,
-        "price_change_24h": 72,
-        "icon_url": null,
-        "display_name": "JupiterHub.io",
-        "display_symbol": "JUPHUB",
-        "quantity": [
-          {
-            "mint": "Gy6Du8Ty2YXxRe8UzUavewy1RT78XBoVnZuVtYsSYcfM",
-            "symbol": "JUPHUB",
-            "amount": 528135,
-            "name": "JupiterHub.io",
-            "icon_url": null,
-            "decimals": 6,
-            "price_usd": 0.01731,
-            "price_change_24h": 72,
-            "usd_value": 9142.01685
           }
         ],
         "rewards_usd": 0,

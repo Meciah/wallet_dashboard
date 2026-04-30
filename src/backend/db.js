@@ -55,21 +55,30 @@ function safeJsonParse(value, fallback) {
   }
 }
 
+function hasTokenIdentity(candidate) {
+  return Boolean(String(candidate?.mint ?? "").trim() || String(candidate?.symbol ?? "").trim());
+}
+
 function isIgnoredPositionPayload(raw, quantity = []) {
-  const candidates = [
-    {
-      mint: raw?.mint,
-      symbol: raw?.display_symbol,
-      name: raw?.display_name,
-    },
-    ...quantity.map((item) => ({
+  const quantityCandidates = quantity
+    .map((item) => ({
       mint: item?.mint,
       symbol: item?.symbol,
       name: item?.name,
-    })),
-  ];
+    }))
+    .filter(hasTokenIdentity);
 
-  return candidates.some((candidate) => shouldIgnoreTokenIdentity(candidate));
+  if (quantityCandidates.length > 0) {
+    return quantityCandidates.some((candidate) => shouldIgnoreTokenIdentity(candidate));
+  }
+
+  const fallback = {
+    mint: raw?.mint,
+    symbol: raw?.display_symbol,
+    name: raw?.display_name,
+  };
+
+  return hasTokenIdentity(fallback) && shouldIgnoreTokenIdentity(fallback);
 }
 
 function sumUsd(positions) {

@@ -1,13 +1,13 @@
 {
-  "count": 4,
+  "count": 3,
   "prices": [
     {
-      "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
-      "symbol": "URMOM",
-      "name": "URMOM",
-      "icon_url": "https://img-v1.raydium.io/icon/9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump.png",
-      "asof_ts": "2026-04-30T00:01:30.448Z",
-      "price_usd": 0.000248,
+      "mint": "So11111111111111111111111111111111111111112",
+      "symbol": "SOL",
+      "name": "Solana",
+      "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
+      "asof_ts": "2026-04-30T00:47:50.277Z",
+      "price_usd": 83.01,
       "source": "provider_chain",
       "confidence": null
     },
@@ -16,28 +16,18 @@
       "symbol": "PUMP",
       "name": "Pump",
       "icon_url": "https://coin-images.coingecko.com/coins/images/67164/large/pump.jpg",
-      "asof_ts": "2026-04-30T00:01:30.447Z",
+      "asof_ts": "2026-04-30T00:47:50.269Z",
       "price_usd": 0.00174243,
       "source": "provider_chain",
       "confidence": null
     },
     {
-      "mint": "So11111111111111111111111111111111111111112",
-      "symbol": "SOL",
-      "name": "Solana",
-      "icon_url": "https://img-v1.raydium.io/icon/So11111111111111111111111111111111111111112.png",
-      "asof_ts": "2026-04-30T00:01:30.294Z",
-      "price_usd": 83.01,
-      "source": "provider_chain",
-      "confidence": null
-    },
-    {
-      "mint": "Gy6Du8Ty2YXxRe8UzUavewy1RT78XBoVnZuVtYsSYcfM",
-      "symbol": null,
-      "name": null,
-      "icon_url": null,
-      "asof_ts": "2026-04-30T00:01:23.985Z",
-      "price_usd": 0.01731,
+      "mint": "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump",
+      "symbol": "URMOM",
+      "name": "URMOM",
+      "icon_url": "https://img-v1.raydium.io/icon/9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump.png",
+      "asof_ts": "2026-04-30T00:47:50.261Z",
+      "price_usd": 0.000248,
       "source": "provider_chain",
       "confidence": null
     }

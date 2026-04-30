@@ -57,6 +57,10 @@ function readGeneratedTimestamp(payloadText) {
   }
 }
 
+function hasTokenIdentity(candidate) {
+  return Boolean(String(candidate?.mint ?? "").trim() || String(candidate?.symbol ?? "").trim());
+}
+
 function positionContainsIgnoredToken(position) {
   const raw = position?.raw ?? {};
   const quantity = Array.isArray(position?.quantity)
@@ -64,20 +68,25 @@ function positionContainsIgnoredToken(position) {
     : Array.isArray(raw.quantity)
       ? raw.quantity
       : [];
-  const candidates = [
-    {
-      mint: position?.asset_mint ?? raw.mint,
-      symbol: position?.asset_symbol ?? raw.display_symbol,
-      name: position?.asset_name ?? raw.display_name,
-    },
-    ...quantity.map((item) => ({
+  const quantityCandidates = quantity
+    .map((item) => ({
       mint: item?.mint,
       symbol: item?.symbol,
       name: item?.name,
-    })),
-  ];
+    }))
+    .filter(hasTokenIdentity);
 
-  return candidates.some((candidate) => shouldIgnoreTokenIdentity(candidate));
+  if (quantityCandidates.length > 0) {
+    return quantityCandidates.some((candidate) => shouldIgnoreTokenIdentity(candidate));
+  }
+
+  const fallback = {
+    mint: position?.asset_mint ?? raw.mint,
+    symbol: position?.asset_symbol ?? raw.display_symbol,
+    name: position?.asset_name ?? raw.display_name,
+  };
+
+  return hasTokenIdentity(fallback) && shouldIgnoreTokenIdentity(fallback);
 }
 
 function parsePositionsPayload(payloadText, fallbackScope, snapshotTs) {

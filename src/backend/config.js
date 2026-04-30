@@ -11,6 +11,8 @@ export const SOL_MINT = "So11111111111111111111111111111111111111112";
 export const MSOL_MINT = "mSoLzYCxHdYgdzUevW6Y8k9sW5M2YfLQ7fPjYq4Jp7";
 export const PUMP_MINT = "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn";
 export const URMOM_MINT = "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump";
+export const ALLOWED_TOKEN_MINTS = [SOL_MINT, PUMP_MINT, URMOM_MINT];
+export const ALLOWED_TOKEN_SYMBOLS = ["SOL", "PUMP", "URMOM"];
 
 export const TRACKED_WALLETS = [
   {
@@ -85,12 +87,6 @@ export const RAYDIUM_LP_MINTS = {};
 
 export const MARINADE_NATIVE_STAKER_AUTHORITY = "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq";
 
-export const IGNORED_TOKEN_MINTS = [];
-export const IGNORED_TOKEN_SYMBOLS = ["JUPHUB"];
-
-const DOMAIN_LIKE_TOKEN_PATTERN =
-  /\b(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?:app|com|finance|fun|io|link|live|net|org|site|shop|top|xyz)\b/i;
-
 export const COINGECKO_IDS_BY_MINT = {
   [SOL_MINT]: "solana",
   [MSOL_MINT]: "marinade-staked-sol",
@@ -137,17 +133,22 @@ export function tokenMetadataForMint(mint) {
   return TOKEN_METADATA_OVERRIDES[mint] ?? null;
 }
 
+export function isAllowedTokenIdentity(token = {}) {
+  const mint = String(token?.mint ?? "").trim();
+  if (mint) {
+    return ALLOWED_TOKEN_MINTS.includes(mint);
+  }
+
+  const symbol = String(token?.symbol ?? "").trim().toUpperCase();
+  return Boolean(symbol && ALLOWED_TOKEN_SYMBOLS.includes(symbol));
+}
+
 export function shouldIgnoreTokenIdentity(token = {}) {
   const mint = String(token?.mint ?? "").trim();
-  if (mint && IGNORED_TOKEN_MINTS.includes(mint)) {
-    return true;
-  }
-
   const symbol = String(token?.symbol ?? "").trim();
-  if (symbol && IGNORED_TOKEN_SYMBOLS.includes(symbol.toUpperCase())) {
-    return true;
+  if (!mint && !symbol) {
+    return false;
   }
 
-  const name = String(token?.name ?? "").trim();
-  return [symbol, name].some((value) => DOMAIN_LIKE_TOKEN_PATTERN.test(value));
+  return !isAllowedTokenIdentity({ mint, symbol });
 }

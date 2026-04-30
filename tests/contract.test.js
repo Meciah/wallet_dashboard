@@ -8,6 +8,7 @@ import { afterEach, describe, expect, it } from "vitest";
 
 import { exportStaticJson } from "../src/backend/export-static.js";
 import { applySchema, connect, seedWalletsAndProtocols, upsertCurrentPosition } from "../src/backend/db.js";
+import { PUMP_MINT } from "../src/backend/config.js";
 
 const cleanupPaths = [];
 
@@ -46,7 +47,7 @@ describe("export contract", () => {
       protocol: "wallet_tokens",
       position_type: "wallet_balance",
       position_key: "contract-position",
-      quantity: [{ mint: "mint-1", symbol: "M1", amount: 1 }],
+      quantity: [{ mint: PUMP_MINT, symbol: "PUMP", amount: 1 }],
       usd_value: 50,
       raw: { source: "fixture" },
       updated_at: "2026-04-02T18:45:48.266Z",

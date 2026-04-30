@@ -250,14 +250,17 @@ describe("providers and adapters", () => {
     expect(walletPositions.find((position) => position.raw.display_symbol === "URMOM")?.usd_value).toBeCloseTo(0.0020625, 7);
   });
 
-  it("skips scam-like URL tokens even when they have a provider price", async () => {
+  it("skips non-allowlisted tokens even when they have a provider price", async () => {
     const scamMint = "JupHubMint123";
     const chainProvider = {
       async getSolBalance() {
         return 1.5;
       },
       async getTokenBalances() {
-        return [{ mint: scamMint, amount: 528_135, decimals: 6, symbol: "JUPHUB", name: "JupiterHub.io" }];
+        return [
+          { mint: scamMint, amount: 528_135, decimals: 6, symbol: "JUPHUB", name: "JupiterHub.io" },
+          { mint: "FakePumpMint123", amount: 100_000, decimals: 6, symbol: "PUMP", name: "Pump" },
+        ];
       },
     };
     const priceProvider = {
@@ -265,6 +268,7 @@ describe("providers and adapters", () => {
         return {
           [SOL_MINT]: { mint, priceUsd: 100, symbol: "SOL", name: "Solana" },
           [scamMint]: { mint, priceUsd: 0.0173, symbol: "JUPHUB", name: "JupiterHub.io" },
+          FakePumpMint123: { mint, priceUsd: 0.001, symbol: "PUMP", name: "Pump" },
         }[mint] ?? null;
       },
     };
@@ -354,9 +358,9 @@ describe("providers and adapters", () => {
     const raydiumPositions = await raydiumAdapter.collectPositions("ELKyH6iy7Qift7bze1kg6Z6aeCuzjhCwt3MtVMnMcaGS");
     const lpPositions = await new LpTokenAdapter(chainProvider, priceProvider).collectPositions("wallet");
 
-    expect(walletPositions).toHaveLength(3);
+    expect(walletPositions).toHaveLength(2);
     expect(walletPositions.find((position) => position.raw.display_symbol === "URMOM")?.usd_value).toBe(3300);
-    expect(walletPositions.reduce((total, position) => total + position.usd_value, 0)).toBe(3460);
+    expect(walletPositions.reduce((total, position) => total + position.usd_value, 0)).toBe(3450);
     expect(marinadePositions[0].usd_value).toBe(270);
     expect(nativePositions[0].usd_value).toBe(150);
     expect(raydiumPositions).toHaveLength(1);
