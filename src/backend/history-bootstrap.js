@@ -2,7 +2,7 @@ import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import { relative, resolve } from "node:path";
 
-import { DEFAULT_STATIC_OUT_DIR, HISTORY_SERIES, SCOPES } from "./config.js";
+import { DEFAULT_STATIC_OUT_DIR, HISTORY_SERIES, SCOPES, shouldIgnoreTokenIdentity } from "./config.js";
 
 function normalizeSnapshot(snapshot, fallbackScope, fallbackSeries = HISTORY_SERIES.WITH_LIQUIDITY) {
   if (!snapshot?.snapshot_ts) {
@@ -57,6 +57,29 @@ function readGeneratedTimestamp(payloadText) {
   }
 }
 
+function positionContainsIgnoredToken(position) {
+  const raw = position?.raw ?? {};
+  const quantity = Array.isArray(position?.quantity)
+    ? position.quantity
+    : Array.isArray(raw.quantity)
+      ? raw.quantity
+      : [];
+  const candidates = [
+    {
+      mint: position?.asset_mint ?? raw.mint,
+      symbol: position?.asset_symbol ?? raw.display_symbol,
+      name: position?.asset_name ?? raw.display_name,
+    },
+    ...quantity.map((item) => ({
+      mint: item?.mint,
+      symbol: item?.symbol,
+      name: item?.name,
+    })),
+  ];
+
+  return candidates.some((candidate) => shouldIgnoreTokenIdentity(candidate));
+}
+
 function parsePositionsPayload(payloadText, fallbackScope, snapshotTs) {
   if (!snapshotTs) {
     return [];
@@ -70,6 +93,7 @@ function parsePositionsPayload(payloadText, fallbackScope, snapshotTs) {
 
     const scope = payload.scope ?? fallbackScope;
     let coreTotalUsd = 0;
+    let totalUsd = 0;
 
     for (const position of payload.positions) {
       const usdValue = Number(position?.usd_value ?? 0);
@@ -77,6 +101,11 @@ function parsePositionsPayload(payloadText, fallbackScope, snapshotTs) {
         continue;
       }
 
+      if (positionContainsIgnoredToken(position)) {
+        continue;
+      }
+
+      totalUsd += usdValue;
       const protocolCategory = position?.protocol_category ?? position?.raw?.protocol_category ?? null;
       const positionType = position?.position_type ?? position?.raw?.position_type ?? null;
       if (protocolCategory !== "lp" && positionType !== "lp") {
@@ -85,6 +114,16 @@ function parsePositionsPayload(payloadText, fallbackScope, snapshotTs) {
     }
 
     return [
+      normalizeSnapshot(
+        {
+          snapshot_ts: snapshotTs,
+          scope,
+          series: HISTORY_SERIES.WITH_LIQUIDITY,
+          total_usd: totalUsd,
+        },
+        scope,
+        HISTORY_SERIES.WITH_LIQUIDITY,
+      ),
       normalizeSnapshot(
         {
           snapshot_ts: snapshotTs,
@@ -155,6 +194,30 @@ function collectHistoryFromGit(repoRoot, historyDir, scopes, execFileSyncImpl) {
   return snapshots;
 }
 
+function collectPositionSnapshotsFromFiles(dataDir, scopes, readFileSyncImpl, existsSyncImpl) {
+  const generatedPath = resolve(dataDir, "generated.json");
+  if (!existsSyncImpl(generatedPath)) {
+    return [];
+  }
+
+  const snapshotTs = readGeneratedTimestamp(readFileSyncImpl(generatedPath, "utf8"));
+  if (!snapshotTs) {
+    return [];
+  }
+
+  const snapshots = [];
+  for (const scope of scopes) {
+    const filePath = resolve(dataDir, "positions", `${scope}.json`);
+    if (!existsSyncImpl(filePath)) {
+      continue;
+    }
+
+    snapshots.push(...parsePositionsPayload(readFileSyncImpl(filePath, "utf8"), scope, snapshotTs));
+  }
+
+  return snapshots;
+}
+
 function collectPositionSnapshotsFromGit(repoRoot, dataDir, scopes, execFileSyncImpl) {
   const snapshots = [];
   const generatedRelativePath = relative(repoRoot, resolve(dataDir, "generated.json")).replaceAll("\\", "/");
@@ -163,7 +226,6 @@ function collectPositionSnapshotsFromGit(repoRoot, dataDir, scopes, execFileSync
   }
 
   const generatedTimestampCache = new Map();
-  const historyPayloadCache = new Map();
   const readCommitTimestamp = (commit, commitDate) => {
     if (generatedTimestampCache.has(commit)) {
       return generatedTimestampCache.get(commit);
@@ -188,7 +250,6 @@ function collectPositionSnapshotsFromGit(repoRoot, dataDir, scopes, execFileSync
   for (const scope of scopes) {
     const filePath = resolve(dataDir, "positions", `${scope}.json`);
     const relativePath = relative(repoRoot, filePath).replaceAll("\\", "/");
-    const historyRelativePath = relative(repoRoot, resolve(dataDir, "history", `${scope}.json`)).replaceAll("\\", "/");
     if (!relativePath || relativePath.startsWith("..")) {
       continue;
     }
@@ -213,29 +274,6 @@ function collectPositionSnapshotsFromGit(repoRoot, dataDir, scopes, execFileSync
 
     for (const { commit, commitDate } of commits) {
       try {
-        if (historyRelativePath && !historyRelativePath.startsWith("..")) {
-          const historyCacheKey = `${commit}:${historyRelativePath}`;
-          let hasSeparateCoreHistory = historyPayloadCache.get(historyCacheKey);
-          if (hasSeparateCoreHistory === undefined) {
-            try {
-              const historyText = execFileSyncImpl("git", ["show", `${commit}:${historyRelativePath}`], {
-                cwd: repoRoot,
-                encoding: "utf8",
-                stdio: ["ignore", "pipe", "ignore"],
-              });
-              const payload = JSON.parse(historyText);
-              hasSeparateCoreHistory = Array.isArray(payload.history_with_liquidity);
-            } catch {
-              hasSeparateCoreHistory = false;
-            }
-            historyPayloadCache.set(historyCacheKey, hasSeparateCoreHistory);
-          }
-
-          if (hasSeparateCoreHistory) {
-            continue;
-          }
-        }
-
         const positionsText = execFileSyncImpl("git", ["show", `${commit}:${relativePath}`], {
           cwd: repoRoot,
           encoding: "utf8",
@@ -319,12 +357,13 @@ export function loadSeedPortfolioHistory(options = {}) {
   const existsSyncImpl = options.existsSyncImpl ?? existsSync;
   const execFileSyncImpl = options.execFileSyncImpl ?? execFileSync;
 
+  const filePositionSnapshots = collectPositionSnapshotsFromFiles(dataDir, scopes, readFileSyncImpl, existsSyncImpl);
+  const gitPositionSnapshots = collectPositionSnapshotsFromGit(repoRoot, dataDir, scopes, execFileSyncImpl);
   const fileSnapshots = collectHistoryFromFiles(historyDir, scopes, readFileSyncImpl, existsSyncImpl);
   const gitSnapshots = collectHistoryFromGit(repoRoot, historyDir, scopes, execFileSyncImpl);
-  const gitPositionSnapshots = collectPositionSnapshotsFromGit(repoRoot, dataDir, scopes, execFileSyncImpl);
 
   return mergeHistorySnapshots(
-    [...fileSnapshots, ...gitSnapshots, ...gitPositionSnapshots],
+    [...filePositionSnapshots, ...gitPositionSnapshots, ...fileSnapshots, ...gitSnapshots],
     scopes,
     options.limit ?? 300,
   );

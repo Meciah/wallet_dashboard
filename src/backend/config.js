@@ -85,6 +85,12 @@ export const RAYDIUM_LP_MINTS = {};
 
 export const MARINADE_NATIVE_STAKER_AUTHORITY = "stWirqFCf2Uts1JBL1Jsd3r6VBWhgnpdPxCTe1MFjrq";
 
+export const IGNORED_TOKEN_MINTS = [];
+export const IGNORED_TOKEN_SYMBOLS = ["JUPHUB"];
+
+const DOMAIN_LIKE_TOKEN_PATTERN =
+  /\b(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)+(?:app|com|finance|fun|io|link|live|net|org|site|shop|top|xyz)\b/i;
+
 export const COINGECKO_IDS_BY_MINT = {
   [SOL_MINT]: "solana",
   [MSOL_MINT]: "marinade-staked-sol",
@@ -129,4 +135,19 @@ export function protocolPresentation(protocol) {
 
 export function tokenMetadataForMint(mint) {
   return TOKEN_METADATA_OVERRIDES[mint] ?? null;
+}
+
+export function shouldIgnoreTokenIdentity(token = {}) {
+  const mint = String(token?.mint ?? "").trim();
+  if (mint && IGNORED_TOKEN_MINTS.includes(mint)) {
+    return true;
+  }
+
+  const symbol = String(token?.symbol ?? "").trim();
+  if (symbol && IGNORED_TOKEN_SYMBOLS.includes(symbol.toUpperCase())) {
+    return true;
+  }
+
+  const name = String(token?.name ?? "").trim();
+  return [symbol, name].some((value) => DOMAIN_LIKE_TOKEN_PATTERN.test(value));
 }

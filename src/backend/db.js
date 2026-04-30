@@ -9,6 +9,7 @@ import {
   TRACKED_WALLETS,
   getWalletMetadata,
   protocolPresentation,
+  shouldIgnoreTokenIdentity,
   tokenMetadataForMint,
 } from "./config.js";
 import { utcNowIso } from "./utils.js";
@@ -44,6 +45,35 @@ function normalizeLegacyQuantity(raw) {
   }
 
   return [];
+}
+
+function safeJsonParse(value, fallback) {
+  try {
+    return JSON.parse(value);
+  } catch {
+    return fallback;
+  }
+}
+
+function isIgnoredPositionPayload(raw, quantity = []) {
+  const candidates = [
+    {
+      mint: raw?.mint,
+      symbol: raw?.display_symbol,
+      name: raw?.display_name,
+    },
+    ...quantity.map((item) => ({
+      mint: item?.mint,
+      symbol: item?.symbol,
+      name: item?.name,
+    })),
+  ];
+
+  return candidates.some((candidate) => shouldIgnoreTokenIdentity(candidate));
+}
+
+function sumUsd(positions) {
+  return positions.reduce((total, position) => total + Number(position.usd_value ?? 0), 0);
 }
 
 function createSummary(scope, totalUsd) {
@@ -234,47 +264,14 @@ export function seedPortfolioSnapshots(db, snapshots = []) {
   }
 }
 export function summarizeScope(db, scope) {
-  if (scope === "combined") {
-    const row = db.prepare("SELECT COALESCE(SUM(usd_value), 0) AS total FROM positions_current").get();
-    return createSummary(scope, row?.total);
-  }
-
-  const row = db
-    .prepare(`
-      SELECT COALESCE(SUM(pc.usd_value), 0) AS total
-      FROM positions_current pc
-      JOIN wallets w ON w.id = pc.wallet_id
-      WHERE w.label = ?
-    `)
-    .get(scope);
-
-  return createSummary(scope, row?.total);
+  return createSummary(scope, sumUsd(listCurrentPositions(db, scope)));
 }
 
 export function summarizeHistoryScope(db, scope) {
-  if (scope === "combined") {
-    const row = db
-      .prepare(`
-        SELECT COALESCE(SUM(pc.usd_value), 0) AS total
-        FROM positions_current pc
-        JOIN protocols p ON p.id = pc.protocol_id
-        WHERE p.category != 'lp'
-      `)
-      .get();
-    return createSummary(scope, row?.total);
-  }
-
-  const row = db
-    .prepare(`
-      SELECT COALESCE(SUM(pc.usd_value), 0) AS total
-      FROM positions_current pc
-      JOIN wallets w ON w.id = pc.wallet_id
-      JOIN protocols p ON p.id = pc.protocol_id
-      WHERE w.label = ? AND p.category != 'lp'
-    `)
-    .get(scope);
-
-  return createSummary(scope, row?.total);
+  return createSummary(
+    scope,
+    sumUsd(listCurrentPositions(db, scope).filter((position) => position.protocol_category !== "lp")),
+  );
 }
 
 export function listCurrentPositions(db, scope) {
@@ -302,60 +299,94 @@ export function listCurrentPositions(db, scope) {
 
   query += " ORDER BY pc.usd_value DESC";
 
-  return db.prepare(query).all(...params).map((row) => {
-    const raw = JSON.parse(row.raw_json);
-    const quantity = normalizeLegacyQuantity(raw);
-    const primary = quantity[0] ?? null;
-    const wallet = getWalletMetadata(row.wallet_scope);
-    const protocolInfo = protocolPresentation(row.protocol_name);
+  return db
+    .prepare(query)
+    .all(...params)
+    .map((row) => {
+      const raw = JSON.parse(row.raw_json);
+      const quantity = normalizeLegacyQuantity(raw);
+      const primary = quantity[0] ?? null;
+      const wallet = getWalletMetadata(row.wallet_scope);
+      const protocolInfo = protocolPresentation(row.protocol_name);
 
-    return {
-      wallet_scope: row.wallet_scope,
-      wallet_label: wallet?.label ?? row.wallet_scope,
-      wallet_address: row.wallet_address,
-      wallet_accent: wallet?.accent ?? null,
-      protocol: row.protocol_name,
-      protocol_label: protocolInfo.label,
-      protocol_section: protocolInfo.section,
-      protocol_category: row.protocol_category,
-      position_type: row.position_type,
-      position_key: row.position_key,
-      usd_value: Number(row.usd_value),
-      updated_at: row.updated_at,
-      quantity,
-      asset_mint: primary?.mint ?? raw.mint ?? null,
-      asset_symbol: primary?.symbol ?? raw.display_symbol ?? null,
-      asset_name: raw.display_name ?? primary?.name ?? raw.display_symbol ?? row.protocol_name,
-      icon_url: raw.icon_url ?? primary?.icon_url ?? null,
-      unit_price_usd: raw.unit_price_usd ?? primary?.price_usd ?? null,
-      price_change_24h: raw.price_change_24h ?? primary?.price_change_24h ?? null,
-      rewards_usd: Number(raw.rewards_usd ?? 0),
-      raw,
-    };
-  });
+      return {
+        wallet_scope: row.wallet_scope,
+        wallet_label: wallet?.label ?? row.wallet_scope,
+        wallet_address: row.wallet_address,
+        wallet_accent: wallet?.accent ?? null,
+        protocol: row.protocol_name,
+        protocol_label: protocolInfo.label,
+        protocol_section: protocolInfo.section,
+        protocol_category: row.protocol_category,
+        position_type: row.position_type,
+        position_key: row.position_key,
+        usd_value: Number(row.usd_value),
+        updated_at: row.updated_at,
+        quantity,
+        asset_mint: primary?.mint ?? raw.mint ?? null,
+        asset_symbol: primary?.symbol ?? raw.display_symbol ?? null,
+        asset_name: raw.display_name ?? primary?.name ?? raw.display_symbol ?? row.protocol_name,
+        icon_url: raw.icon_url ?? primary?.icon_url ?? null,
+        unit_price_usd: raw.unit_price_usd ?? primary?.price_usd ?? null,
+        price_change_24h: raw.price_change_24h ?? primary?.price_change_24h ?? null,
+        rewards_usd: Number(raw.rewards_usd ?? 0),
+        raw,
+      };
+    })
+    .filter((position) => !isIgnoredPositionPayload(position.raw, position.quantity));
+}
+
+function ignoredSnapshotUsd(db, scope, snapshotTs, series) {
+  const params = [snapshotTs];
+  let query = `
+    SELECT p.category AS protocol_category, ps.usd_value, ps.quantity_json, ps.raw_json
+    FROM positions_snapshots ps
+    JOIN wallets w ON w.id = ps.wallet_id
+    JOIN protocols p ON p.id = ps.protocol_id
+    WHERE ps.snapshot_ts = ?
+  `;
+
+  if (scope !== "combined") {
+    query += " AND w.label = ?";
+    params.push(scope);
+  }
+
+  if (series === HISTORY_SERIES.CORE) {
+    query += " AND p.category != 'lp'";
+  }
+
+  return db
+    .prepare(query)
+    .all(...params)
+    .reduce((total, row) => {
+      const raw = safeJsonParse(row.raw_json, {});
+      const quantity = Array.isArray(raw.quantity) ? raw.quantity : safeJsonParse(row.quantity_json, []);
+      return isIgnoredPositionPayload(raw, quantity) ? total + Number(row.usd_value ?? 0) : total;
+    }, 0);
 }
 
 export function listPortfolioHistory(db, scope, limit = 100, series = HISTORY_SERIES.WITH_LIQUIDITY) {
-  const params = [scope, HISTORY_SERIES.WITH_LIQUIDITY, series];
   const query = `
       SELECT snapshot_ts, scope, COALESCE(series, ?) AS series, total_usd, pnl_24h, pnl_7d
       FROM portfolio_snapshots
       WHERE scope = ? AND COALESCE(series, ?) = ?
       ORDER BY snapshot_ts DESC LIMIT ?
   `;
-  params.push(limit);
 
   return db
     .prepare(query)
-    .all(HISTORY_SERIES.WITH_LIQUIDITY, ...params)
-    .map((row) => ({
-      snapshot_ts: row.snapshot_ts,
-      scope: row.scope,
-      series: row.series,
-      total_usd: Number(row.total_usd),
-      pnl_24h: row.pnl_24h,
-      pnl_7d: row.pnl_7d,
-    }));
+    .all(HISTORY_SERIES.WITH_LIQUIDITY, scope, HISTORY_SERIES.WITH_LIQUIDITY, series, limit)
+    .map((row) => {
+      const ignoredUsd = ignoredSnapshotUsd(db, row.scope, row.snapshot_ts, row.series);
+      return {
+        snapshot_ts: row.snapshot_ts,
+        scope: row.scope,
+        series: row.series,
+        total_usd: Math.max(0, Number(row.total_usd) - ignoredUsd),
+        pnl_24h: row.pnl_24h,
+        pnl_7d: row.pnl_7d,
+      };
+    });
 }
 
 export function upsertPrice(db, mint, priceUsd, source, confidence = null) {
@@ -391,7 +422,8 @@ export function listLatestPrices(db, limit = 200) {
         source: row.source,
         confidence: row.confidence,
       };
-    });
+    })
+    .filter((price) => !shouldIgnoreTokenIdentity(price));
 }
 
 export function listAllocation(db, scope, by = "protocol") {
@@ -399,46 +431,40 @@ export function listAllocation(db, scope, by = "protocol") {
     throw new Error("by must be protocol or wallet");
   }
 
-  const params = [];
-  const selectDimension = by === "protocol" ? "p.name" : "w.label";
-
-  let query = `
-    SELECT ${selectDimension} AS dim, COALESCE(SUM(pc.usd_value), 0) AS total_usd
-    FROM positions_current pc
-    JOIN wallets w ON w.id = pc.wallet_id
-    JOIN protocols p ON p.id = pc.protocol_id
-  `;
-
-  if (scope !== "combined") {
-    query += " WHERE w.label = ?";
-    params.push(scope);
-  }
-
-  query += " GROUP BY dim ORDER BY total_usd DESC";
-  const rows = db.prepare(query).all(...params);
+  const positions = listCurrentPositions(db, scope);
 
   if (by === "wallet") {
-    return rows.map((row) => {
-      const wallet = getWalletMetadata(row.dim);
-      return {
-        wallet_scope: row.dim,
-        wallet: wallet?.label ?? row.dim,
-        total_usd: Number(row.total_usd),
-      };
-    });
+    const grouped = new Map();
+    for (const position of positions) {
+      const existing = grouped.get(position.wallet_scope) ?? 0;
+      grouped.set(position.wallet_scope, existing + Number(position.usd_value ?? 0));
+    }
+
+    return [...grouped.entries()]
+      .map(([walletScope, totalUsd]) => {
+        const wallet = getWalletMetadata(walletScope);
+        return {
+          wallet_scope: walletScope,
+          wallet: wallet?.label ?? walletScope,
+          total_usd: totalUsd,
+        };
+      })
+      .sort((left, right) => right.total_usd - left.total_usd);
   }
 
   const grouped = new Map();
-  for (const row of rows) {
-    const presentation = protocolPresentation(row.dim);
+  for (const position of positions) {
+    const presentation = protocolPresentation(position.protocol);
     const existing = grouped.get(presentation.section) ?? {
       protocol: presentation.section,
       protocol_label: presentation.label,
       protocols: [],
       total_usd: 0,
     };
-    existing.total_usd += Number(row.total_usd);
-    existing.protocols.push(row.dim);
+    existing.total_usd += Number(position.usd_value ?? 0);
+    if (!existing.protocols.includes(position.protocol)) {
+      existing.protocols.push(position.protocol);
+    }
     grouped.set(presentation.section, existing);
   }
 

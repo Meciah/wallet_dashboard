@@ -10,6 +10,7 @@ import {
   applySchema,
   connect,
   finishIngestionRun,
+  insertPositionSnapshot,
   listAllocation,
   listCurrentPositions,
   listIngestionRuns,
@@ -117,6 +118,49 @@ describe("backend db queries", () => {
     });
     expect(prices.find((item) => item.mint === "mint-1")?.price_usd).toBe(2);
     expect(runs[0].status).toBe("success");
+
+    db.close();
+  });
+
+  it("excludes ignored scam tokens from positions, summaries, allocations, and history", () => {
+    const { dir, db } = createTempDb();
+    cleanupPaths.push(dir);
+    const snapshotTs = "2026-04-29T12:00:00.000Z";
+    const goodPosition = makePosition({
+      quantity: [{ mint: "mint-1", symbol: "M1", name: "Token One", amount: 1 }],
+      usd_value: 123,
+    });
+    const scamPosition = makePosition({
+      position_key: "scam-position",
+      quantity: [{ mint: "scam-mint", symbol: "JUPHUB", name: "JupiterHub.io", amount: 528135 }],
+      usd_value: 9142.02,
+      raw: {
+        mint: "scam-mint",
+        display_name: "JupiterHub.io",
+        display_symbol: "JUPHUB",
+      },
+    });
+
+    upsertCurrentPosition(db, goodPosition);
+    upsertCurrentPosition(db, scamPosition);
+    insertPositionSnapshot(db, goodPosition, snapshotTs);
+    insertPositionSnapshot(db, scamPosition, snapshotTs);
+    savePortfolioSnapshotSeries(
+      db,
+      {
+        scope: "wallet_1",
+        snapshot_ts: snapshotTs,
+        total_usd: goodPosition.usd_value + scamPosition.usd_value,
+        pnl_24h: null,
+        pnl_7d: null,
+      },
+      HISTORY_SERIES.WITH_LIQUIDITY,
+    );
+
+    expect(listCurrentPositions(db, "wallet_1")).toHaveLength(1);
+    expect(summarizeScope(db, "wallet_1").total_usd).toBe(123);
+    expect(listAllocation(db, "wallet_1", "protocol")[0].total_usd).toBe(123);
+    expect(listPortfolioHistory(db, "wallet_1", 5, HISTORY_SERIES.WITH_LIQUIDITY)[0].total_usd).toBe(123);
 
     db.close();
   });

@@ -250,6 +250,31 @@ describe("providers and adapters", () => {
     expect(walletPositions.find((position) => position.raw.display_symbol === "URMOM")?.usd_value).toBeCloseTo(0.0020625, 7);
   });
 
+  it("skips scam-like URL tokens even when they have a provider price", async () => {
+    const scamMint = "JupHubMint123";
+    const chainProvider = {
+      async getSolBalance() {
+        return 1.5;
+      },
+      async getTokenBalances() {
+        return [{ mint: scamMint, amount: 528_135, decimals: 6, symbol: "JUPHUB", name: "JupiterHub.io" }];
+      },
+    };
+    const priceProvider = {
+      async getQuote(mint) {
+        return {
+          [SOL_MINT]: { mint, priceUsd: 100, symbol: "SOL", name: "Solana" },
+          [scamMint]: { mint, priceUsd: 0.0173, symbol: "JUPHUB", name: "JupiterHub.io" },
+        }[mint] ?? null;
+      },
+    };
+
+    const walletPositions = await new WalletTokenAdapter(chainProvider, priceProvider).collectPositions("wallet");
+
+    expect(walletPositions).toHaveLength(1);
+    expect(walletPositions[0].raw.display_symbol).toBe("SOL");
+  });
+
   it("returns expected positions for wallet, marinade, native stake, raydium, and lp adapters", async () => {
     const chainProvider = new FakeChainProvider();
     const priceProvider = new FakePriceProvider();
