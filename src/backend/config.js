@@ -11,8 +11,9 @@ export const SOL_MINT = "So11111111111111111111111111111111111111112";
 export const MSOL_MINT = "mSoLzYCxHdYgdzUevW6Y8k9sW5M2YfLQ7fPjYq4Jp7";
 export const PUMP_MINT = "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn";
 export const URMOM_MINT = "9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump";
-export const ALLOWED_TOKEN_MINTS = [SOL_MINT, PUMP_MINT, URMOM_MINT];
-export const ALLOWED_TOKEN_SYMBOLS = ["SOL", "PUMP", "URMOM"];
+export const UNC_MINT = "ACtfUWtgvaXrQGNMiohTusi5jcx5RJf5zwu9aAxkpump";
+export const ALLOWED_TOKEN_MINTS = [SOL_MINT, PUMP_MINT, URMOM_MINT, UNC_MINT];
+export const ALLOWED_TOKEN_SYMBOLS = ["SOL", "PUMP", "URMOM", "UNC"];
 
 const DEFAULT_WALLET_ACCENTS = ["#7ee787", "#4ad8ff", "#b892ff"];
 const DEMO_TRACKED_WALLETS = [
@@ -101,9 +102,15 @@ export const TOKEN_METADATA_OVERRIDES = {
     decimals: 6,
     icon_url: "https://img-v1.raydium.io/icon/9j6twpYWrV1ueJok76D9YK8wJTVoG9Zy8spC7wnTpump.png",
   },
+  [UNC_MINT]: {
+    symbol: "UNC",
+    name: "UNC",
+    decimals: 6,
+    icon_url: "https://img-v1.raydium.io/icon/ACtfUWtgvaXrQGNMiohTusi5jcx5RJf5zwu9aAxkpump.png",
+  },
 };
 
-export const TRACKED_TOKENS = [PUMP_MINT, URMOM_MINT]
+export const TRACKED_TOKENS = [PUMP_MINT, URMOM_MINT, UNC_MINT]
   .map((mint) => {
     const metadata = TOKEN_METADATA_OVERRIDES[mint];
     return metadata ? { mint, ...metadata } : null;
